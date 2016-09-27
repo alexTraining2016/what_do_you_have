@@ -12,6 +12,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
+    public void toThirdActivity(View view) {
+        startActivity(new Intent(this, ThirdActivity.class));
+    }
     public void goToSecondBtn(View view) {
         startActivity(new Intent(this, SecondActivity.class));
     }
