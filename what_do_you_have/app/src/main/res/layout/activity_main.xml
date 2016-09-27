@@ -14,7 +14,8 @@
         android:id="@+id/avatar"
         android:src="@mipmap/ic_launcher"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:onClick="toThirdActivity"/>
     <TextView
         android:id="@+id/user_name"
         android:layout_margin="6dip"
