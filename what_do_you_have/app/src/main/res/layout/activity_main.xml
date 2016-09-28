@@ -33,8 +33,9 @@
         android:layout_height="match_parent" />
     <Button
         android:id="@+id/goToSecondBtn"
+        android:text="to second activity"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:onClick="goToSecondBtn"/>
 </RelativeLayout>
