@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:title="@string/name_main_part">
+            <menu>
+            <item
+                android:id="@+id/nav_i_have"
+                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:title="@string/i_have" />
+            <item
+                android:id="@+id/nav_all_recipes"
+                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:title="@string/all_recipes" />
+            <item
+                android:id="@+id/nav_favorites"
+                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:title="@string/favorites" />
+            </menu>
+        </item>
+    </group>
+
+    <item android:title="@string/fitness">
+        <menu>
+            <item
+                android:id="@+id/nav_diets"
+                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:title="@string/diets" />
+            <item
+                android:id="@+id/nav_training_program"
+                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:title="@string/training_program" />
+        </menu>
+    </item>
+
+</menu>

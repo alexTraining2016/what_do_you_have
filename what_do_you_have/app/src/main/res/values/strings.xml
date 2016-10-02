@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">what_do_you_have</string>
+    <string name="app_name">what do you have</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="i_have">I have...</string>
+    <string name="name_main_part">What do you have?</string>
+    <string name="all_recipes">All recipes</string>
+    <string name="favorites">Favorites</string>
+    <string name="fitness">Fitness</string>
+    <string name="diets">Diets</string>
+    <string name="training_program">Training program</string>
 </resources>

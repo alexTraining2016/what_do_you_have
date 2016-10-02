@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Что у тебя есть?</string>
+    <string name="i_have">У меня есть...</string>
+    <string name="name_main_part">Что у тебя есть?</string>
+    <string name="all_recipes">Все рецепты</string>
+    <string name="favorites">Избранное</string>
+    <string name="fitness">Фитнес</string>
+    <string name="diets">Диеты</string>
+    <string name="training_program">Программы тренировок</string>
+</resources>
