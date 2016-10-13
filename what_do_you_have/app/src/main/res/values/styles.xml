@@ -15,4 +15,18 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CollapsedAppBar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">22sp</item>
+        <item name="android:maxLength">15</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="VectorImageTextViewStyleClickable">
+        <item name="android:paddingBottom">16dip</item>
+        <item name="android:paddingTop">16dip</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+    </style>
 </resources>

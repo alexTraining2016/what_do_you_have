@@ -10,11 +10,11 @@
                 android:title="@string/i_have" />
             <item
                 android:id="@+id/nav_all_recipes"
-                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:icon="@drawable/ic_import_contacts_black_24dp"
                 android:title="@string/all_recipes" />
             <item
                 android:id="@+id/nav_favorites"
-                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:icon="@drawable/ic_local_library_black_24dp"
                 android:title="@string/favorites" />
             </menu>
         </item>
@@ -24,15 +24,15 @@
         <menu>
             <item
                 android:id="@+id/nav_diets"
-                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:icon="@drawable/ic_local_dining_black_24dp"
                 android:title="@string/diets" />
             <item
                 android:id="@+id/nav_training_program"
-                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:icon="@drawable/ic_directions_bike_black_24dp"
                 android:title="@string/training_program" />
             <item
                 android:id="@+id/nav_favorites_program"
-                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:icon="@drawable/ic_assignment_black_24dp"
                 android:title="@string/favorites_program" />
 
         </menu>

@@ -2,7 +2,6 @@ package comalexpolyanskyi.github.foodandhealth.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import comalexpolyanskyi.github.foodandhealth.R;
+import comalexpolyanskyi.github.foodandhealth.ui.views.VectorImageTextView;
 
 
 public class DescriptionActivity extends AppCompatActivity {
@@ -33,11 +33,11 @@ public class DescriptionActivity extends AppCompatActivity {
         String title = intent.getExtras().getString(TITLE);
         setTitle(title);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        VectorImageTextView favBtn = (VectorImageTextView) findViewById(R.id.fav);
+        favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Добаввлено в избранное", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Добавлено в избранное", Snackbar.LENGTH_LONG)
                         .setAction(ACTION, null).show();
             }
         });

@@ -6,22 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Helper class for providing sample content for user interfaces created by
- * Android template wizards.
- * <p>
- * TODO: Replace all uses of this class before publishing your app.
- */
 public class RecipesModel implements Serializable {
 
-    /**
-     * An array of sample (dummy) items.
-     */
     public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
 
-    /**
-     * A map of sample (dummy) items, by ID.
-     */
     public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
     private static final int COUNT = 500;
@@ -39,7 +27,7 @@ public class RecipesModel implements Serializable {
     }
 
     private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+        return new DummyItem(String.valueOf(position), "Item" + position, makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -51,9 +39,6 @@ public class RecipesModel implements Serializable {
         return builder.toString();
     }
 
-    /**
-     * A dummy item representing a piece of content.
-     */
     public static class DummyItem implements Serializable{
         public final String id;
         public final String content;
