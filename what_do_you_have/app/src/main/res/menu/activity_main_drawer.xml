@@ -30,6 +30,11 @@
                 android:id="@+id/nav_training_program"
                 android:icon="@drawable/ic_shopping_basket_black_24dp"
                 android:title="@string/training_program" />
+            <item
+                android:id="@+id/nav_favorites_program"
+                android:icon="@drawable/ic_shopping_basket_black_24dp"
+                android:title="@string/favorites_program" />
+
         </menu>
     </item>
 
