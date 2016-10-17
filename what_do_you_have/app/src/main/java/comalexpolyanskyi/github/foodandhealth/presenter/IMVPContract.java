@@ -4,10 +4,6 @@ import android.support.v4.util.SparseArrayCompat;
 
 import java.io.Serializable;
 
-/**
- * Created by Алексей on 13.10.2016.
- */
-
 public interface IMVPContract {
 
     interface RequiredView<T extends Serializable> {

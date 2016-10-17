@@ -10,10 +10,6 @@ import java.io.Serializable;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 
-/**
- * Created by Алексей on 17.10.2016.
- */
-
 public class ListFragmentModel<T extends Serializable> implements IMVPContract.Model {
 
     private IMVPContract.RequiredPresenter<T> presenter;

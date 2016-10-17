@@ -1,9 +1,5 @@
 package comalexpolyanskyi.github.foodandhealth.utils;
 
-/**
- * Created by Алексей on 17.10.2016.
- */
-
 import android.content.Context;
 
 public enum ContextHolder {

@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.RecipesModel;
@@ -26,7 +25,7 @@ public class ListFragment extends Fragment implements IMVPContract.RequiredView<
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
-    private ProgressBar progressBar;
+    private View progressBar;
     private RecyclerView recyclerView;
     private View view;
 
@@ -38,8 +37,6 @@ public class ListFragment extends Fragment implements IMVPContract.RequiredView<
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            IMVPContract.Presenter presenter = new ListFragmentPresenter(this);
-            //presenter.getAllRecipesData();
         }
     }
 
@@ -47,13 +44,18 @@ public class ListFragment extends Fragment implements IMVPContract.RequiredView<
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_recipes_list, container, false);
-        Context context = view.getContext();
+        progressBar = view.findViewById(R.id.list_fragment_progress);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);
-        checkOrientation();
-        recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        recyclerView.setAdapter(new RecipesRVAdapter(RecipesModel.ITEMS, mListener));
-        progressBar = (ProgressBar) view.findViewById(R.id.list_fragment_progress);
+        IMVPContract.Presenter presenter = new ListFragmentPresenter(this);
+        presenter.loadListItems("");
+        setupRecyclerView();
         return view;
+    }
+
+    private void setupRecyclerView(){
+        checkOrientation();
+        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
+        recyclerView.setAdapter(new RecipesRVAdapter(RecipesModel.ITEMS, mListener));
     }
 
     @Override

@@ -11,10 +11,9 @@ import java.net.URL;
 
 public class AppHttpClient {
 
-    public static final String CACHE_CONTROL = "Cache-Control";
-    public static final String MAX_STALE = "max-stale=";
+    private final String CACHE_CONTROL = "Cache-Control";
+    private final String MAX_STALE = "max-stale=";
     private static AppHttpClient httpClient;
-    private final int maxStale = 60 * 60;
 
     private AppHttpClient(){}
 
@@ -23,6 +22,7 @@ public class AppHttpClient {
             URL url = new URL(stringUrl);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setUseCaches(true);
+            int maxStale = 60 * 60;
             urlConnection.addRequestProperty(CACHE_CONTROL, MAX_STALE + maxStale);
             InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
             result = new String(ByteStreams.toByteArray(inputStream), Charsets.UTF_8);
