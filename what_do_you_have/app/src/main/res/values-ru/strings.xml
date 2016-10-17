@@ -13,4 +13,5 @@
     <string name="training_program">Программы тренировок</string>
     <string name="favorites_program">Избранное</string>
     <string name="action_search">Поиск</string>
+    <string name="error_loading">Ошибка загрузки данных</string>
 </resources>

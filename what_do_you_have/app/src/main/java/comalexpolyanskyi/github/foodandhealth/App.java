@@ -7,6 +7,9 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
+import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
+import comalexpolyanskyi.github.foodandhealth.utils.ContextHolder;
+
 import static android.content.ContentValues.TAG;
 
 /**
@@ -21,6 +24,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ContextHolder.setContext(this);
+        AppHttpClient.install();
         try {
             File httpCacheDir = new File(this.getCacheDir(), HTTP);
             long httpCacheSize = 5 * 1024 * 1024;
