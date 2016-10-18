@@ -75,15 +75,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         Fragment fragment = null;
+        FragmentManager fragmentManager = getSupportFragmentManager();
         String title = "";
         int id = item.getItemId();
         if (id == R.id.nav_all_recipes) {
-            fragment = new ListFragment();
             title = getString(R.string.all_recipes);
+            fragment = fragmentManager.findFragmentByTag(title);
+            if(fragment == null){
+                fragment = new ListFragment();
+            }
         }
         if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction().add(fragment, title);
             fragmentTransaction.replace(R.id.container_body, fragment);
             fragmentTransaction.commit();
             if (getSupportActionBar() != null) {

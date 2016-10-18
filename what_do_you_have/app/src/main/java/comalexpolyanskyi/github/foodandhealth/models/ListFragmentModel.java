@@ -5,26 +5,26 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.SparseArrayCompat;
 
 import java.io.IOException;
-import java.io.Serializable;
 
+import comalexpolyanskyi.github.foodandhealth.models.beans.ListItemBean;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 
-public class ListFragmentModel<T extends Serializable> implements IMVPContract.Model {
+public class ListFragmentModel implements IMVPContract.Model {
 
-    private IMVPContract.RequiredPresenter<T> presenter;
-    private SparseArrayCompat<T> sparseArrays = null;
+    private IMVPContract.RequiredPresenter<SparseArrayCompat<ListItemBean>> presenter;
+    private SparseArrayCompat<ListItemBean> sparseArrays = null;
 
     public ListFragmentModel(@NonNull IMVPContract.RequiredPresenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void getListItems(final String url) {
+    public void getData(final String url) {
         final AppHttpClient httpClient = AppHttpClient.getAppHttpClient();
-        new AsyncTask<Void, Void, SparseArrayCompat<T>>() {
+        new AsyncTask<Void, Void, SparseArrayCompat<ListItemBean>>() {
             @Override
-            protected SparseArrayCompat<T> doInBackground(Void... voids) {
+            protected SparseArrayCompat<ListItemBean> doInBackground(Void... voids) {
                 try {
                     String requestHttp = httpClient.loadDataFromHttp(url);
                     //sparseArrays = parseJsonTo(requestHttp);
@@ -35,7 +35,7 @@ public class ListFragmentModel<T extends Serializable> implements IMVPContract.M
             }
 
             @Override
-            protected void onPostExecute(SparseArrayCompat<T> response) {
+            protected void onPostExecute(SparseArrayCompat<ListItemBean> response) {
                 super.onPostExecute(response);
                 if(sparseArrays != null) {
                     presenter.onSuccess(response);
@@ -44,6 +44,11 @@ public class ListFragmentModel<T extends Serializable> implements IMVPContract.M
                 }
             }
         }.execute();
+    }
+
+    @Override
+    public void onDestroy() {
+        //if i need, here I can clean cache
     }
 
 }

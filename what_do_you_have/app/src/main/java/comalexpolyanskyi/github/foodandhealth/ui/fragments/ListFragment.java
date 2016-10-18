@@ -19,7 +19,7 @@ import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.presenter.ListFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.utils.RecipesRVAdapter;
 
-public class ListFragment extends Fragment implements IMVPContract.RequiredView<ListItemBean> {
+public class ListFragment extends Fragment implements IMVPContract.RequiredView<SparseArrayCompat<ListItemBean>> {
 
     public static final String ACTION = "Action";
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -28,6 +28,7 @@ public class ListFragment extends Fragment implements IMVPContract.RequiredView<
     private View progressBar;
     private RecyclerView recyclerView;
     private View view;
+    private IMVPContract.Presenter presenter;
 
     public ListFragment() {
     }
@@ -35,6 +36,7 @@ public class ListFragment extends Fragment implements IMVPContract.RequiredView<
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -46,8 +48,7 @@ public class ListFragment extends Fragment implements IMVPContract.RequiredView<
         view = inflater.inflate(R.layout.fragment_recipes_list, container, false);
         progressBar = view.findViewById(R.id.list_fragment_progress);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);
-        IMVPContract.Presenter presenter = new ListFragmentPresenter(this);
-        presenter.loadListItems("");
+        startMVP(savedInstanceState);
         setupRecyclerView();
         return view;
     }
@@ -55,7 +56,16 @@ public class ListFragment extends Fragment implements IMVPContract.RequiredView<
     private void setupRecyclerView(){
         checkOrientation();
         recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
-        recyclerView.setAdapter(new RecipesRVAdapter(RecipesModel.ITEMS, mListener));
+        recyclerView.setAdapter(new RecipesRVAdapter(RecipesModel.ITEMS, mListener, getActivity()));
+    }
+
+    public void startMVP(Bundle savedInstanceState) {
+        if (savedInstanceState == null ) {
+                this.presenter = new ListFragmentPresenter(this);
+                presenter.loadData("");
+        } else {
+                this.presenter.onConfigurationChanged(this);
+        }
     }
 
     @Override
@@ -67,6 +77,7 @@ public class ListFragment extends Fragment implements IMVPContract.RequiredView<
     @Override
     public void onDetach() {
         super.onDetach();
+        presenter.onDestroy();
         mListener = null;
     }
 

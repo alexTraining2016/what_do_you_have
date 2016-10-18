@@ -1,29 +1,26 @@
 package comalexpolyanskyi.github.foodandhealth.presenter;
 
-import android.support.v4.util.SparseArrayCompat;
-
-import java.io.Serializable;
-
 public interface IMVPContract {
 
-    interface RequiredView<T extends Serializable> {
-        void returnData(SparseArrayCompat<T> response);
+    interface RequiredView<T> {
+        void returnData(T response);
         void returnError(String message);
         void showProgress(boolean isInProgress);
     }
 
     interface Presenter {
         void onConfigurationChanged(RequiredView view);
-        void loadListItems(String url);
+        void onDestroy();
+        void loadData(String url);
     }
 
-    interface Model{
-        void getListItems(String url);
-
+    interface Model {
+        void getData(String url);
+        void onDestroy();
     }
 
-    interface RequiredPresenter<T extends Serializable>{
+    interface RequiredPresenter<T>{
         void onError();
-        void onSuccess(SparseArrayCompat<T> response);
+        void onSuccess(T response);
     }
 }

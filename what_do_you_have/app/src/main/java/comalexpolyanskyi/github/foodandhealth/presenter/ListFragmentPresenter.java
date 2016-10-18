@@ -8,7 +8,7 @@ import comalexpolyanskyi.github.foodandhealth.models.ListFragmentModel;
 import comalexpolyanskyi.github.foodandhealth.models.beans.ListItemBean;
 import comalexpolyanskyi.github.foodandhealth.utils.ContextHolder;
 
-public class ListFragmentPresenter implements IMVPContract.Presenter, IMVPContract.RequiredPresenter<ListItemBean> {
+public class ListFragmentPresenter implements IMVPContract.Presenter, IMVPContract.RequiredPresenter<SparseArrayCompat<ListItemBean>> {
 
     private IMVPContract.RequiredView view;
     private IMVPContract.Model model;
@@ -20,13 +20,19 @@ public class ListFragmentPresenter implements IMVPContract.Presenter, IMVPContra
 
     @Override
     public void onConfigurationChanged(IMVPContract.RequiredView view) {
-
+        this.view = view;
     }
 
     @Override
-    public void loadListItems(final String url) {
+    public void onDestroy() {
+        view = null;
+        model.onDestroy();
+    }
+
+    @Override
+    public void loadData(final String url) {
         view.showProgress(true);
-        model.getListItems(url);
+        model.getData(url);
     }
 
     @Override
