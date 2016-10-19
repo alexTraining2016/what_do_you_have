@@ -20,7 +20,8 @@ import comalexpolyanskyi.github.foodandhealth.utils.cache.FileCache;
 
 public abstract class AbstractImageLoader {
 
-    private static final int THREE_POOL_SIZE = 7;
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    private static final int THREAD_POOL_SIZE = CPU_COUNT * 2 + 1;
     public static final String TEST = "test";
     public static final String ERROR = "error";
     private Handler handler;
