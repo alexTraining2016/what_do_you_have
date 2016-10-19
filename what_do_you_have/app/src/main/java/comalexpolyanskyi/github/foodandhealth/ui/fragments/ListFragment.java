@@ -56,7 +56,7 @@ public class ListFragment extends Fragment implements IMVPContract.RequiredView<
     private void setupRecyclerView(){
         checkOrientation();
         recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
-        recyclerView.setAdapter(new RecipesRVAdapter(RecipesModel.ITEMS, mListener, getActivity()));
+        recyclerView.setAdapter(new RecipesRVAdapter(RecipesModel.ITEMS, mListener));
     }
 
     public void startMVP(Bundle savedInstanceState) {
