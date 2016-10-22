@@ -55,6 +55,7 @@ public class RecipesListFragment extends Fragment implements IMVPContract.Requir
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_recipes_list, container, false);
         progressBar = view.findViewById(R.id.list_fragment_progress);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);

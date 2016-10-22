@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.models.pojo.QueryParameters;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.IngredientListFragment;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.RecipesListFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -126,7 +127,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private Fragment prepareFragment(int id){
         Fragment fragment = null;
-        if (id == R.id.nav_all_recipes) {
+        if(id == R.id.nav_i_have){
+            title = getString(R.string.all_recipes);
+            theme = R.style.FoodAppTheme;
+            color = R.color.colorPrimaryFood;
+            drawable = R.drawable.food;
+            fragment = new IngredientListFragment();
+        }else if (id == R.id.nav_all_recipes) {
             title = getString(R.string.all_recipes);
             theme = R.style.FoodAppTheme;
             color = R.color.colorPrimaryFood;

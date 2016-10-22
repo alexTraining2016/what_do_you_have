@@ -12,7 +12,7 @@ import comalexpolyanskyi.github.foodandhealth.utils.ContextHolder;
 
 public class ListFragmentPresenter implements IMVPContract.Presenter<QueryParameters>, IMVPContract.RequiredPresenter<SparseArrayCompat<ListItemBean>> {
 
-    public static final String REQUEST_URL = "sdda";
+    private static final String REQUEST_URL = "sdda";
     private IMVPContract.RequiredView view;
     private IMVPContract.Model model;
 
