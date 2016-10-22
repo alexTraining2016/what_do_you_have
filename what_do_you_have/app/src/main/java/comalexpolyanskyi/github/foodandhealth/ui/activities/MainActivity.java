@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final int FAVORITES_TRAINING_AND_DIET_RECIPES = 5;
     public static final String TITLE_KEY = "title";
     public static final String THEME_KEY = "theme";
+    public static final String COLOR_KEY = "color";
+    public static final String DRAWABLE_KEY = "draw";
     private int theme = 0;
     private int color = 0;
     private int drawable = R.drawable.food;
@@ -52,6 +54,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         setupNavigationDrawer(toolbar);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null){
+            theme = savedInstanceState.getInt(THEME_KEY);
+            color = savedInstanceState.getInt(COLOR_KEY);
+            drawable = savedInstanceState.getInt(DRAWABLE_KEY);
+            toolbar.setBackgroundColor(getResources().getColor(color));
+            headerLayout.setBackground(getResources().getDrawable(drawable));
+        }
     }
 
     @Override
@@ -87,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(THEME_KEY, theme);
+        outState.putInt(COLOR_KEY, color);
+        outState.putInt(DRAWABLE_KEY, drawable);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
