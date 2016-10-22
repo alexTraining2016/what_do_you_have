@@ -13,16 +13,16 @@ import java.util.List;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.RecipesModel;
 import comalexpolyanskyi.github.foodandhealth.presenter.ImageLoader;
-import comalexpolyanskyi.github.foodandhealth.ui.fragments.ListFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.RecipesListFragment;
 
 
 public class RecipesRVAdapter extends RecyclerView.Adapter<RecipesRVAdapter.ViewHolder> {
 
     private final List<RecipesModel.DummyItem> mValues;
-    private final ListFragment.OnListFragmentInteractionListener mListener;
+    private final RecipesListFragment.OnListFragmentInteractionListener mListener;
     private ImageLoader imageLoader;
 
-    public RecipesRVAdapter(List<RecipesModel.DummyItem> items, ListFragment.OnListFragmentInteractionListener listener) {
+    public RecipesRVAdapter(List<RecipesModel.DummyItem> items, RecipesListFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
         imageLoader = new ImageLoader(ContextCompat.getDrawable(ContextHolder.getContext(), R.mipmap.images));
@@ -37,7 +37,7 @@ public class RecipesRVAdapter extends RecyclerView.Adapter<RecipesRVAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        imageLoader.loadImageFromUrl("http://www.planwallpaper.com/static/images/6768666-1080p-wallpapers.jpg", holder.mImageView);
+        imageLoader.loadImageFromUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKEzvQjaPFW6s02YqZkmyb7qZMiNEhFkRCkhpoOyYnU-z8OzYL8g", holder.mImageView);
         holder.mItem = mValues.get(position);
         holder.mIdView.setTag(mValues.get(position).content);
         holder.mIdView.setText(mValues.get(position).id);

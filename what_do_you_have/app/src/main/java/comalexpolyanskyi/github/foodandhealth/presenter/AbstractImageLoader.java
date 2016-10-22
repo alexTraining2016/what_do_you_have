@@ -20,7 +20,8 @@ import comalexpolyanskyi.github.foodandhealth.utils.cache.FileCache;
 
 public abstract class AbstractImageLoader {
 
-    private static final int THREE_POOL_SIZE = 7;
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    private static final int THREAD_POOL_SIZE = CPU_COUNT * 2 + 1;
     public static final String TEST = "test";
     public static final String ERROR = "error";
     private Handler handler;
@@ -28,27 +29,26 @@ public abstract class AbstractImageLoader {
     protected FileCache fileCache;
     protected LruCache<String, Bitmap>  memoryCache;
 
-    final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-    final int cacheSize = maxMemory / 8;
-
     public AbstractImageLoader(){
+        handler = new Handler(Looper.getMainLooper());
         fileCache = FileCache.getFileCache();
+        int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        int cacheSize = maxMemory / 8;
         memoryCache = new LruCache<>(cacheSize);
-        executorService = Executors.newFixedThreadPool(THREE_POOL_SIZE);
+        executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     }
 
     abstract public void onDestroy();
-
-    protected void onPreExecute(){
-
-    }
 
     abstract protected Bitmap doInBackground(String url);
 
     abstract protected void onPostExecute(Bitmap response, ImageView imageView);
 
+    protected void onPreExecute(){
+
+    }
+
     public void loadImageFromUrl(String url, final ImageView imageView){
-        handler = new Handler(Looper.getMainLooper());
         Bitmap bitmap = memoryCache.get(url);
         if(bitmap == null){
             executorService.submit(new BitmapLoader(url, imageView));

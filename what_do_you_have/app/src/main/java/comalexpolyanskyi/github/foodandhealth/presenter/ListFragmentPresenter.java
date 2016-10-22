@@ -5,11 +5,14 @@ import android.support.v4.util.SparseArrayCompat;
 
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.models.ListFragmentModel;
-import comalexpolyanskyi.github.foodandhealth.models.beans.ListItemBean;
+import comalexpolyanskyi.github.foodandhealth.models.pojo.ListItemBean;
+import comalexpolyanskyi.github.foodandhealth.models.pojo.QueryParameters;
+import comalexpolyanskyi.github.foodandhealth.ui.activities.MainActivity;
 import comalexpolyanskyi.github.foodandhealth.utils.ContextHolder;
 
-public class ListFragmentPresenter implements IMVPContract.Presenter, IMVPContract.RequiredPresenter<SparseArrayCompat<ListItemBean>> {
+public class ListFragmentPresenter implements IMVPContract.Presenter<QueryParameters>, IMVPContract.RequiredPresenter<SparseArrayCompat<ListItemBean>> {
 
+    public static final String REQUEST_URL = "sdda";
     private IMVPContract.RequiredView view;
     private IMVPContract.Model model;
 
@@ -30,8 +33,30 @@ public class ListFragmentPresenter implements IMVPContract.Presenter, IMVPContra
     }
 
     @Override
-    public void loadData(final String url) {
+    public void loadData(QueryParameters parameters) {
+        //TODO формирование GET запроса в зависимости от типа данных
         view.showProgress(true);
+        String url = null;
+        switch (parameters.getViewType()){
+            case MainActivity.ALL_FOOD_RECIPES:
+                url = REQUEST_URL;
+                break;
+            case MainActivity.FOOD_RECIPES_BY_INGREDIENT:
+                url = REQUEST_URL;
+                break;
+            case MainActivity.FAVORITES_FOOD_RECIPES:
+                url = REQUEST_URL;
+                break;
+            case MainActivity.ALL_DIET_RECIPES:
+                url = REQUEST_URL;
+                break;
+            case MainActivity.ALL_TRAINING_RECIPES:
+                url = REQUEST_URL;
+                break;
+            case MainActivity.FAVORITES_TRAINING_AND_DIET_RECIPES:
+                url = REQUEST_URL;
+                break;
+        }
         model.getData(url);
     }
 

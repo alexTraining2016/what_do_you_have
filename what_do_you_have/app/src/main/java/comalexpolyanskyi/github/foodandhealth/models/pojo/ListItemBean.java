@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.models.beans;
+package comalexpolyanskyi.github.foodandhealth.models.pojo;
 
 import java.io.Serializable;
 

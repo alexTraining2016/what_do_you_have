@@ -9,12 +9,4 @@
         <attr name="bottomIcon" format="reference" />
     </declare-styleable>
 
-
-    <attr name="MyCustomAttrForMyImageView" format="reference"/>
-    <attr name="icImageViewStyle" format="reference"/>
-
-    <declare-styleable name="icImageViewStyle">
-        <attr name="imageFromURL" format="reference" />
-    </declare-styleable>
-
 </resources>

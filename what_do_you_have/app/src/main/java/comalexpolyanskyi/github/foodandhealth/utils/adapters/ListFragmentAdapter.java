@@ -4,15 +4,15 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import java.util.List;
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.ui.fragments.ListFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.RecipesListFragment;
 import comalexpolyanskyi.github.foodandhealth.utils.ContextHolder;
 
 public class ListFragmentAdapter<ListItemBean> extends AbstractAdapter<ListItemBean> {
 
     private final List<ListItemBean> values;
-    private final ListFragment.OnListFragmentInteractionListener listener;
+    private final RecipesListFragment.OnListFragmentInteractionListener listener;
 
-    public ListFragmentAdapter(List<ListItemBean> items, ListFragment.OnListFragmentInteractionListener listener){
+    public ListFragmentAdapter(List<ListItemBean> items, RecipesListFragment.OnListFragmentInteractionListener listener){
         values = items;
         this.listener = listener;
     }

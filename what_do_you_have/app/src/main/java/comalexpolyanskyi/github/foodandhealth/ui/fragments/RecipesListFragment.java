@@ -14,23 +14,33 @@ import android.view.ViewGroup;
 
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.RecipesModel;
-import comalexpolyanskyi.github.foodandhealth.models.beans.ListItemBean;
+import comalexpolyanskyi.github.foodandhealth.models.pojo.ListItemBean;
+import comalexpolyanskyi.github.foodandhealth.models.pojo.QueryParameters;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.presenter.ListFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.utils.RecipesRVAdapter;
 
-public class ListFragment extends Fragment implements IMVPContract.RequiredView<SparseArrayCompat<ListItemBean>> {
+public class RecipesListFragment extends Fragment implements IMVPContract.RequiredView<SparseArrayCompat<ListItemBean>> {
 
     public static final String ACTION = "Action";
     private static final String ARG_COLUMN_COUNT = "column-count";
+    public static final String FRAGMENT_REQUEST_PARAMS_KEY = "params";
     private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
     private View progressBar;
     private RecyclerView recyclerView;
     private View view;
-    private IMVPContract.Presenter presenter;
+    private IMVPContract.Presenter<QueryParameters> presenter;
 
-    public ListFragment() {
+    public RecipesListFragment() {
+    }
+
+    public static RecipesListFragment newInstance(QueryParameters parameters){
+        RecipesListFragment fragment = new RecipesListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FRAGMENT_REQUEST_PARAMS_KEY, parameters);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -61,10 +71,11 @@ public class ListFragment extends Fragment implements IMVPContract.RequiredView<
 
     public void startMVP(Bundle savedInstanceState) {
         if (savedInstanceState == null ) {
-                this.presenter = new ListFragmentPresenter(this);
-                presenter.loadData("");
+            this.presenter = new ListFragmentPresenter(this);
+            QueryParameters parameters = (QueryParameters) getArguments().getSerializable(FRAGMENT_REQUEST_PARAMS_KEY);
+            presenter.loadData(parameters);
         } else {
-                this.presenter.onConfigurationChanged(this);
+            this.presenter.onConfigurationChanged(this);
         }
     }
 

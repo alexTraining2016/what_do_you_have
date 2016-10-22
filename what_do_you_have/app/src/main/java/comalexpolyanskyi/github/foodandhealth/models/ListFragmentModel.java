@@ -6,7 +6,7 @@ import android.support.v4.util.SparseArrayCompat;
 
 import java.io.IOException;
 
-import comalexpolyanskyi.github.foodandhealth.models.beans.ListItemBean;
+import comalexpolyanskyi.github.foodandhealth.models.pojo.ListItemBean;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 
