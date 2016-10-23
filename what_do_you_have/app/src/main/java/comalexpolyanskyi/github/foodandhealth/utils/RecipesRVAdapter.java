@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.R;
@@ -16,7 +17,7 @@ import comalexpolyanskyi.github.foodandhealth.presenter.ImageLoader;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.RecipesListFragment;
 
 
-public class RecipesRVAdapter extends RecyclerView.Adapter<RecipesRVAdapter.ViewHolder> {
+public class RecipesRVAdapter extends RecyclerView.Adapter<RecipesRVAdapter.ViewHolder> implements ItemTouchHelperAdapter  {
 
     private final List<RecipesModel.DummyItem> mValues;
     private final RecipesListFragment.OnListFragmentInteractionListener mListener;
@@ -56,6 +57,26 @@ public class RecipesRVAdapter extends RecyclerView.Adapter<RecipesRVAdapter.View
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mValues, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mValues, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        mValues.remove(position);
+        notifyItemRemoved(position);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

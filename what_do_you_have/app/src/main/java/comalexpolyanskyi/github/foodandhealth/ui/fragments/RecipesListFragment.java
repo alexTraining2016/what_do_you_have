@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import comalexpolyanskyi.github.foodandhealth.models.pojo.QueryParameters;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.presenter.ListFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.utils.RecipesRVAdapter;
+import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelperCallback;
 
 public class RecipesListFragment extends Fragment implements IMVPContract.RequiredView<SparseArrayCompat<ListItemBean>> {
 
@@ -67,7 +69,12 @@ public class RecipesListFragment extends Fragment implements IMVPContract.Requir
     private void setupRecyclerView(){
         checkOrientation();
         recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
-        recyclerView.setAdapter(new RecipesRVAdapter(RecipesModel.ITEMS, mListener));
+        RecipesRVAdapter adapter = new RecipesRVAdapter(RecipesModel.ITEMS, mListener);
+        recyclerView.setAdapter(adapter);
+        ItemTouchHelper.Callback callback =
+                new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     public void startMVP(Bundle savedInstanceState) {
