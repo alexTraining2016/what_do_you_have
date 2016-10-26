@@ -34,7 +34,6 @@ public class ListFragmentPresenter implements IMVPContract.Presenter<QueryParame
 
     @Override
     public void loadData(QueryParameters parameters) {
-        //TODO формирование GET запроса в зависимости от типа данных
         view.showProgress(true);
         String url = null;
         switch (parameters.getViewType()){

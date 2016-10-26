@@ -1,7 +1,11 @@
 package comalexpolyanskyi.github.foodandhealth.utils.cache;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 public class FileCache {
 
@@ -16,6 +20,16 @@ public class FileCache {
             cacheDir=context.getCacheDir();
         if(!cacheDir.exists())
             cacheDir.mkdirs();
+    }
+
+    public void put(String filename, Bitmap bitmap){
+        File f = getFile(filename);
+        try {
+            FileOutputStream outStream = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static FileCache initialFileCache(Context context){

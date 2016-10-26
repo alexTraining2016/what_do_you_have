@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,13 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.presenter.ImageLoader;
 import comalexpolyanskyi.github.foodandhealth.ui.views.VectorImageTextView;
+import comalexpolyanskyi.github.foodandhealth.utils.AntiMalevich;
 
 
 public class DescriptionActivity extends AppCompatActivity {
-    private ImageLoader imageLoader;
+    
     public static final String EXTRA_IMAGE = "DescriptionActivity:image";
     public static final String ACTION = "Action";
 
@@ -35,7 +35,7 @@ public class DescriptionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String title = intent.getExtras().getString(MainActivity.TITLE_KEY);
         setTitle(title);
-        imageLoader = new ImageLoader(ContextCompat.getDrawable(this, R.mipmap.images));
+        AntiMalevich imageLoader = App.getMalevich();
         imageLoader.loadImageFromUrl("http://www.planwallpaper.com/static/images/6768666-1080p-wallpapers.jpg", imageView);
         VectorImageTextView favBtn = (VectorImageTextView) findViewById(R.id.fav);
         favBtn.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +60,5 @@ public class DescriptionActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        imageLoader.onDestroy();
     }
 }
