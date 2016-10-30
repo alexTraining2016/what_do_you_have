@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import java.util.List;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.RecipesListFragment;
-import comalexpolyanskyi.github.foodandhealth.utils.ContextHolder;
+import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public class ListFragmentAdapter<ListItemBean> extends AbstractAdapter<ListItemBean> {
 

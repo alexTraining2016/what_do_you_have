@@ -8,7 +8,7 @@ import comalexpolyanskyi.github.foodandhealth.models.ListFragmentModel;
 import comalexpolyanskyi.github.foodandhealth.models.pojo.ListItemBean;
 import comalexpolyanskyi.github.foodandhealth.models.pojo.QueryParameters;
 import comalexpolyanskyi.github.foodandhealth.ui.activities.MainActivity;
-import comalexpolyanskyi.github.foodandhealth.utils.ContextHolder;
+import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public class ListFragmentPresenter implements IMVPContract.Presenter<QueryParameters>, IMVPContract.RequiredPresenter<SparseArrayCompat<ListItemBean>> {
 

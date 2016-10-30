@@ -24,7 +24,7 @@ import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelp
 
 public class RecipesListFragment extends Fragment implements IMVPContract.RequiredView<SparseArrayCompat<ListItemBean>> {
 
-    public static final String ACTION = "Action";
+    private static final String ACTION = "Action";
     private static final String ARG_COLUMN_COUNT = "column-count";
     public static final String FRAGMENT_REQUEST_PARAMS_KEY = "params";
     private int mColumnCount = 2;
@@ -61,12 +61,12 @@ public class RecipesListFragment extends Fragment implements IMVPContract.Requir
         view = inflater.inflate(R.layout.fragment_recipes_list, container, false);
         progressBar = view.findViewById(R.id.list_fragment_progress);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);
-        startMVP(savedInstanceState);
-        setupRecyclerView();
+        bindMVP(savedInstanceState);
+        bindRecyclerView();
         return view;
     }
 
-    private void setupRecyclerView(){
+    private void bindRecyclerView(){
         checkOrientation();
         recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), mColumnCount));
         RecipesRVAdapter adapter = new RecipesRVAdapter(RecipesModel.ITEMS, mListener);
@@ -77,8 +77,8 @@ public class RecipesListFragment extends Fragment implements IMVPContract.Requir
         touchHelper.attachToRecyclerView(recyclerView);
     }
 
-    public void startMVP(Bundle savedInstanceState) {
-        if (savedInstanceState == null ) {
+    public void bindMVP(Bundle savedInstanceState) {
+        if (savedInstanceState == null || presenter == null) {
             this.presenter = new ListFragmentPresenter(this);
             QueryParameters parameters = (QueryParameters) getArguments().getSerializable(FRAGMENT_REQUEST_PARAMS_KEY);
             presenter.loadData(parameters);

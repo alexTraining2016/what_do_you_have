@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:background="#ffff"
+    android:layout_height="60dip"
+    android:clickable="true">
+    <View
+        android:layout_width="8dip"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryFood"/>
+
+    <TextView
+        android:id="@+id/ingredient_name"
+        android:maxLines="1"
+        android:textSize="18sp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

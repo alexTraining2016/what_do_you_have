@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.utils;
+package comalexpolyanskyi.github.foodandhealth.utils.holders;
 
 import android.content.Context;
 

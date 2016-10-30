@@ -21,6 +21,7 @@ public class RecipesRVAdapter extends RecyclerView.Adapter<RecipesRVAdapter.View
 
     private static String[] IMAGE_URLS =
                        {
+                               "http://shushi168.com/data/out/114/36276270-image.png",
                                "http://makeitlast.se/wp-content/uploads/2015/10/loppis_12.jpg",
                                "https://images-na.ssl-images-amazon.com/images/G/01/img15/pet-products/small-tiles/30423_pets-products_january-site-flip_3-cathealth_short-tile_592x304._CB286975940_.jpg",
                                "https://s-media-cache-ak0.pinimg.com/236x/8a/1b/7c/8a1b7c35091025bf2417ce2d9a6b058d.jpg",

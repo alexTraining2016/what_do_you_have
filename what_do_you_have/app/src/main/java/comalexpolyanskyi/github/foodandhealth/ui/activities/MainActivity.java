@@ -26,6 +26,7 @@ import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.models.pojo.QueryParameters;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.IngredientListFragment;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.RecipesListFragment;
+import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         RecipesListFragment.OnListFragmentInteractionListener {
@@ -37,13 +38,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final int ALL_DIET_RECIPES = 4;
     public static final int FAVORITES_TRAINING_AND_DIET_RECIPES = 5;
     public static final String TITLE_KEY = "title";
-    public static final String THEME_KEY = "theme";
-    public static final String COLOR_KEY = "color";
-    public static final String DRAWABLE_KEY = "draw";
-    private int theme = 0;
-    private int color = 0;
-    private int drawable = R.drawable.food;
-    private String title = null;
+    private AppStyleHolder appStyleHolder;
+
     private Toolbar toolbar;
     private View headerLayout;
 
@@ -53,19 +49,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        appStyleHolder = AppStyleHolder.initialize();
         setSupportActionBar(toolbar);
-        setupNavigationDrawer(toolbar);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState != null){
-            theme = savedInstanceState.getInt(THEME_KEY);
-            color = savedInstanceState.getInt(COLOR_KEY);
-            drawable = savedInstanceState.getInt(DRAWABLE_KEY);
-            toolbar.setBackgroundColor(getResources().getColor(color));
-            headerLayout.setBackground(getResources().getDrawable(drawable));
+        NavigationView navigationView = setupNavigationDrawer(toolbar);
+        if(savedInstanceState == null){
+            onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_all_recipes));
+        }else{
+            toolbar.setBackgroundColor(getResources().getColor(appStyleHolder.getColor()));
+            headerLayout.setBackground(getResources().getDrawable(appStyleHolder.getDrawable()));
+            getSupportActionBar().setTitle(appStyleHolder.getTitle());
         }
     }
 
@@ -77,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void setupNavigationDrawer(Toolbar toolbar){
+    private NavigationView setupNavigationDrawer(Toolbar toolbar){
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -92,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
             }
         });
-        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_all_recipes));
+        return navigationView;
     }
     @Override
     public void onBackPressed() {
@@ -104,21 +96,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(THEME_KEY, theme);
-        outState.putInt(COLOR_KEY, color);
-        outState.putInt(DRAWABLE_KEY, drawable);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         Fragment fragment = prepareFragment(id);
         if (fragment != null) {
-            completeTransaction(fragment, title);
+            completeTransaction(fragment, appStyleHolder.getTitle());
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -128,40 +112,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment prepareFragment(int id){
         Fragment fragment = null;
         if(id == R.id.nav_i_have){
-            title = getString(R.string.all_recipes);
-            theme = R.style.FoodAppTheme;
-            color = R.color.colorPrimaryFood;
-            drawable = R.drawable.food;
+            appStyleHolder.defaultInitialize(getString(R.string.i_have));
             fragment = new IngredientListFragment();
         }else if (id == R.id.nav_all_recipes) {
-            title = getString(R.string.all_recipes);
-            theme = R.style.FoodAppTheme;
-            color = R.color.colorPrimaryFood;
-            drawable = R.drawable.food;
+            appStyleHolder.defaultInitialize(getString(R.string.all_recipes));
             fragment = RecipesListFragment.newInstance(new QueryParameters(0, new HashMap<String, String>()));
         }else if(id == R.id.nav_favorites){
-            title = getString(R.string.favorites);
-            theme = R.style.FoodAppTheme;
-            color = R.color.colorPrimaryFood;
-            drawable = R.drawable.food;
+            appStyleHolder.defaultInitialize(getString(R.string.favorites));
             fragment = RecipesListFragment.newInstance(new QueryParameters(0, new HashMap<String, String>()));
         }else if(id == R.id.nav_diets){
-            title = getString(R.string.diets);
-            theme = R.style.TrainingAppTheme;
-            color = R.color.colorPrimaryTraining;
-            drawable = R.drawable.fitness;
+            appStyleHolder.fitnessInitialize(getString(R.string.diets));
             fragment = RecipesListFragment.newInstance(new QueryParameters(0, new HashMap<String, String>()));
         }else if(id == R.id.nav_training_program){
-            title = getString(R.string.training_program);
-            theme = R.style.TrainingAppTheme;
-            color = R.color.colorPrimaryTraining;
-            drawable = R.drawable.fitness;
+            appStyleHolder.fitnessInitialize(getString(R.string.training_program));
             fragment = RecipesListFragment.newInstance(new QueryParameters(0, new HashMap<String, String>()));
         }else if(id == R.id.nav_favorites_program){
-            theme = R.style.TrainingAppTheme;
-            title = getString(R.string.favorites_program);
-            color = R.color.colorPrimaryTraining;
-            drawable = R.drawable.fitness;
+            appStyleHolder.fitnessInitialize(getString(R.string.favorites_program));
             fragment = RecipesListFragment.newInstance(new QueryParameters(0, new HashMap<String, String>()));
         }
         return fragment;
@@ -174,8 +140,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.container_body, fragment);
         fragmentTransaction.commit();
 
-        toolbar.setBackgroundColor(getResources().getColor(color));
-        headerLayout.setBackground(getResources().getDrawable(drawable));
+        toolbar.setBackgroundColor(getResources().getColor(appStyleHolder.getColor()));
+        headerLayout.setBackground(getResources().getDrawable(appStyleHolder.getDrawable()));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
         }
@@ -188,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         this, v.findViewById(R.id.imageView), DescriptionActivity.EXTRA_IMAGE);
         Intent intent = new Intent(this, DescriptionActivity.class);
         intent.putExtra(TITLE_KEY, v.getTag().toString());
-        intent.putExtra(THEME_KEY, theme);
         ActivityCompat.startActivity(this, intent, options.toBundle());
     }
 }

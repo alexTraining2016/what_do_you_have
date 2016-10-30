@@ -1,5 +1,7 @@
 package comalexpolyanskyi.github.foodandhealth.utils;
 
+import android.support.test.espresso.core.deps.guava.io.ByteStreams;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,18 +13,14 @@ public class AppHttpClient {
     private final String CACHE_CONTROL = "Cache-Control";
     private final String MAX_STALE = "max-stale=";
     private static AppHttpClient httpClient;
-    private HttpResponse httpResponse;
 
-    public interface HttpResponse{
-        void onSuccess(InputStream inputStream);
-        void onFail(IOException e);
-    }
+
     private AppHttpClient(){}
 
-    public void loadDataFromHttp(String stringUrl, HttpResponse httpResponse)  {
-        this.httpResponse = httpResponse;
+    public byte[] loadDataFromHttp(String stringUrl)  {
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
+        byte[] bytes = null;
         try {
             URL url = new URL(stringUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -30,14 +28,15 @@ public class AppHttpClient {
             int maxStale = 60 * 60;
             urlConnection.addRequestProperty(CACHE_CONTROL, MAX_STALE + maxStale);
             inputStream = new BufferedInputStream(urlConnection.getInputStream());
-            httpResponse.onSuccess(inputStream);
+            bytes = ByteStreams.toByteArray(inputStream);
         }catch (IOException e){
-            httpResponse.onFail(e);
+            e.printStackTrace();
         }finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
         }
+        return bytes;
     }
 
     public static void install(){

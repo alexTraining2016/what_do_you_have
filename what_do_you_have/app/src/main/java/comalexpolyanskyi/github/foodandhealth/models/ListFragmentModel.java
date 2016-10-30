@@ -1,24 +1,23 @@
 package comalexpolyanskyi.github.foodandhealth.models;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.test.espresso.core.deps.guava.base.Charsets;
-import android.support.test.espresso.core.deps.guava.io.ByteStreams;
 import android.support.v4.util.SparseArrayCompat;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 import comalexpolyanskyi.github.foodandhealth.models.pojo.ListItemBean;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 
-public class ListFragmentModel implements AppHttpClient.HttpResponse, IMVPContract.Model {
+public class ListFragmentModel implements IMVPContract.Model {
 
     private IMVPContract.RequiredPresenter<SparseArrayCompat<ListItemBean>> presenter;
     private SparseArrayCompat<ListItemBean> sparseArrays = null;
+    private Handler handler;
 
     public ListFragmentModel(@NonNull IMVPContract.RequiredPresenter presenter) {
+        handler = new Handler(Looper.getMainLooper());
         this.presenter = presenter;
     }
 
@@ -28,7 +27,18 @@ public class ListFragmentModel implements AppHttpClient.HttpResponse, IMVPContra
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                httpClient.loadDataFromHttp(url, ListFragmentModel.this);
+                byte[] bytes = httpClient.loadDataFromHttp(url);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(sparseArrays != null) {
+
+                            presenter.onSuccess(sparseArrays);
+                        }else{
+                            presenter.onError();
+                        }
+                    }
+                });
                 return null;
             }
         }.execute();
@@ -39,7 +49,7 @@ public class ListFragmentModel implements AppHttpClient.HttpResponse, IMVPContra
         //if i need, here I can clean cache
     }
 
-    @Override
+   /* @Override
     public void onSuccess(InputStream inputStream) {
         String httpRequest = null;
         try {
@@ -50,17 +60,17 @@ public class ListFragmentModel implements AppHttpClient.HttpResponse, IMVPContra
             //sparseArrays = DAO.loadCachedData(url);
         }
         //sparseArrays = parseJsonTo(requestHttp);
-        if(sparseArrays != null) {
-            presenter.onSuccess(sparseArrays);
-        }else{
-            presenter.onError();
-        }
 
     }
 
     @Override
     public void onFail(IOException e) {
-        presenter.onError();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                presenter.onError();
+            }
+        });
         //sparseArrays = DAO.loadCachedData(url);
-    }
+    }*/
 }

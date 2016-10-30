@@ -15,6 +15,7 @@ import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.ui.views.VectorImageTextView;
 import comalexpolyanskyi.github.foodandhealth.utils.AntiMalevich;
+import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 
 
 public class DescriptionActivity extends AppCompatActivity {
@@ -26,7 +27,7 @@ public class DescriptionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        setTheme(intent.getExtras().getInt(MainActivity.THEME_KEY));
+        setTheme(AppStyleHolder.initialize().getTheme());
         setContentView(R.layout.activity_scrolling);
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         ViewCompat.setTransitionName(imageView, EXTRA_IMAGE);
