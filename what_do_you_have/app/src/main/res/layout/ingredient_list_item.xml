@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:background="#ffff"
+    android:background="@drawable/normal"
     android:layout_height="60dip"
+    android:alpha="0.9"
     android:clickable="true">
     <View
         android:layout_width="8dip"

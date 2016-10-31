@@ -21,6 +21,7 @@ import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.presenter.ListFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.utils.RecipesRVAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelperCallback;
+import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 
 public class RecipesListFragment extends Fragment implements IMVPContract.RequiredView<SparseArrayCompat<ListItemBean>> {
 
@@ -59,6 +60,7 @@ public class RecipesListFragment extends Fragment implements IMVPContract.Requir
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_recipes_list, container, false);
+        view.findViewById(R.id.backgroundImage).setBackgroundResource(AppStyleHolder.initialize().getBgDrawable());
         progressBar = view.findViewById(R.id.list_fragment_progress);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);
         bindMVP(savedInstanceState);

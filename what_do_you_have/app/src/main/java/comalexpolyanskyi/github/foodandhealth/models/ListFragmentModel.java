@@ -27,6 +27,11 @@ public class ListFragmentModel implements IMVPContract.Model {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 byte[] bytes = httpClient.loadDataFromHttp(url);
                 handler.post(new Runnable() {
                     @Override

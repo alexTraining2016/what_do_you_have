@@ -7,6 +7,8 @@
         <item name="colorPrimary">@color/colorPrimaryFood</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccentFood</item>
+        <item name="android:fastScrollTextColor">@color/colorAccentFood</item>
+        <item name="android:fastScrollPreviewBackgroundRight">@drawable/bg_default_focused_holo_light</item>
     </style>
     <style name="TrainingAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>

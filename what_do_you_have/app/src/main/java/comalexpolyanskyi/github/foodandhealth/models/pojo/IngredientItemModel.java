@@ -7,6 +7,7 @@ package comalexpolyanskyi.github.foodandhealth.models.pojo;
 public class IngredientItemModel {
     private int id;
     private String name;
+    private boolean isSelected = false;
 
     public IngredientItemModel(int id, String name) {
         this.id = id;
@@ -19,5 +20,13 @@ public class IngredientItemModel {
 
     public int getId() {
         return id;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

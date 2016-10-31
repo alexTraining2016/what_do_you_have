@@ -1,18 +1,13 @@
 package comalexpolyanskyi.github.foodandhealth.ui.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +16,8 @@ import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.models.pojo.IngredientItemModel;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.presenter.IngredientListFragmentPresenter;
+import comalexpolyanskyi.github.foodandhealth.utils.adapters.IngredientListAdapter;
 
-/**
- * Created by Алексей on 22.10.2016.
- */
 
 public class IngredientListFragment extends Fragment implements IMVPContract.RequiredView<List<IngredientItemModel>> {
 
@@ -32,7 +25,7 @@ public class IngredientListFragment extends Fragment implements IMVPContract.Req
     private static final String ACTION = "Action";
     private View view;
     private ListView listView;
-    private ListAdapter arrayAdapter;
+    private IngredientListAdapter arrayAdapter;
     private IMVPContract.Presenter<Void> presenter;
     private List<IngredientItemModel> data = new ArrayList<>();
 
@@ -52,26 +45,7 @@ public class IngredientListFragment extends Fragment implements IMVPContract.Req
     }
 
     private void bindListView(){
-        arrayAdapter = new ArrayAdapter<IngredientItemModel>(getContext(), R.layout.ingredient_list_item, data){
-            @NonNull
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view;
-                if (convertView == null) {
-                    view = LayoutInflater.from(getContext()).inflate(R.layout.ingredient_list_item, parent, false);
-                } else {
-                    view = convertView;
-                }
-                bindView(position, view);
-                return view;
-            }
-
-            private void bindView(int position, View view) {
-                IngredientItemModel ingredient = getItem(position);
-                ((TextView) view.findViewById(R.id.ingredient_name)).setText(ingredient.getName());
-                view.findViewById(R.id.ingredient_name).setTag(ingredient.getId());
-            }
-        };
+        arrayAdapter = new IngredientListAdapter(getContext(), data, R.layout.ingredient_list_item);
         listView.setAdapter(arrayAdapter);
     }
 
@@ -94,8 +68,7 @@ public class IngredientListFragment extends Fragment implements IMVPContract.Req
     public void returnData(List<IngredientItemModel> response) {
         data.clear();
         data.addAll(response);
-        Log.i("123", "12345");
-        ((ArrayAdapter)arrayAdapter).notifyDataSetChanged();
+        arrayAdapter.updateDataSet();
 
     }
 
@@ -114,4 +87,5 @@ public class IngredientListFragment extends Fragment implements IMVPContract.Req
             listView.setVisibility(View.VISIBLE);
         }
     }
+
 }

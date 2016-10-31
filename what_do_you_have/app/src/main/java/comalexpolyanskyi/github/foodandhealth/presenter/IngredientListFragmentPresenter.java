@@ -1,7 +1,6 @@
 package comalexpolyanskyi.github.foodandhealth.presenter;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +48,12 @@ public class IngredientListFragmentPresenter implements IMVPContract.Presenter<V
     @Override
     public void onSuccess(List<IngredientItemModel> response) {
         view.showProgress(false);
-
+        char ch = 'a';
         for(int i = 0; i <= 100; i++){
-            Log.i("123", "1234");
-            response.add(new IngredientItemModel(i, "Ingredient Number " + i));
+            response.add(new IngredientItemModel(i, ch+"Ingredient Number " + i));
+            if(i%3 == 0){
+                ch ++;
+            }
         }
         view.returnData(response);
     }

@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import comalexpolyanskyi.github.foodandhealth.utils.cache.FileCache;
@@ -42,10 +41,11 @@ class ImageLoader implements AntiMalevich {
             }
         };*/
         //executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-        executorService = new ThreadPoolExecutor(0, THREAD_POOL_SIZE, 0, MILLISECONDS, new LinkedBlockingDeque<Runnable>());
+        executorService = new ThreadPoolExecutor(0, THREAD_POOL_SIZE, 0, MILLISECONDS, new BlockingLifoQueue<Runnable>());
     }
 
     public void loadImageFromUrl(final String url, final ImageView imageView){
+        imageView.setTag(url);
         imageView.setImageBitmap(null);
         Bitmap bitmap = memoryCache.get(url);
         if(bitmap == null){
@@ -76,7 +76,6 @@ class ImageLoader implements AntiMalevich {
         BitmapLoader(String stringUrl, ImageView imageView){
             this.imageViewReference =  new WeakReference<>(imageView);
             this.stringUrl=stringUrl;
-            imageView.setTag(stringUrl);
         }
 
         private Bitmap decodeAndResizeFile(byte [] bytes, ImageView imageView){

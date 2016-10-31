@@ -8,6 +8,7 @@
     <color name="colorPrimaryDarkTraining">#512DA8</color>
     <color name="colorAccentTraining">#FF4081</color>
 
-    <color name="colorBackgroundListView">#dedddd</color>
+    <color name="colorBackgroundListView">#c9c7c7</color>
     <color name="colorPrimaryDark">#000</color>
+    <color name="colorBackgroundRecycledView">#cfd8dc</color>
 </resources>

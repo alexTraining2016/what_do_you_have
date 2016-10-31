@@ -4,7 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="name_main_part">Еда</string>
-    <string name="i_have">У меня есть ингридиенты</string>
+    <string name="i_have">У меня имеется..</string>
     <string name="favorites">Моя кулинарная книга</string>
     <string name="all_recipes">Все рецепты</string>
 

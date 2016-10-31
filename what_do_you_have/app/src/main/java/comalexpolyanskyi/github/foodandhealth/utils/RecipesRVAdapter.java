@@ -24,7 +24,7 @@ public class RecipesRVAdapter extends RecyclerView.Adapter<RecipesRVAdapter.View
                                "http://shushi168.com/data/out/114/36276270-image.png",
                                "http://makeitlast.se/wp-content/uploads/2015/10/loppis_12.jpg",
                                "https://images-na.ssl-images-amazon.com/images/G/01/img15/pet-products/small-tiles/30423_pets-products_january-site-flip_3-cathealth_short-tile_592x304._CB286975940_.jpg",
-                               "https://s-media-cache-ak0.pinimg.com/236x/8a/1b/7c/8a1b7c35091025bf2417ce2d9a6b058d.jpg",
+                               "https://IngredientListAdapter-media-cache-ak0.pinimg.com/236x/8a/1b/7c/8a1b7c35091025bf2417ce2d9a6b058d.jpg",
                                "https://cnet4.cbsistatic.com/hub/i/2011/10/27/a66dfbb7-fdc7-11e2-8c7c-d4ae52e62bcc/android-wallpaper5_2560x1600_1.jpg",
                                "https://www.android.com/static/img/home/more-from-2.png",
                                "http://www.howtablet.ru/wp-content/uploads/2016/04/%D0%9E%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-Android-6.0.1-Marshmallow.jpg",
@@ -65,9 +65,9 @@ public class RecipesRVAdapter extends RecyclerView.Adapter<RecipesRVAdapter.View
         }else{
             i = position / IMAGE_URLS.length;
         }
+        holder.mIdView.setTag(mValues.get(position).content);
         imageLoader.loadImageFromUrl(IMAGE_URLS[i], holder.mImageView);
         holder.mItem = mValues.get(position);
-        holder.mIdView.setTag(mValues.get(position).content);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
         holder.mView.setOnClickListener(new View.OnClickListener() {

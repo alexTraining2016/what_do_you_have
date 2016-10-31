@@ -61,8 +61,10 @@ public class ListFragmentPresenter implements IMVPContract.Presenter<QueryParame
 
     @Override
     public void onError() {
-        view.showProgress(false);
-        view.returnError(ContextHolder.getContext().getString(R.string.error_loading));
+        if(view != null){
+            view.showProgress(false);
+            view.returnError(ContextHolder.getContext().getString(R.string.error_loading));
+        }
     }
 
     @Override
