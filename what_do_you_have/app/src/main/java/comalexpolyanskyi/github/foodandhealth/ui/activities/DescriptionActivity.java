@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.ui.views.VectorImageTextView;
-import comalexpolyanskyi.github.foodandhealth.utils.AntiMalevich;
+import comalexpolyanskyi.github.foodandhealth.utils.MySimpleImageLoader;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 
 
@@ -36,7 +36,7 @@ public class DescriptionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String title = intent.getExtras().getString(MainActivity.TITLE_KEY);
         setTitle(title);
-        AntiMalevich imageLoader = App.getMalevich();
+        MySimpleImageLoader imageLoader = App.getImageLoader();
         imageLoader.loadImageFromUrl("http://www.planwallpaper.com/static/images/6768666-1080p-wallpapers.jpg", imageView);
         VectorImageTextView favBtn = (VectorImageTextView) findViewById(R.id.fav);
         favBtn.setOnClickListener(new View.OnClickListener() {

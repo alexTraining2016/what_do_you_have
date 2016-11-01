@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/article_list_item_root"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="160dip"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:foreground="?attr/selectableItemBackground">
+
     <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
+        android:id="@+id/article_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
@@ -17,7 +19,7 @@
         card_view:cardUseCompatPadding="true">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/article_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:transitionName="photo_hero"
@@ -33,18 +35,14 @@
             android:layout_gravity="bottom"
             android:gravity="center|left"
             android:orientation="horizontal">
-            <TextView
-                android:id="@+id/id"
-                android:textColor="#ffff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem" />
 
             <TextView
-                android:id="@+id/content"
+                android:id="@+id/article_name"
                 android:textColor="#ffff"
-                android:layout_width="wrap_content"
+                android:gravity="clip_horizontal|center_horizontal"
+                android:textSize="19sp"
+                android:maxLines="2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
                 android:textAppearance="?attr/textAppearanceListItem" />

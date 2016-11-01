@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.models.pojo.IngredientItemModel;
+import comalexpolyanskyi.github.foodandhealth.models.dataObjects.IngredientItemDO;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.presenter.IngredientListFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.IngredientListAdapter;
 
 
-public class IngredientListFragment extends Fragment implements IMVPContract.RequiredView<List<IngredientItemModel>> {
+public class IngredientListFragment extends Fragment implements IMVPContract.RequiredView<List<IngredientItemDO>> {
 
     private View progressBar;
     private static final String ACTION = "Action";
@@ -27,7 +27,7 @@ public class IngredientListFragment extends Fragment implements IMVPContract.Req
     private ListView listView;
     private IngredientListAdapter arrayAdapter;
     private IMVPContract.Presenter<Void> presenter;
-    private List<IngredientItemModel> data = new ArrayList<>();
+    private List<IngredientItemDO> data = new ArrayList<>();
 
     public IngredientListFragment(){}
 
@@ -65,7 +65,7 @@ public class IngredientListFragment extends Fragment implements IMVPContract.Req
     }
 
     @Override
-    public void returnData(List<IngredientItemModel> response) {
+    public void returnData(List<IngredientItemDO> response) {
         data.clear();
         data.addAll(response);
         arrayAdapter.updateDataSet();

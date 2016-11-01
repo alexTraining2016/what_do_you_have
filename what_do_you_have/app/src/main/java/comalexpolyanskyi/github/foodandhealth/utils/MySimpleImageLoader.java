@@ -6,12 +6,12 @@ import android.widget.ImageView;
  * Created by Алексей on 26.10.2016.
  */
 
-public interface AntiMalevich {
+public interface MySimpleImageLoader {
 
     void loadImageFromUrl(final String imageUrl, final ImageView imageView);
 
     class Impl {
-        public static AntiMalevich newInstance() {
+        public static MySimpleImageLoader newInstance() {
             return new ImageLoader();
         }
     }

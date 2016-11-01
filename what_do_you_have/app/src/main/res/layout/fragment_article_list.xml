@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="comalexpolyanskyi.github.foodandhealth.ui.fragments.RecipesListFragment"
+    tools:context="comalexpolyanskyi.github.foodandhealth.ui.fragments.ArticleListFragment"
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
         android:id="@+id/backgroundImage"
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/fragment_recipes_item" />
+        tools:listitem="@layout/fragment_article_list_item" />
     <ProgressBar
         android:id="@+id/list_fragment_progress"
         android:layout_width="wrap_content"

@@ -20,24 +20,24 @@ import java.util.Locale;
 import java.util.Set;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.models.pojo.IngredientItemModel;
+import comalexpolyanskyi.github.foodandhealth.models.dataObjects.IngredientItemDO;
 
-public class IngredientListAdapter extends ArrayAdapter<IngredientItemModel> implements SectionIndexer {
+public class IngredientListAdapter extends ArrayAdapter<IngredientItemDO> implements SectionIndexer {
 
     private HashMap<String, Integer> mapIndex;
     private String[] sections;
-    private List<IngredientItemModel> data;
+    private List<IngredientItemDO> data;
 
-    public IngredientListAdapter(Context context, List<IngredientItemModel> data, int layout) {
+    public IngredientListAdapter(Context context, List<IngredientItemDO> data, int layout) {
         super(context, layout, data);
         this.data = data;
-        installFastScroll();
+        bindFastScroll();
     }
 
-    private void installFastScroll(){
+    private void bindFastScroll(){
         mapIndex = new LinkedHashMap<>();
         for (int x = 0; x < data.size(); x++) {
-            IngredientItemModel itemModel = data.get(x);
+            IngredientItemDO itemModel = data.get(x);
             String ch = itemModel.getName().substring(0, 1);
             ch = ch.toUpperCase(Locale.US);
             mapIndex.put(ch, x);
@@ -52,7 +52,7 @@ public class IngredientListAdapter extends ArrayAdapter<IngredientItemModel> imp
     public void updateDataSet()
     {
         notifyDataSetChanged();
-        installFastScroll();
+        bindFastScroll();
     }
 
     public int getPositionForSection(int section) {
@@ -76,8 +76,8 @@ public class IngredientListAdapter extends ArrayAdapter<IngredientItemModel> imp
         return view;
     }
 
-    private boolean bindBackground(TextView textView, View view, IngredientItemModel ingredientItemModel){
-        boolean isSelected = ingredientItemModel.isSelected();
+    private boolean bindBackground(TextView textView, View view, IngredientItemDO ingredientItemDO){
+        boolean isSelected = ingredientItemDO.isSelected();
         if(isSelected) {
             view.setBackground(getContext().getResources().getDrawable(R.drawable.pressed));
             textView.setTextColor(Color.WHITE);
@@ -89,7 +89,7 @@ public class IngredientListAdapter extends ArrayAdapter<IngredientItemModel> imp
     }
 
     private void bindView(final int position, View view) {
-        final IngredientItemModel ingredient = getItem(position);
+        final IngredientItemDO ingredient = getItem(position);
         view.findViewById(R.id.ingredient_name).setTag(ingredient.getId());
         TextView textView = ((TextView) view.findViewById(R.id.ingredient_name));
         textView.setText(ingredient.getName());

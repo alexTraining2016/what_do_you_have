@@ -23,20 +23,15 @@ import android.view.View;
 import java.util.HashMap;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.models.pojo.QueryParameters;
+import comalexpolyanskyi.github.foodandhealth.models.dataObjects.QueryParameters;
+import comalexpolyanskyi.github.foodandhealth.presenter.ArticlesTypeRequest;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.IngredientListFragment;
-import comalexpolyanskyi.github.foodandhealth.ui.fragments.RecipesListFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.ArticleListFragment;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        RecipesListFragment.OnListFragmentInteractionListener {
+        ArticleListFragment.OnListFragmentInteractionListener {
 
-    public static final int ALL_FOOD_RECIPES = 0;
-    public static final int FOOD_RECIPES_BY_INGREDIENT = 1;
-    public static final int FAVORITES_FOOD_RECIPES = 2;
-    public static final int ALL_TRAINING_RECIPES = 3;
-    public static final int ALL_DIET_RECIPES = 4;
-    public static final int FAVORITES_TRAINING_AND_DIET_RECIPES = 5;
     public static final String TITLE_KEY = "title";
     private AppStyleHolder appStyleHolder;
 
@@ -116,19 +111,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new IngredientListFragment();
         }else if (id == R.id.nav_all_recipes) {
             appStyleHolder.defaultInitialize(getString(R.string.all_recipes));
-            fragment = RecipesListFragment.newInstance(new QueryParameters(0, new HashMap<String, String>()));
+            fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.ALL_FOOD_RECIPES, new HashMap<String, String>()));
         }else if(id == R.id.nav_favorites){
             appStyleHolder.defaultInitialize(getString(R.string.favorites));
-            fragment = RecipesListFragment.newInstance(new QueryParameters(0, new HashMap<String, String>()));
+            fragment = ArticleListFragment.newInstance(new QueryParameters(1, new HashMap<String, String>()));
         }else if(id == R.id.nav_diets){
             appStyleHolder.fitnessInitialize(getString(R.string.diets));
-            fragment = RecipesListFragment.newInstance(new QueryParameters(0, new HashMap<String, String>()));
+            fragment = ArticleListFragment.newInstance(new QueryParameters(1, new HashMap<String, String>()));
         }else if(id == R.id.nav_training_program){
             appStyleHolder.fitnessInitialize(getString(R.string.training_program));
-            fragment = RecipesListFragment.newInstance(new QueryParameters(0, new HashMap<String, String>()));
+            fragment = ArticleListFragment.newInstance(new QueryParameters(1, new HashMap<String, String>()));
         }else if(id == R.id.nav_favorites_program){
             appStyleHolder.fitnessInitialize(getString(R.string.favorites_program));
-            fragment = RecipesListFragment.newInstance(new QueryParameters(0, new HashMap<String, String>()));
+            fragment = ArticleListFragment.newInstance(new QueryParameters(1, new HashMap<String, String>()));
         }
         return fragment;
     }

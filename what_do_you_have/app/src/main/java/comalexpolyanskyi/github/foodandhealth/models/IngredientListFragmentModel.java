@@ -3,7 +3,7 @@ package comalexpolyanskyi.github.foodandhealth.models;
 import android.support.annotation.NonNull;
 import android.support.v4.util.SparseArrayCompat;
 
-import comalexpolyanskyi.github.foodandhealth.models.pojo.ListItemBean;
+import comalexpolyanskyi.github.foodandhealth.models.dataObjects.ListItemDO;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 
 /**
@@ -12,8 +12,8 @@ import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 
 public class IngredientListFragmentModel implements IMVPContract.Model {
 
-    private IMVPContract.RequiredPresenter<SparseArrayCompat<ListItemBean>> presenter;
-    private SparseArrayCompat<ListItemBean> sparseArrays = null;
+    private IMVPContract.RequiredPresenter<SparseArrayCompat<ListItemDO>> presenter;
+    private SparseArrayCompat<ListItemDO> sparseArrays = null;
 
     public IngredientListFragmentModel(@NonNull IMVPContract.RequiredPresenter presenter) {
         this.presenter = presenter;

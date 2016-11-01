@@ -17,7 +17,7 @@ import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
-class ImageLoader implements AntiMalevich {
+class ImageLoader implements MySimpleImageLoader {
 
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final int THREAD_POOL_SIZE = CPU_COUNT * 2 + 1;

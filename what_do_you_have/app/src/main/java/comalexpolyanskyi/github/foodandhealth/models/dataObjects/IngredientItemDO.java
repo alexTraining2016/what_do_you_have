@@ -1,15 +1,11 @@
-package comalexpolyanskyi.github.foodandhealth.models.pojo;
+package comalexpolyanskyi.github.foodandhealth.models.dataObjects;
 
-/**
- * Created by Алексей on 29.10.2016.
- */
-
-public class IngredientItemModel {
+public class IngredientItemDO {
     private int id;
     private String name;
     private boolean isSelected = false;
 
-    public IngredientItemModel(int id, String name) {
+    public IngredientItemDO(int id, String name) {
         this.id = id;
         this.name = name;
     }

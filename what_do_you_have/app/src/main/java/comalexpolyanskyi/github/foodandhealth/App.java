@@ -7,7 +7,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
-import comalexpolyanskyi.github.foodandhealth.utils.AntiMalevich;
+import comalexpolyanskyi.github.foodandhealth.utils.MySimpleImageLoader;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
@@ -17,7 +17,7 @@ public class App extends Application {
 
     public static final String HTTP = "http";
     public static final String CACHE_FAILED = "HTTP response cache installation failed:";
-    private static AntiMalevich antiMalevich;
+    private static MySimpleImageLoader mySimpleImageLoader;
 
     @Override
     public void onCreate() {
@@ -33,10 +33,10 @@ public class App extends Application {
         }
     }
 
-    public static AntiMalevich getMalevich() {
-        if (antiMalevich == null) {
-            antiMalevich = AntiMalevich.Impl.newInstance();
+    public static MySimpleImageLoader getImageLoader() {
+        if (mySimpleImageLoader == null) {
+            mySimpleImageLoader = MySimpleImageLoader.Impl.newInstance();
         }
-        return antiMalevich;
+        return mySimpleImageLoader;
     }
 }

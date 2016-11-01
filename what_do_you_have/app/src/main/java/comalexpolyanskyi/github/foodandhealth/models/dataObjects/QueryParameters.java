@@ -1,12 +1,8 @@
-package comalexpolyanskyi.github.foodandhealth.models.pojo;
+package comalexpolyanskyi.github.foodandhealth.models.dataObjects;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * Created by Алексей on 22.10.2016.
- */
 
 public class QueryParameters implements Serializable {
     private int viewType;

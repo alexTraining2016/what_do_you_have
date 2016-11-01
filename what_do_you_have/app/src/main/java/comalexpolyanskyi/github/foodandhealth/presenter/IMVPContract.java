@@ -8,10 +8,10 @@ public interface IMVPContract {
         void showProgress(boolean isInProgress);
     }
 
-    interface Presenter<T> {
+    interface Presenter<P> {
         void onConfigurationChanged(RequiredView view);
         void onDestroy();
-        void loadData(T parameters);
+        void loadData(P parameters);
     }
 
     interface Model {

@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.models.IngredientListFragmentModel;
-import comalexpolyanskyi.github.foodandhealth.models.pojo.IngredientItemModel;
+import comalexpolyanskyi.github.foodandhealth.models.dataObjects.IngredientItemDO;
 
 /**
  * Created by Алексей on 22.10.2016.
  */
 
-public class IngredientListFragmentPresenter implements IMVPContract.Presenter<Void>, IMVPContract.RequiredPresenter<List<IngredientItemModel>> {
+public class IngredientListFragmentPresenter implements IMVPContract.Presenter<Void>, IMVPContract.RequiredPresenter<List<IngredientItemDO>> {
 
     private static final String REQUEST_URL = "sdda";
-    private IMVPContract.RequiredView<List<IngredientItemModel>> view;
+    private IMVPContract.RequiredView<List<IngredientItemDO>> view;
     private IMVPContract.Model model;
 
     public IngredientListFragmentPresenter(@NonNull IMVPContract.RequiredView view) {
@@ -36,7 +36,7 @@ public class IngredientListFragmentPresenter implements IMVPContract.Presenter<V
     @Override
     public void loadData(Void parameters) {
         view.showProgress(true);
-        onSuccess(new ArrayList<IngredientItemModel>());
+        onSuccess(new ArrayList<IngredientItemDO>());
     }
 
     @Override
@@ -46,11 +46,11 @@ public class IngredientListFragmentPresenter implements IMVPContract.Presenter<V
     }
 
     @Override
-    public void onSuccess(List<IngredientItemModel> response) {
+    public void onSuccess(List<IngredientItemDO> response) {
         view.showProgress(false);
         char ch = 'a';
         for(int i = 0; i <= 100; i++){
-            response.add(new IngredientItemModel(i, ch+"Ingredient Number " + i));
+            response.add(new IngredientItemDO(i, ch+"Ingredient Number " + i));
             if(i%3 == 0){
                 ch ++;
             }
