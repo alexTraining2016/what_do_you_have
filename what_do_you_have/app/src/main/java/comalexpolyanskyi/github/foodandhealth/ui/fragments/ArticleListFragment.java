@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.models.dataObjects.ArticleListItemDO;
-import comalexpolyanskyi.github.foodandhealth.models.dataObjects.QueryParameters;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleListItemDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.QueryParameters;
 import comalexpolyanskyi.github.foodandhealth.presenter.ArticleListFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.presenter.ArticlesTypeRequest;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
@@ -68,7 +68,7 @@ public class ArticleListFragment extends Fragment implements IMVPContract.Requir
         view.findViewById(R.id.backgroundImage).setBackgroundResource(AppStyleHolder.initialize().getBgDrawable());
         progressBar = view.findViewById(R.id.list_fragment_progress);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);
-        bindMVP(savedInstanceState);
+        bindPresenter(savedInstanceState);
         bindRecyclerView();
         return view;
     }
@@ -88,7 +88,7 @@ public class ArticleListFragment extends Fragment implements IMVPContract.Requir
         }
     }
 
-    public void bindMVP(Bundle savedInstanceState) {
+    public void bindPresenter(Bundle savedInstanceState) {
         if (savedInstanceState == null || presenter == null) {
             this.presenter = new ArticleListFragmentPresenter(this);
             QueryParameters parameters = (QueryParameters) getArguments().getSerializable(FRAGMENT_REQUEST_PARAMS_KEY);

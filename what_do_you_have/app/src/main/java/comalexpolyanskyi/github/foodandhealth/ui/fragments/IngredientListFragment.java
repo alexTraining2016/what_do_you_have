@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.models.dataObjects.IngredientItemDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.IngredientItemDO;
 import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
 import comalexpolyanskyi.github.foodandhealth.presenter.IngredientListFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.IngredientListAdapter;

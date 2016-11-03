@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.utils;
+package comalexpolyanskyi.github.foodandhealth.utils.imageloader;
 
 import android.widget.ImageView;
 

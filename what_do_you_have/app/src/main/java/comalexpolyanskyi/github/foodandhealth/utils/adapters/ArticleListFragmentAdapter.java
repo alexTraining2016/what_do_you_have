@@ -11,9 +11,9 @@ import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.models.dataObjects.ArticleListItemDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.ArticleListFragment;
-import comalexpolyanskyi.github.foodandhealth.utils.MySimpleImageLoader;
+import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemDO>  {

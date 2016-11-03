@@ -7,7 +7,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
-import comalexpolyanskyi.github.foodandhealth.utils.MySimpleImageLoader;
+import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 

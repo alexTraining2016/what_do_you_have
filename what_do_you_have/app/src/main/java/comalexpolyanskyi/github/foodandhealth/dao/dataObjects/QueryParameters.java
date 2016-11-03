@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.models.dataObjects;
+package comalexpolyanskyi.github.foodandhealth.dao.dataObjects;
 
 import java.io.Serializable;
 import java.util.HashMap;

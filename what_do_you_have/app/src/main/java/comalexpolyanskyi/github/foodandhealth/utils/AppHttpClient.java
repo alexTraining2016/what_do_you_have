@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 public class AppHttpClient {
 
+    public static final String IF_MODIFIED_SINCE = "if-Modified-Since";
     private final String CACHE_CONTROL = "Cache-Control";
     private final String MAX_STALE = "max-stale=";
     private static AppHttpClient httpClient;
@@ -25,8 +28,10 @@ public class AppHttpClient {
             URL url = new URL(stringUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setUseCaches(true);
-            int maxStale = 60 * 60;
-            urlConnection.addRequestProperty(CACHE_CONTROL, MAX_STALE + maxStale);
+            //int maxStale = 60 * 60;
+           // urlConnection.addRequestProperty(CACHE_CONTROL, MAX_STALE + maxStale);
+            urlConnection.addRequestProperty(IF_MODIFIED_SINCE, urlConnection.getIfModifiedSince()+"");
+            Map<String, List<String>> header = urlConnection.getHeaderFields();
             inputStream = new BufferedInputStream(urlConnection.getInputStream());
             bytes = ByteStreams.toByteArray(inputStream);
         }catch (IOException e){

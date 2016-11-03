@@ -23,7 +23,7 @@ import android.view.View;
 import java.util.HashMap;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.models.dataObjects.QueryParameters;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.QueryParameters;
 import comalexpolyanskyi.github.foodandhealth.presenter.ArticlesTypeRequest;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.IngredientListFragment;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.ArticleListFragment;

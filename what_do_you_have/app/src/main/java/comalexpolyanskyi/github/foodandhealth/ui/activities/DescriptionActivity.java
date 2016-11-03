@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.ui.views.VectorImageTextView;
-import comalexpolyanskyi.github.foodandhealth.utils.MySimpleImageLoader;
+import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 
 

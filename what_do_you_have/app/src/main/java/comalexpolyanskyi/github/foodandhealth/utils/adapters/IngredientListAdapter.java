@@ -20,7 +20,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.models.dataObjects.IngredientItemDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.IngredientItemDO;
 
 public class IngredientListAdapter extends ArrayAdapter<IngredientItemDO> implements SectionIndexer {
 

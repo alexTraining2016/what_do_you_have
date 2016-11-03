@@ -14,9 +14,11 @@ public interface IMVPContract {
         void loadData(P parameters);
     }
 
-    interface Model {
-        void getData(String url);
-        void onDestroy();
+    interface DAO<P> {
+        void get(P parameters);
+        void delete(P parameters);
+        void post(P parameters);
+        void put(P parameters);
     }
 
     interface RequiredPresenter<T>{

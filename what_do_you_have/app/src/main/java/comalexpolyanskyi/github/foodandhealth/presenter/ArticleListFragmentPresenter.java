@@ -2,23 +2,27 @@ package comalexpolyanskyi.github.foodandhealth.presenter;
 
 import android.support.annotation.NonNull;
 
+import java.util.HashMap;
 import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.models.ArticleListFragmentModel;
-import comalexpolyanskyi.github.foodandhealth.models.dataObjects.ArticleListItemDO;
-import comalexpolyanskyi.github.foodandhealth.models.dataObjects.QueryParameters;
+import comalexpolyanskyi.github.foodandhealth.dao.ArticleListFragmentDAO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleListItemDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.QueryParameters;
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public class ArticleListFragmentPresenter implements IMVPContract.Presenter<QueryParameters>, IMVPContract.RequiredPresenter<List<ArticleListItemDO>> {
 
     private static final String REQUEST_URL = "sdda";
-    private IMVPContract.RequiredView view;
-    private IMVPContract.Model model;
+    private IMVPContract.RequiredView<List<ArticleListItemDO>> view;
+    private IMVPContract.DAO<ParametersInformationRequest> DAO;
+    private ParametersInformationRequest parametersInformationRequest;
 
     public ArticleListFragmentPresenter(@NonNull IMVPContract.RequiredView<List<ArticleListItemDO>> view) {
         this.view = view;
-        this.model = new ArticleListFragmentModel(this);
+        this.DAO = new ArticleListFragmentDAO(this);
     }
 
     @Override
@@ -30,16 +34,17 @@ public class ArticleListFragmentPresenter implements IMVPContract.Presenter<Quer
     @Override
     public void onDestroy() {
         view = null;
-        model.onDestroy();
     }
 
     @Override
     public void loadData(QueryParameters parameters) {
         view.showProgress(true);
         String url = null;
+        HashMap<String, String> selectParam = new HashMap<>();
         switch (parameters.getViewType()){
             case ArticlesTypeRequest.ALL_FOOD_RECIPES:
-                url = Api.API_BASE_URL+Api.API_ARTICLES;
+                url = Api.API_BASE_URL+ Api.API_ARTICLES;
+                selectParam.put(Article.TYPE, " WHERE " + Article.TYPE + "=" + Article.TYPE);
                 break;
             case ArticlesTypeRequest.FOOD_RECIPES_BY_INGREDIENT:
                 url = REQUEST_URL;
@@ -57,7 +62,8 @@ public class ArticleListFragmentPresenter implements IMVPContract.Presenter<Quer
                 url = REQUEST_URL;
                 break;
         }
-        model.getData(url);
+        parametersInformationRequest = new ParametersInformationRequest(url, selectParam, null, null, null);
+        DAO.get(parametersInformationRequest);
     }
 
     @Override
@@ -71,6 +77,7 @@ public class ArticleListFragmentPresenter implements IMVPContract.Presenter<Quer
     @Override
     public void onSuccess(List<ArticleListItemDO> response) {
         view.showProgress(false);
+        DAO.put(parametersInformationRequest);
         view.returnData(response);
     }
 

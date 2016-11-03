@@ -1,8 +1,14 @@
-package comalexpolyanskyi.github.foodandhealth.models.dataObjects;
+package comalexpolyanskyi.github.foodandhealth.dao.dataObjects;
 
 import com.google.gson.annotations.SerializedName;
 
 public class ArticleListItemDO {
+
+    public ArticleListItemDO(int id, String name, String photo) {
+        this.id = id;
+        this.name = name;
+        this.photo = photo;
+    }
 
     @SerializedName("id")
     private int id;

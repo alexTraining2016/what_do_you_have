@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.models.dataObjects;
+package comalexpolyanskyi.github.foodandhealth.dao.dataObjects;
 
 public class IngredientItemDO {
     private int id;

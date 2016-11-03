@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.utils;
+package comalexpolyanskyi.github.foodandhealth.utils.imageloader;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +11,8 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
+import comalexpolyanskyi.github.foodandhealth.utils.BlockingLifoQueue;
 import comalexpolyanskyi.github.foodandhealth.utils.cache.FileCache;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
