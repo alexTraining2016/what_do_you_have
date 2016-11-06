@@ -2,6 +2,7 @@ package comalexpolyanskyi.github.foodandhealth.ui.fragments;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -12,21 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.QueryParameters;
 import comalexpolyanskyi.github.foodandhealth.presenter.ArticleListFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.presenter.ArticlesTypeRequest;
-import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
+import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ArticleListFragmentAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelperCallback;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 
-public class ArticleListFragment extends Fragment implements IMVPContract.RequiredView<List<ArticleListItemDO>>, ItemTouchHelperAdapter {
+public class ArticleListFragment extends Fragment implements MVPContract.RequiredView<Cursor>, ItemTouchHelperAdapter {
 
     private static final String ACTION = "Action";
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -36,8 +33,8 @@ public class ArticleListFragment extends Fragment implements IMVPContract.Requir
     private View progressBar;
     private RecyclerView recyclerView;
     private View view;
-    private List<ArticleListItemDO> data = new ArrayList<>();
-    private IMVPContract.Presenter<QueryParameters> presenter;
+    private Cursor data;
+    private MVPContract.Presenter<QueryParameters> presenter;
     private ArticleListFragmentAdapter adapter;
 
     public ArticleListFragment() {
@@ -112,9 +109,9 @@ public class ArticleListFragment extends Fragment implements IMVPContract.Requir
     }
 
     @Override
-    public void returnData(List<ArticleListItemDO> response) {
-        data.addAll(response);
-        adapter.notifyDataSetChanged();
+    public void returnData(Cursor response) {
+        this.data = response;
+        adapter.swapCursor(response);
     }
 
     @Override
@@ -135,8 +132,9 @@ public class ArticleListFragment extends Fragment implements IMVPContract.Requir
 
     @Override
     public void onItemDismiss(int position) {
-        data.remove(position);
-        adapter.notifyItemRemoved(position);
+      // data.remove(position);
+       // data.
+      //  adapter.notifyItemRemoved(position);
     }
 
     public interface OnListFragmentInteractionListener {

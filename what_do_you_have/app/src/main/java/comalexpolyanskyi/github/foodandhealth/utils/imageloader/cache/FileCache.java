@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.utils.cache;
+package comalexpolyanskyi.github.foodandhealth.utils.imageloader.cache;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -24,15 +24,17 @@ public class FileCache {
     private static final String TEMP_IMAGES = "TempImages";
     private static final String MAPPING_FILE = "mapping";
     private File cacheDir;
-    private static int DEFAULT_COUNT = 30;
-    private int maxCountFile = DEFAULT_COUNT;
+    private static int DEFAULT_COUNT = 70;
+    //private int maxCountFile = DEFAULT_COUNT;
     private static FileCache fileCache;
     private ConcurrentHashMap<String, Long> map = null;
+    private long cacheMaxSize = 150 * 1024 * 1024;
     private final Object lock = new Object();
     private final Object deleteLock = new Object();
 
-    private FileCache(Context context, int maxCountFile){
-        this.maxCountFile = maxCountFile;
+    private FileCache(Context context, int maxCountFile, long cacheMaxSize){
+      //  this.maxCountFile = maxCountFile;
+        this.cacheMaxSize = cacheMaxSize;
         if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
             cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), TEMP_IMAGES);
         else
@@ -75,16 +77,18 @@ public class FileCache {
                 return o1.getValue().compareTo(o2.getValue());
             }
         });
+        int currentCacheSize = map.size();
         for(Map.Entry<String, Long> entry : map.entrySet()) {
             File f = getFile(entry.getKey());
             f.delete();
             map.remove(entry.getKey());
-            if(maxCountFile/2 >= map.size()) break;
+            if(currentCacheSize * 0.8 >= map.size()) break;
         }
     }
 
     private boolean isCacheOverfull(){
-        return map.size() >= maxCountFile;
+        //return map.size() >= maxCountFile;
+        return cacheDir.getUsableSpace() >= cacheMaxSize;
     }
 
     public void put(String url, Bitmap bitmap){
@@ -95,7 +99,7 @@ public class FileCache {
             try {
                 getMappingFile();
             } catch (Exception e) {
-                map = new ConcurrentHashMap<>(maxCountFile);
+                map = new ConcurrentHashMap<>(DEFAULT_COUNT);
             }
         }
         if (isCacheOverfull()) {
@@ -108,9 +112,9 @@ public class FileCache {
         }
     }
 
-    public static FileCache initialFileCache(Context context, int maxCountFile){
+    public static FileCache initialFileCache(Context context, int maxCountFile, long cacheMaxSize){
         if(fileCache == null){
-            fileCache = new FileCache(context, maxCountFile);
+            fileCache = new FileCache(context, maxCountFile, cacheMaxSize);
         }
         return fileCache;
     }

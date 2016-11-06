@@ -1,11 +1,9 @@
 package comalexpolyanskyi.github.foodandhealth.presenter;
 
-/**
- * Created by Алексей on 01.11.2016.
- */
 
 public interface Api {
     String API_BASE_URL = "http://faheasy.esy.es/";
-    String API_ARTICLES = "index2.php";
-
+    String API_ARTICLES = "index2.php?type=";
+    String API_ARTICLES_All = "index2.php?all_type";
+    String API_ARTICLES_DESC = "index2.php?description=";
 }

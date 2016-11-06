@@ -14,19 +14,19 @@ import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.IngredientItemDO;
-import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
+import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.presenter.IngredientListFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.IngredientListAdapter;
 
 
-public class IngredientListFragment extends Fragment implements IMVPContract.RequiredView<List<IngredientItemDO>> {
+public class IngredientListFragment extends Fragment implements MVPContract.RequiredView<List<IngredientItemDO>> {
 
     private View progressBar;
     private static final String ACTION = "Action";
     private View view;
     private ListView listView;
     private IngredientListAdapter arrayAdapter;
-    private IMVPContract.Presenter<Void> presenter;
+    private MVPContract.Presenter<Void> presenter;
     private List<IngredientItemDO> data = new ArrayList<>();
 
     public IngredientListFragment(){}

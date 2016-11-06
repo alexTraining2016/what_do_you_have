@@ -4,10 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class ArticleListItemDO {
 
-    public ArticleListItemDO(int id, String name, String photo) {
+    public ArticleListItemDO(int id, String name, String photo, int type) {
         this.id = id;
         this.name = name;
         this.photo = photo;
+        this.type = type;
     }
 
     @SerializedName("id")
@@ -18,6 +19,13 @@ public class ArticleListItemDO {
 
     @SerializedName("photo")
     private String photo;
+
+    @SerializedName("type")
+    private int type;
+
+    public int getType() {
+        return  type;
+    }
 
     public int getId() {
         return id;

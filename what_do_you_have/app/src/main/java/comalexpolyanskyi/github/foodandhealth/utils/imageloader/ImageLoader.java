@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 import comalexpolyanskyi.github.foodandhealth.utils.BlockingLifoQueue;
-import comalexpolyanskyi.github.foodandhealth.utils.cache.FileCache;
+import comalexpolyanskyi.github.foodandhealth.utils.imageloader.cache.FileCache;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -23,7 +23,8 @@ class ImageLoader implements MySimpleImageLoader {
 
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final int THREAD_POOL_SIZE = CPU_COUNT * 2 + 1;
-    private static final int FILE_CACHE_COUNT = 40;
+    private static final int FILE_CACHE_COUNT = 300;
+    private static final long FILE_CACHE_SIZE = 300 * 1024 * 1024;
     private Handler handler;
     private FileCache fileCache;
     private ExecutorService executorService;
@@ -33,7 +34,7 @@ class ImageLoader implements MySimpleImageLoader {
         handler = new Handler(Looper.getMainLooper());
         int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         int cacheSize = maxMemory / 8;
-        fileCache = FileCache.initialFileCache(ContextHolder.getContext(), FILE_CACHE_COUNT);
+        fileCache = FileCache.initialFileCache(ContextHolder.getContext(), FILE_CACHE_COUNT, FILE_CACHE_SIZE);
         //if override the method sizeOf then the memory cache doesn't work ¯\_(ツ)_/¯
         memoryCache = new LruCache<>(cacheSize);
         /*{
@@ -106,7 +107,7 @@ class ImageLoader implements MySimpleImageLoader {
         public void run() {
             Bitmap bitmap = fileCache.get(stringUrl);
             if(bitmap == null) {
-                byte[] bytes = AppHttpClient.getAppHttpClient().loadDataFromHttp(stringUrl);
+                byte[] bytes = AppHttpClient.getAppHttpClient().loadDataFromHttp(stringUrl, false);
                 bitmap = decodeAndResizeFile(bytes, imageViewReference.get());
                 fileCache.put(stringUrl, bitmap);
             }

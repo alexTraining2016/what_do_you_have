@@ -114,16 +114,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.ALL_FOOD_RECIPES, new HashMap<String, String>()));
         }else if(id == R.id.nav_favorites){
             appStyleHolder.defaultInitialize(getString(R.string.favorites));
-            fragment = ArticleListFragment.newInstance(new QueryParameters(1, new HashMap<String, String>()));
+            fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.FAVORITES_FOOD_RECIPES, new HashMap<String, String>()));
         }else if(id == R.id.nav_diets){
             appStyleHolder.fitnessInitialize(getString(R.string.diets));
-            fragment = ArticleListFragment.newInstance(new QueryParameters(1, new HashMap<String, String>()));
+            fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.ALL_DIET_RECIPES, new HashMap<String, String>()));
         }else if(id == R.id.nav_training_program){
             appStyleHolder.fitnessInitialize(getString(R.string.training_program));
-            fragment = ArticleListFragment.newInstance(new QueryParameters(1, new HashMap<String, String>()));
+            fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.ALL_TRAINING_RECIPES, new HashMap<String, String>()));
         }else if(id == R.id.nav_favorites_program){
             appStyleHolder.fitnessInitialize(getString(R.string.favorites_program));
-            fragment = ArticleListFragment.newInstance(new QueryParameters(1, new HashMap<String, String>()));
+            fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.FAVORITES_TRAINING_AND_DIET_RECIPES, new HashMap<String, String>()));
         }
         return fragment;
     }

@@ -15,6 +15,7 @@ import java.util.Locale;
 
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.Table;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbInteger;
+import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbLong;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbString;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Contract;
 
@@ -36,6 +37,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             return null;
         }
     }
+//спрссить что за фигня
     @Nullable
     public static String getTableCreateQuery(final Class<?> clazz) {
         final Table table = clazz.getAnnotation(Table.class);
@@ -47,25 +49,28 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                 for (int i = 0; i < fields.length; i++) {
                     final Field field = fields[i];
                     final Annotation[] annotations = field.getAnnotations();
-                            String type = null;
+                    String type = null;
                     for (final Annotation annotation : annotations) {
                         if (annotation instanceof dbInteger) {
                             type = ((dbInteger) annotation).value();
+                        } else if (annotation instanceof dbLong) {
+                            type = ((dbLong) annotation).value();
                         } else if (annotation instanceof dbString) {
                             type = ((dbString) annotation).value();
                         }
                     }
                     if (type == null) {
-                        return null;
+                        continue;
                     }
                     final String value = (String) field.get(null);
                     builder.append(String.format(Locale.US, SQL_TABLE_CREATE_FIELD_TEMPLATE, value, type));
-                    if (i < fields.length - 1) {
+                    if (i < fields.length - 2) {
                         builder.append(",");
                     }
                 }
                 return String.format(Locale.US, SQL_TABLE_CREATE_TEMPLATE, name, builder);
             } catch (final Exception e) {
+                e.printStackTrace();
                 return null;
             }
         } else {
@@ -94,7 +99,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
     }
 
     @Override
-    public long insert(final Class<?> table, final ContentValues values) {
+    public long update(final Class<?> table, final ContentValues values) {
         final String name = getTableName(table);
         if (name != null) {
             final SQLiteDatabase database = getWritableDatabase();
@@ -102,6 +107,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             try {
                 database.beginTransaction();
                 id = database.insert(name, null, values);
+               // id = database.update(name, values, null, null);
                 database.setTransactionSuccessful();
             } finally {
                 database.endTransaction();
@@ -111,8 +117,9 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             throw new RuntimeException();
         }
     }
+
     @Override
-    public int bulkInsert(final Class<?> table, final List<ContentValues> values) {
+    public long bulkUpdate(Class<?> table, final List<ContentValues> values) {
         final String name = getTableName(table);
         if (name != null) {
             final SQLiteDatabase database = getWritableDatabase();
@@ -121,6 +128,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                 database.beginTransaction();
                 for (final ContentValues value : values) {
                     database.insert(name, null, value);
+               //     database.update(name, value, null, null);
                     count++;
                 }
                 database.setTransactionSuccessful();

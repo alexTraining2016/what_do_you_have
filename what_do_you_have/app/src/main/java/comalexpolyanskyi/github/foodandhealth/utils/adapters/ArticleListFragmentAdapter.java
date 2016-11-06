@@ -1,5 +1,6 @@
 package comalexpolyanskyi.github.foodandhealth.utils.adapters;
 
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,23 +8,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleListItemDO;
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.ArticleListFragment;
-import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
+import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 
 public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemDO>  {
 
-    private final List<ArticleListItemDO> values;
+    private Cursor cursor;
     private final ArticleListFragment.OnListFragmentInteractionListener listener;
     private MySimpleImageLoader imageLoader;
 
-    public ArticleListFragmentAdapter(@NonNull List<ArticleListItemDO> items, @NonNull ArticleListFragment.OnListFragmentInteractionListener listener){
-        values = items;
+    public ArticleListFragmentAdapter(@NonNull Cursor items, @NonNull ArticleListFragment.OnListFragmentInteractionListener listener){
+        cursor = items;
         this.listener = listener;
         imageLoader = App.getImageLoader();
     }
@@ -41,8 +41,19 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
         });
     }
 
+    public void swapCursor(Cursor cursor){
+        if(cursor != null){
+            this.cursor = cursor;
+            notifyDataSetChanged();
+        }
+    }
+
     public ArticleListItemDO getItem(final int position) {
-        return values.get(position);
+        cursor.moveToPosition(position);
+        return new ArticleListItemDO(cursor.getInt(cursor.getColumnIndex(Article.ID)),
+                                     cursor.getString(cursor.getColumnIndex(Article.NAME)),
+                                     cursor.getString(cursor.getColumnIndex(Article.IMAGE_URI)),
+                                     cursor.getInt(cursor.getColumnIndex(Article.TYPE)));
     }
 
     @Override
@@ -51,6 +62,10 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
     }
 
     public int getItemCount() {
-        return values.size();
+        if(cursor != null){
+            return cursor.getCount();
+        }else{
+            return 0;
+        }
     }
 }

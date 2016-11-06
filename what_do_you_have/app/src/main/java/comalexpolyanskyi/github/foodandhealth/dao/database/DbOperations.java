@@ -6,12 +6,14 @@ import android.database.Cursor;
 import java.util.List;
 
 public interface DbOperations {
+    String FOOD_AND_HEAL = "foodAndHeal";
+    int VERSION = 1;
 
     Cursor query(String sql, String... args);
 
-    long insert(Class<?> table, ContentValues values);
+    long update(Class<?> table, ContentValues values);
 
-    int bulkInsert(Class<?> table, List<ContentValues> values);
+    long bulkUpdate(Class<?> table, List<ContentValues> values);
 
     int delete(Class<?> table, String sql, String... args);
 

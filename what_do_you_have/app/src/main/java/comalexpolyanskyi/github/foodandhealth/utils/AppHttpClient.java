@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 public class AppHttpClient {
 
@@ -20,18 +18,19 @@ public class AppHttpClient {
 
     private AppHttpClient(){}
 
-    public byte[] loadDataFromHttp(String stringUrl)  {
+    public byte[] loadDataFromHttp(String stringUrl, boolean usesCache)  {
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
         byte[] bytes = null;
         try {
             URL url = new URL(stringUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setUseCaches(true);
-            //int maxStale = 60 * 60;
-           // urlConnection.addRequestProperty(CACHE_CONTROL, MAX_STALE + maxStale);
-            urlConnection.addRequestProperty(IF_MODIFIED_SINCE, urlConnection.getIfModifiedSince()+"");
-            Map<String, List<String>> header = urlConnection.getHeaderFields();
+            urlConnection.setUseCaches(usesCache);
+            if(usesCache) {
+                //int maxStale = 60 * 60;
+                // urlConnection.addRequestProperty(CACHE_CONTROL, MAX_STALE + maxStale);
+                urlConnection.addRequestProperty(IF_MODIFIED_SINCE, urlConnection.getIfModifiedSince() + "");
+            }
             inputStream = new BufferedInputStream(urlConnection.getInputStream());
             bytes = ByteStreams.toByteArray(inputStream);
         }catch (IOException e){

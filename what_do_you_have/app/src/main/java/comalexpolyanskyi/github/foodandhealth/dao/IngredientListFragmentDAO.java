@@ -1,36 +1,16 @@
 package comalexpolyanskyi.github.foodandhealth.dao;
-import android.support.annotation.NonNull;
-import android.support.v4.util.SparseArrayCompat;
 
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ListItemDO;
-import comalexpolyanskyi.github.foodandhealth.presenter.IMVPContract;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
+import comalexpolyanskyi.github.foodandhealth.presenter.IngredientListFragmentPresenter;
+import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 
-public class IngredientListFragmentDAO implements IMVPContract.DAO<String> {
+public class IngredientListFragmentDAO implements MVPContract.DAO<ParametersInformationRequest> {
 
-    private IMVPContract.RequiredPresenter<SparseArrayCompat<ListItemDO>> presenter;
-    private SparseArrayCompat<ListItemDO> sparseArrays = null;
-
-    public IngredientListFragmentDAO(@NonNull IMVPContract.RequiredPresenter presenter) {
-        this.presenter = presenter;
+    public IngredientListFragmentDAO(IngredientListFragmentPresenter ingredientListFragmentPresenter) {
     }
 
     @Override
-    public void get(String url) {
-
-    }
-
-    @Override
-    public void delete(String parameters) {
-
-    }
-
-    @Override
-    public void post(String parameters) {
-
-    }
-
-    @Override
-    public void put(String parameters) {
+    public void get(ParametersInformationRequest parameters) {
 
     }
 }

@@ -1,6 +1,6 @@
 package comalexpolyanskyi.github.foodandhealth.presenter;
 
-public interface IMVPContract {
+public interface MVPContract {
 
     interface RequiredView<T> {
         void returnData(T response);
@@ -16,9 +16,6 @@ public interface IMVPContract {
 
     interface DAO<P> {
         void get(P parameters);
-        void delete(P parameters);
-        void post(P parameters);
-        void put(P parameters);
     }
 
     interface RequiredPresenter<T>{

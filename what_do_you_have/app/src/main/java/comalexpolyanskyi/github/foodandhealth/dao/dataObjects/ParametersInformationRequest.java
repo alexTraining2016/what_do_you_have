@@ -2,8 +2,6 @@ package comalexpolyanskyi.github.foodandhealth.dao.dataObjects;
 
 import android.content.ContentValues;
 
-import java.util.HashMap;
-
 /**
  * Created by Алексей on 03.11.2016.
  */
@@ -11,30 +9,20 @@ import java.util.HashMap;
 public class ParametersInformationRequest {
 
     private String url;
-    private ContentValues insertParameters, updateParameters;
-    private HashMap<String, String> deleteParameters, selectParameters;
+    private String[]  selectParameters;
+    private ContentValues updateParameters;
 
-    public ParametersInformationRequest(String url, HashMap<String, String> selectParameters, ContentValues insertParameters, ContentValues updateParameters, HashMap<String, String> deleteParameters) {
+    public ParametersInformationRequest(String url, String[] selectParameters, ContentValues updateParameters) {
         this.url = url;
         this.selectParameters = selectParameters;
-        this.insertParameters = insertParameters;
         this.updateParameters = updateParameters;
-        this.deleteParameters = deleteParameters;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public ContentValues getInsertParameters() {
-        return insertParameters;
-    }
-
-    public HashMap<String, String> getDeleteParameters() {
-        return deleteParameters;
-    }
-
-    public HashMap<String, String> getSelectParameters() {
+    public String[] getSelectParameters() {
         return selectParameters;
     }
 

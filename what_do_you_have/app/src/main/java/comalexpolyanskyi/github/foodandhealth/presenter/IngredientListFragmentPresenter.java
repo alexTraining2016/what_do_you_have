@@ -8,23 +8,19 @@ import java.util.List;
 import comalexpolyanskyi.github.foodandhealth.dao.IngredientListFragmentDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.IngredientItemDO;
 
-/**
- * Created by Алексей on 22.10.2016.
- */
-
-public class IngredientListFragmentPresenter implements IMVPContract.Presenter<Void>, IMVPContract.RequiredPresenter<List<IngredientItemDO>> {
+public class IngredientListFragmentPresenter implements MVPContract.Presenter<Void>, MVPContract.RequiredPresenter<List<IngredientItemDO>> {
 
     private static final String REQUEST_URL = "sdda";
-    private IMVPContract.RequiredView<List<IngredientItemDO>> view;
-    private IMVPContract.DAO DAO;
+    private MVPContract.RequiredView<List<IngredientItemDO>> view;
+    private MVPContract.DAO DAO;
 
-    public IngredientListFragmentPresenter(@NonNull IMVPContract.RequiredView view) {
+    public IngredientListFragmentPresenter(@NonNull MVPContract.RequiredView view) {
         this.view = view;
         this.DAO = new IngredientListFragmentDAO(this);
     }
 
     @Override
-    public void onConfigurationChanged(IMVPContract.RequiredView view) {
+    public void onConfigurationChanged(MVPContract.RequiredView view) {
 
     }
 
@@ -57,5 +53,4 @@ public class IngredientListFragmentPresenter implements IMVPContract.Presenter<V
         }
         view.returnData(response);
     }
-
 }
