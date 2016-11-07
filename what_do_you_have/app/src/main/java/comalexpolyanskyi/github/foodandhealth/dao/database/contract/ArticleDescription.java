@@ -2,11 +2,10 @@ package comalexpolyanskyi.github.foodandhealth.dao.database.contract;
 
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.Table;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbInteger;
-import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbLong;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbString;
 
 @Table(name = "ARTICLEDESK")
-public class ArticleDescription {
+public class ArticleDescription implements CachedTable {
 
     @dbInteger
     public static final String ID = "id";
@@ -26,9 +25,4 @@ public class ArticleDescription {
     @dbInteger
     public static final String REPOST_COUNT = "repostCount";
 
-    @dbLong
-    public static final String RECORDING_TIME = "recordingTime";
-
-    @dbLong
-    public static final String AGING_TIME = "agingTime";
 }

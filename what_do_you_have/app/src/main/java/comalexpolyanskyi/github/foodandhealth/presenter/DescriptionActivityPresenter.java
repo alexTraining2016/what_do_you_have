@@ -33,10 +33,11 @@ public class DescriptionActivityPresenter implements  MVPContract.Presenter<Stri
 
     @Override
     public void loadData(String parameters) {
+        view.showProgress(true);
         String url = Api.API_BASE_URL+Api.API_ARTICLES_DESC+parameters;
         String selectParam = "SELECT * FROM ";
         String whereParam = " WHERE " + Article.ID + " = " + parameters;
-        String[] select = {selectParam, whereParam};
+        String [] select = {selectParam, whereParam};
         dao.get(new ParametersInformationRequest(url, select, null));
     }
 

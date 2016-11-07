@@ -5,6 +5,8 @@ public final class Contract {
     public static final Class<?>[] MODELS =
             {
                     Article.class,
-                    ArticleDescription.class
+                    ArticleDescription.class,
+                    Ingredient.class
+
             };
 }

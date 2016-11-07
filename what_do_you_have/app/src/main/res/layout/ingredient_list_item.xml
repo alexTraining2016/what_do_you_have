@@ -6,10 +6,6 @@
     android:layout_height="60dip"
     android:alpha="0.9"
     android:clickable="true">
-    <View
-        android:layout_width="8dip"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryFood"/>
 
     <TextView
         android:id="@+id/ingredient_name"

@@ -2,11 +2,9 @@ package comalexpolyanskyi.github.foodandhealth.dao.dataObjects;
 
 import android.content.ContentValues;
 
-/**
- * Created by Алексей on 03.11.2016.
- */
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.CachedTable;
 
-public class ParametersInformationRequest {
+public class ParametersInformationRequest<T extends CachedTable> {
 
     private String url;
     private String[]  selectParameters;
@@ -29,4 +27,5 @@ public class ParametersInformationRequest {
     public ContentValues getUpdateParameters() {
         return updateParameters;
     }
+
 }

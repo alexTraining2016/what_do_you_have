@@ -104,7 +104,6 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
         MySimpleImageLoader imageLoader = App.getImageLoader();
         imageLoader.loadImageFromUrl(response.getPhotoUrl(), imageView);
         ((CollapsingToolbarLayout)findViewById(R.id.toolbar_layout)).setTitle(response.getName());
-        ((CollapsingToolbarLayout)findViewById(R.id.toolbar_layout)).set
         ((AppBarLayout)findViewById(R.id.app_bar)).setExpanded(true, true);
         descriptionText.setText(response.getDescription());
         likeButton.setText(response.getLikeCount()+"");
@@ -120,9 +119,11 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
     public void showProgress(boolean isInProgress) {
         if(isInProgress){
             progressBar.setVisibility(View.VISIBLE);
+            findViewById(R.id.app_bar).setVisibility(View.GONE);
             descriptionText.setVisibility(View.GONE);
         }else{
             progressBar.setVisibility(View.GONE);
+            findViewById(R.id.app_bar).setVisibility(View.VISIBLE);
             descriptionText.setVisibility(View.VISIBLE);
         }
     }

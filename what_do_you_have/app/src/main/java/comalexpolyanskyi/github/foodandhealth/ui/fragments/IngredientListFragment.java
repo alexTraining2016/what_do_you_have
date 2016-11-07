@@ -1,5 +1,6 @@
 package comalexpolyanskyi.github.foodandhealth.ui.fragments;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -9,25 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.IngredientItemDO;
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.presenter.IngredientListFragmentPresenter;
-import comalexpolyanskyi.github.foodandhealth.utils.adapters.IngredientListAdapter;
+import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter.IngredientSectionCursorAdapter;
 
 
-public class IngredientListFragment extends Fragment implements MVPContract.RequiredView<List<IngredientItemDO>> {
+public class IngredientListFragment extends Fragment implements MVPContract.RequiredView<Cursor> {
 
     private View progressBar;
     private static final String ACTION = "Action";
     private View view;
     private ListView listView;
-    private IngredientListAdapter arrayAdapter;
+    private IngredientSectionCursorAdapter arrayAdapter;
     private MVPContract.Presenter<Void> presenter;
-    private List<IngredientItemDO> data = new ArrayList<>();
+    private Cursor data;
 
     public IngredientListFragment(){}
 
@@ -45,7 +42,9 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
     }
 
     private void bindListView(){
-        arrayAdapter = new IngredientListAdapter(getContext(), data, R.layout.ingredient_list_item);
+        arrayAdapter = new IngredientSectionCursorAdapter(getContext(), data);
+        listView.setFastScrollEnabled(true);
+        listView.setFastScrollAlwaysVisible(true);
         listView.setAdapter(arrayAdapter);
     }
 
@@ -65,11 +64,9 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
     }
 
     @Override
-    public void returnData(List<IngredientItemDO> response) {
-        data.clear();
-        data.addAll(response);
-        arrayAdapter.updateDataSet();
-
+    public void returnData(Cursor response) {
+        data = response;
+        arrayAdapter.updateDataSet(response);
     }
 
     @Override

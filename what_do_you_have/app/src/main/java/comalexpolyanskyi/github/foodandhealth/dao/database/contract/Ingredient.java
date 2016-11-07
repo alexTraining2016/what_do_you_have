@@ -4,18 +4,13 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.Table;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbInteger;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbString;
 
-@Table(name = "ARTICLE")
-public class Article implements CachedTable {
+@Table(name = "INGREDIENTS")
+public class Ingredient implements CachedTable {
 
     @dbInteger
-    public static final String ID = "id";
+    public static final String ID = "_id";
 
     @dbString
     public static final String NAME = "name";
 
-    @dbString
-    public static final String IMAGE_URI = "imageUrl";
-
-    @dbInteger
-    public static final String TYPE = "type";
 }

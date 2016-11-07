@@ -1,22 +1,22 @@
 package comalexpolyanskyi.github.foodandhealth.presenter;
 
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.IngredientListFragmentDAO;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.IngredientItemDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Ingredient;
+import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
-public class IngredientListFragmentPresenter implements MVPContract.Presenter<Void>, MVPContract.RequiredPresenter<List<IngredientItemDO>> {
+public class IngredientListFragmentPresenter implements MVPContract.Presenter<Void>, MVPContract.RequiredPresenter<Cursor> {
 
-    private static final String REQUEST_URL = "sdda";
-    private MVPContract.RequiredView<List<IngredientItemDO>> view;
-    private MVPContract.DAO DAO;
+    private MVPContract.RequiredView<Cursor> view;
+    private MVPContract.DAO<ParametersInformationRequest> dao;
 
     public IngredientListFragmentPresenter(@NonNull MVPContract.RequiredView view) {
         this.view = view;
-        this.DAO = new IngredientListFragmentDAO(this);
+        this.dao = new IngredientListFragmentDAO(this);
     }
 
     @Override
@@ -32,25 +32,23 @@ public class IngredientListFragmentPresenter implements MVPContract.Presenter<Vo
     @Override
     public void loadData(Void parameters) {
         view.showProgress(true);
-        onSuccess(new ArrayList<IngredientItemDO>());
+        String url = Api.API_BASE_URL+Api.API_ALL_INGREDIENT;
+        String selectFrom = "SELECT * FROM ";
+        String where = " ORDER BY "+ Ingredient.NAME;
+        String[] select = {selectFrom, where};
+        dao.get(new ParametersInformationRequest(url, select, null));
     }
 
     @Override
     public void onError() {
         view.showProgress(false);
-        view.returnError("косяк");
+        view.returnError(ContextHolder.getContext().getString(R.string.error_loading));
     }
 
     @Override
-    public void onSuccess(List<IngredientItemDO> response) {
+    public void onSuccess(Cursor response) {
         view.showProgress(false);
-        char ch = 'a';
-        for(int i = 0; i <= 100; i++){
-            response.add(new IngredientItemDO(i, ch+"Ingredient Number " + i));
-            if(i%3 == 0){
-                ch ++;
-            }
-        }
+
         view.returnData(response);
     }
 }
