@@ -12,17 +12,17 @@ import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
-import comalexpolyanskyi.github.foodandhealth.ui.fragments.ArticleListFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.BaseRVFragment;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 
 public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemDO>  {
 
     private Cursor cursor;
-    private final ArticleListFragment.OnListFragmentInteractionListener listener;
+    private final BaseRVFragment.OnListFragmentInteractionListener listener;
     private MySimpleImageLoader imageLoader;
 
-    public ArticleListFragmentAdapter(@NonNull Cursor items, @NonNull ArticleListFragment.OnListFragmentInteractionListener listener){
+    public ArticleListFragmentAdapter(@NonNull Cursor items, @NonNull BaseRVFragment.OnListFragmentInteractionListener listener){
         cursor = items;
         this.listener = listener;
         imageLoader = App.getImageLoader();
@@ -48,10 +48,19 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
         }
     }
 
+    private String setUpCapitalLetter(String victim){
+        String firstCh = victim.substring(0,1);
+        String otherCh = victim.substring(1);
+        firstCh = firstCh.toUpperCase();
+        victim = firstCh + otherCh;
+        return victim;
+    }
+
     public ArticleListItemDO getItem(final int position) {
         cursor.moveToPosition(position);
-        return new ArticleListItemDO(cursor.getInt(cursor.getColumnIndex(Article.ID)),
-                                     cursor.getString(cursor.getColumnIndex(Article.NAME)),
+        //костылищее что б поиск работал кое как
+        String name = setUpCapitalLetter(cursor.getString(cursor.getColumnIndex(Article.NAME)));
+        return new ArticleListItemDO(cursor.getInt(cursor.getColumnIndex(Article.ID)), name,
                                      cursor.getString(cursor.getColumnIndex(Article.IMAGE_URI)),
                                      cursor.getInt(cursor.getColumnIndex(Article.TYPE)));
     }

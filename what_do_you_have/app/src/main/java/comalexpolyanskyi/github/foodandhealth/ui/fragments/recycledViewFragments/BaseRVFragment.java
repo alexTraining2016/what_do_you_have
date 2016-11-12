@@ -1,51 +1,47 @@
-package comalexpolyanskyi.github.foodandhealth.ui.fragments;
+package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments;
 
 import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.QueryParameters;
-import comalexpolyanskyi.github.foodandhealth.presenter.ArticleListFragmentPresenter;
-import comalexpolyanskyi.github.foodandhealth.presenter.ArticlesTypeRequest;
+import comalexpolyanskyi.github.foodandhealth.presenter.BasePresenter;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ArticleListFragmentAdapter;
-import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdapter;
-import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelperCallback;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 
-public class ArticleListFragment extends Fragment implements MVPContract.RequiredView<Cursor>, ItemTouchHelperAdapter {
+abstract public class BaseRVFragment extends Fragment implements MVPContract.RequiredView<Cursor>, SearchView.OnQueryTextListener {
 
     private static final String ACTION = "Action";
     private static final String ARG_COLUMN_COUNT = "column-count";
-    public static final String FRAGMENT_REQUEST_PARAMS_KEY = "params";
     private int columnCount = 2;
     private OnListFragmentInteractionListener listener;
-    private View progressBar;
+    private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private View view;
     private Cursor data;
-    private MVPContract.Presenter<QueryParameters> presenter;
     private ArticleListFragmentAdapter adapter;
 
-    public ArticleListFragment() {
+    public interface OnListFragmentInteractionListener {
+        void onRecipesFragmentInteraction(View v);
     }
 
-    public static ArticleListFragment newInstance(QueryParameters parameters){
-        ArticleListFragment fragment = new ArticleListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(FRAGMENT_REQUEST_PARAMS_KEY, parameters);
-        fragment.setArguments(bundle);
-        return fragment;
+    public BaseRVFragment() {
     }
 
     @Override
@@ -62,38 +58,42 @@ public class ArticleListFragment extends Fragment implements MVPContract.Require
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_article_list, container, false);
+        setHasOptionsMenu(true);
         view.findViewById(R.id.backgroundImage).setBackgroundResource(AppStyleHolder.initialize().getBgDrawable());
-        progressBar = view.findViewById(R.id.list_fragment_progress);
+        progressBar = (ProgressBar) view.findViewById(R.id.list_fragment_progress);
+        /////
+        progressBar.getIndeterminateDrawable().setColorFilter(AppStyleHolder.initialize().getColor(), PorterDuff.Mode.MULTIPLY);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);
         bindPresenter(savedInstanceState);
         bindRecyclerView();
         return view;
     }
 
-    private void bindRecyclerView(){
+    protected RecyclerView bindRecyclerView(){
         checkOrientation();
         recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), columnCount));
         adapter = new ArticleListFragmentAdapter(data, listener);
         recyclerView.setAdapter(adapter);
-        QueryParameters parameters = (QueryParameters) getArguments().getSerializable(FRAGMENT_REQUEST_PARAMS_KEY);
-        if (parameters != null && (parameters.getViewType() == ArticlesTypeRequest.FAVORITES_FOOD_RECIPES
-                || parameters.getViewType() == ArticlesTypeRequest.FAVORITES_TRAINING_AND_DIET_RECIPES)) {
-            ItemTouchHelper.Callback callback =
-                    new SimpleItemTouchHelperCallback(this);
-            ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-            touchHelper.attachToRecyclerView(recyclerView);
-        }
+        return recyclerView;
     }
 
-    public void bindPresenter(Bundle savedInstanceState) {
-        if (savedInstanceState == null || presenter == null) {
-            this.presenter = new ArticleListFragmentPresenter(this);
-            QueryParameters parameters = (QueryParameters) getArguments().getSerializable(FRAGMENT_REQUEST_PARAMS_KEY);
-            presenter.loadData(parameters);
-        } else {
-            this.presenter.onConfigurationChanged(this);
-        }
+    abstract public void bindPresenter(Bundle savedInstanceState);
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
     }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    abstract public boolean onQueryTextChange(String newText);
 
     @Override
     public void onAttach(Context context) {
@@ -104,7 +104,6 @@ public class ArticleListFragment extends Fragment implements MVPContract.Require
     @Override
     public void onDetach() {
         super.onDetach();
-        presenter.onDestroy();
         listener = null;
     }
 
@@ -128,17 +127,6 @@ public class ArticleListFragment extends Fragment implements MVPContract.Require
             progressBar.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-      // data.remove(position);
-       // data.
-      //  adapter.notifyItemRemoved(position);
-    }
-
-    public interface OnListFragmentInteractionListener {
-        void onRecipesFragmentInteraction(View v);
     }
 
     private void checkOrientation(){

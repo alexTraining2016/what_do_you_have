@@ -4,19 +4,21 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.core.deps.guava.base.Charsets;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.List;
+
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
-import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 
 
-public class DescriptionDAO extends AbstractDAO<ArticleDO> implements MVPContract.DAO<ParametersInformationRequest> {
+public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DAO<ParametersInformationRequest> {
 
     public DescriptionDAO(@NonNull MVPContract.RequiredPresenter<ArticleDO> presenter) {
         super(presenter);
@@ -50,26 +52,24 @@ public class DescriptionDAO extends AbstractDAO<ArticleDO> implements MVPContrac
         operations.update(ArticleDescription.class, contentValues);
     }
 
-
-    @Override
-    protected Cursor getFromCache(String[] parameters){
-        return operations.query(parameters[0] + DBHelper.getTableName(ArticleDescription.class) + parameters[1]);
-    }
-
     private ArticleDO convertToArticleDO(Cursor cursor){
-        cursor.moveToFirst();
-        ArticleDO request = null;
-        try {
-            request = new ArticleDO(cursor.getInt(cursor.getColumnIndex(ArticleDescription.ID)),
-                    cursor.getString(cursor.getColumnIndex(ArticleDescription.NAME)),
-                    cursor.getString(cursor.getColumnIndex(ArticleDescription.DESCRIPTION)),
-                    cursor.getString(cursor.getColumnIndex(ArticleDescription.IMAGE_URI)),
-                    cursor.getInt(cursor.getColumnIndex(ArticleDescription.LIKE_COUNT)),
-                    cursor.getInt(cursor.getColumnIndex(ArticleDescription.REPOST_COUNT)));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (cursor != null) {
+            cursor.moveToFirst();
+            ArticleDO request = null;
+            try {
+                request = new ArticleDO(cursor.getInt(cursor.getColumnIndex(ArticleDescription.ID)),
+                        cursor.getString(cursor.getColumnIndex(ArticleDescription.NAME)),
+                        cursor.getString(cursor.getColumnIndex(ArticleDescription.DESCRIPTION)),
+                        cursor.getString(cursor.getColumnIndex(ArticleDescription.IMAGE_URI)),
+                        cursor.getInt(cursor.getColumnIndex(ArticleDescription.LIKE_COUNT)),
+                        cursor.getInt(cursor.getColumnIndex(ArticleDescription.REPOST_COUNT)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return request;
+        }else{
+            return null;
         }
-        return request;
     }
 
     @Override

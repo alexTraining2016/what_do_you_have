@@ -10,27 +10,25 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.HashMap;
-
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.QueryParameters;
-import comalexpolyanskyi.github.foodandhealth.presenter.ArticlesTypeRequest;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.IngredientListFragment;
-import comalexpolyanskyi.github.foodandhealth.ui.fragments.ArticleListFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.AllRecipesRVFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.BaseRVFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.CookbookRVFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.DietRecipesRVFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.FitnessFavoritesRVFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.TrainingRVFragment;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        ArticleListFragment.OnListFragmentInteractionListener {
+        BaseRVFragment.OnListFragmentInteractionListener {
 
     public static final String TITLE_KEY = "title";
     private AppStyleHolder appStyleHolder;
@@ -54,14 +52,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             headerLayout.setBackground(getResources().getDrawable(appStyleHolder.getDrawable()));
             getSupportActionBar().setTitle(appStyleHolder.getTitle());
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        return super.onCreateOptionsMenu(menu);
     }
 
     private NavigationView setupNavigationDrawer(Toolbar toolbar){
@@ -111,19 +101,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new IngredientListFragment();
         }else if (id == R.id.nav_all_recipes) {
             appStyleHolder.defaultInitialize(getString(R.string.all_recipes));
-            fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.ALL_FOOD_RECIPES, new HashMap<String, String>()));
+            fragment = new AllRecipesRVFragment();
         }else if(id == R.id.nav_favorites){
             appStyleHolder.defaultInitialize(getString(R.string.favorites));
-            fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.FAVORITES_FOOD_RECIPES, new HashMap<String, String>()));
+            fragment = new CookbookRVFragment();
         }else if(id == R.id.nav_diets){
             appStyleHolder.fitnessInitialize(getString(R.string.diets));
-            fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.ALL_DIET_RECIPES, new HashMap<String, String>()));
+            fragment = new DietRecipesRVFragment();
         }else if(id == R.id.nav_training_program){
             appStyleHolder.fitnessInitialize(getString(R.string.training_program));
-            fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.ALL_TRAINING_RECIPES, new HashMap<String, String>()));
+            fragment = new TrainingRVFragment();
         }else if(id == R.id.nav_favorites_program){
             appStyleHolder.fitnessInitialize(getString(R.string.favorites_program));
-            fragment = ArticleListFragment.newInstance(new QueryParameters(ArticlesTypeRequest.FAVORITES_TRAINING_AND_DIET_RECIPES, new HashMap<String, String>()));
+            fragment = new FitnessFavoritesRVFragment();
         }
         return fragment;
     }

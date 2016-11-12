@@ -15,11 +15,10 @@ import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
-import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 
-public class ArticleListFragmentDAO extends AbstractDAO<Cursor> implements MVPContract.DAO<ParametersInformationRequest> {
+public class ArticleListFragmentDAO extends BaseDAO<Cursor> implements MVPContract.DAO<ParametersInformationRequest> {
 
     public ArticleListFragmentDAO(@NonNull MVPContract.RequiredPresenter<Cursor> presenter) {
         super(presenter);
@@ -31,7 +30,8 @@ public class ArticleListFragmentDAO extends AbstractDAO<Cursor> implements MVPCo
             ContentValues contentValues = new ContentValues();
             contentValues.put(Article.ID, item.getId());
             contentValues.put(Article.TYPE, item.getType());
-            contentValues.put(Article.NAME, item.getName());
+            //костылище что б поиск работал
+            contentValues.put(Article.NAME, item.getName().toLowerCase());
             contentValues.put(Article.IMAGE_URI, item.getPhotoUrl());
             contentValues.put(Article.RECORDING_TIME, System.currentTimeMillis());
             contentValues.put(Article.AGING_TIME, 3600);
@@ -53,10 +53,5 @@ public class ArticleListFragmentDAO extends AbstractDAO<Cursor> implements MVPCo
         }else{
             return null;
         }
-    }
-
-    @Override
-    protected Cursor getFromCache(String[] parameters){
-        return operations.query(parameters[0] + DBHelper.getTableName(Article.class) + parameters[1]);
     }
 }

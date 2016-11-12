@@ -12,10 +12,11 @@ public interface MVPContract {
         void onConfigurationChanged(RequiredView view);
         void onDestroy();
         void loadData(P parameters);
+        void search(P searchParameter);
     }
 
     interface DAO<P> {
-        void get(P parameters);
+        void get(P parameters, boolean flag);
     }
 
     interface RequiredPresenter<T>{

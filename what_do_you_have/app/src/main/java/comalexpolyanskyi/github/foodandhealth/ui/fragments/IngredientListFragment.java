@@ -28,6 +28,12 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
 
     public IngredientListFragment(){}
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,7 +41,6 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
         view = inflater.inflate(R.layout.fragment_ingredient_list, container, false);
         progressBar = view.findViewById(R.id.list_fragment_progress);
         listView = (ListView) view.findViewById(R.id.ingredient_list_view);
-        setRetainInstance(true);
         bindListView();
         bindMVP(savedInstanceState);
         return view;
@@ -46,12 +51,6 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
         listView.setFastScrollEnabled(true);
         listView.setFastScrollAlwaysVisible(true);
         listView.setAdapter(arrayAdapter);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
     }
 
     public void bindMVP(Bundle savedInstanceState) {
@@ -84,5 +83,4 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
             listView.setVisibility(View.VISIBLE);
         }
     }
-
 }

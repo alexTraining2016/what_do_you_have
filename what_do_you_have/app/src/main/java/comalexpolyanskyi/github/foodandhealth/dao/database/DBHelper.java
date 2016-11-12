@@ -98,6 +98,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
         return database.rawQuery(sql, args);
     }
 
+
     @Override
     public long update(final Class<?> table, final ContentValues values) {
         final String name = getTableName(table);

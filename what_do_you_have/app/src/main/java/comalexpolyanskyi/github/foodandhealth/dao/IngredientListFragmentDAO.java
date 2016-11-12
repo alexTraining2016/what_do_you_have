@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.core.deps.guava.base.Charsets;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,11 +15,10 @@ import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.IngredientItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
-import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Ingredient;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 
-public class IngredientListFragmentDAO extends AbstractDAO<Cursor> {
+public class IngredientListFragmentDAO extends BaseDAO<Cursor> {
 
     public IngredientListFragmentDAO(@NonNull MVPContract.RequiredPresenter<Cursor> presenter) {
         super(presenter);
@@ -31,7 +29,6 @@ public class IngredientListFragmentDAO extends AbstractDAO<Cursor> {
         byte [] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl(), true);
         if(requestBytes != null) {
             String requestString = new String(requestBytes, Charsets.UTF_8);
-            Log.e("123", requestString);
             Type listType = new TypeToken<List<IngredientItemDO>>() {}.getType();
             Gson gson = new GsonBuilder().create();
             final List<IngredientItemDO> requestList = gson.fromJson(requestString, listType);
@@ -53,11 +50,6 @@ public class IngredientListFragmentDAO extends AbstractDAO<Cursor> {
             contentValuesList.add(contentValues);
         }
         operations.bulkUpdate(Ingredient.class, contentValuesList);
-    }
-
-    @Override
-    protected Cursor getFromCache(String[] parameters) {
-        return operations.query(parameters[0] + DBHelper.getTableName(Ingredient.class) + parameters[1]);
     }
 }
 

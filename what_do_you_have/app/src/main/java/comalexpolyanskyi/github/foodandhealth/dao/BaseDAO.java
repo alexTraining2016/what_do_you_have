@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,11 +17,7 @@ import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
-/**
- * Created by Алексей on 07.11.2016.
- */
-
-abstract class AbstractDAO<T>  implements MVPContract.DAO<ParametersInformationRequest>  {
+abstract class BaseDAO<T>  implements MVPContract.DAO<ParametersInformationRequest>  {
 
     private ExecutorService executorService;
     protected MVPContract.RequiredPresenter<T> presenter;
@@ -28,7 +25,7 @@ abstract class AbstractDAO<T>  implements MVPContract.DAO<ParametersInformationR
     protected final DbOperations operations;
     protected AppHttpClient httpClient;
 
-    protected AbstractDAO(@NonNull MVPContract.RequiredPresenter<T> presenter) {
+    protected BaseDAO(@NonNull MVPContract.RequiredPresenter<T> presenter) {
         handler = new Handler(Looper.getMainLooper());
         this.presenter = presenter;
         operations = new DBHelper(ContextHolder.getContext(), DbOperations.FOOD_AND_HEAL, DbOperations.VERSION);
@@ -37,7 +34,7 @@ abstract class AbstractDAO<T>  implements MVPContract.DAO<ParametersInformationR
     }
 
     @Override
-    public void get(final ParametersInformationRequest parameters) {
+    public void get(final ParametersInformationRequest parameters, final boolean notUpdate) {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -57,10 +54,10 @@ abstract class AbstractDAO<T>  implements MVPContract.DAO<ParametersInformationR
                 }else{
                     isNeedUpdate = true;
                 }
-                if(isNeedUpdate){
+                if(isNeedUpdate && !notUpdate){
                     cursor = update(parameters);
+                    sendAnswer(cursor);
                 }
-                sendAnswer(cursor);
             }
         });
     }
@@ -82,6 +79,11 @@ abstract class AbstractDAO<T>  implements MVPContract.DAO<ParametersInformationR
         });
     }
 
+    protected Cursor getFromCache(String parameters){
+        Log.e("123", parameters);
+        return operations.query(parameters);
+    }
+
     protected void displayDataFromCache(final Cursor cursor){
         handler.post(new Runnable() {
             @Override
@@ -93,5 +95,4 @@ abstract class AbstractDAO<T>  implements MVPContract.DAO<ParametersInformationR
 
     protected abstract Cursor update(ParametersInformationRequest parameters);
 
-    protected abstract Cursor getFromCache(String[] parameters);
 }
