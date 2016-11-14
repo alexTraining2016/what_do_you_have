@@ -1,6 +1,7 @@
 package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments;
 
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import comalexpolyanskyi.github.foodandhealth.presenter.AllRecipesFragmentPresenter;
@@ -8,7 +9,7 @@ import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 
 public class AllRecipesRVFragment extends BaseRVFragment {
 
-    private MVPContract.Presenter<String> presenter;
+    private MVPContract.Presenter<String, Cursor> presenter;
 
     public AllRecipesRVFragment(){
         super();

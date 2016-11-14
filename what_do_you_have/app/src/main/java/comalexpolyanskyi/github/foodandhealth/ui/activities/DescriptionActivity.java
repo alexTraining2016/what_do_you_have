@@ -35,7 +35,7 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
     private ArticleDO data;
     private TextView descriptionText;
     private VectorImageTextView favButton, likeButton;
-    private DescriptionActivityPresenter presenter;
+    private MVPContract.Presenter<String, ArticleDO> presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

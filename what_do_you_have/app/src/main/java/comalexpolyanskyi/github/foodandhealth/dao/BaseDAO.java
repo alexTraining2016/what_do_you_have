@@ -1,28 +1,35 @@
 package comalexpolyanskyi.github.foodandhealth.dao;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DbOperations;
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.CachedTable;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
-abstract class BaseDAO<T>  implements MVPContract.DAO<ParametersInformationRequest>  {
+abstract class BaseDAO <T,D>  implements MVPContract.DAO<ParametersInformationRequest>  {
 
+    private static final String CHARSET_NAME = "UTF-8";
     private ExecutorService executorService;
-    protected MVPContract.RequiredPresenter<T> presenter;
-    protected Handler handler;
-    protected final DbOperations operations;
-    protected AppHttpClient httpClient;
+    private MVPContract.RequiredPresenter<T> presenter;
+    private Handler handler;
+    private AppHttpClient httpClient;
+    private DbOperations operations;
 
     protected BaseDAO(@NonNull MVPContract.RequiredPresenter<T> presenter) {
         handler = new Handler(Looper.getMainLooper());
@@ -40,7 +47,7 @@ abstract class BaseDAO<T>  implements MVPContract.DAO<ParametersInformationReque
                 boolean isNeedUpdate = false;
                 Cursor cursor = getFromCache(parameters.getSelectParameters());
                 if(cursor.getCount() != 0) {
-                    displayDataFromCache(cursor);
+                    displayDataFromCache(prepareResponse(cursor));
                     Long currentTime = System.currentTimeMillis();
                     for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                         Long recordingTime = cursor.getLong(cursor.getColumnIndex(CachedTable.RECORDING_TIME));
@@ -59,32 +66,28 @@ abstract class BaseDAO<T>  implements MVPContract.DAO<ParametersInformationReque
                     }catch (Exception e){
                         e.printStackTrace();
                     }finally {
-                        sendAnswer(cursor);
+                        sendAnswer(prepareResponse(cursor));
                     }
                 }
             }
         });
     }
 
-    protected void displayDataFromCache(final Cursor cursor){
+    private void displayDataFromCache(final T response){
         handler.post(new Runnable() {
             @Override
             public void run() {
-                presenter.onSuccess((T) cursor);
+                presenter.onSuccess(response);
             }
         });
     }
 
-    protected void sendAnswer(final Cursor cursor) {
+    private void sendAnswer(final T request) {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if(cursor != null){
-                    if(cursor.getCount() > 0){
-                        presenter.onSuccess((T) cursor);
-                    }else{
-                        presenter.onError();
-                    }
+                if(request != null){
+                        presenter.onSuccess(request);
                 }else{
                     presenter.onError();
                 }
@@ -92,10 +95,39 @@ abstract class BaseDAO<T>  implements MVPContract.DAO<ParametersInformationReque
         });
     }
 
-    protected Cursor getFromCache(String parameters){
+    private Cursor update(ParametersInformationRequest parameters){
+        byte [] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl(), true);
+        if(requestBytes != null){
+            String requestString = new String(requestBytes, Charset.forName(CHARSET_NAME));
+            if(processRequest(requestString)){
+                return getFromCache(parameters.getSelectParameters());
+            }
+        }
+        return  null;
+    }
+
+    private Cursor getFromCache(String parameters){
         return operations.query(parameters);
     }
 
-    protected abstract Cursor update(ParametersInformationRequest parameters) throws Exception;
+    private boolean processRequest(String request){
+        try {
+            Type type = new TypeToken<List<D>>(){}.getType();
+            Gson gson = new GsonBuilder().create();
+            final List<D> result = gson.fromJson(request, type);
+            List<ContentValues> contentValuesList = prepareContentValues(result);
+            saveToCache(contentValuesList);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
 
+    private void saveToCache(List<ContentValues> contentValuesList){
+        operations.bulkUpdate(ArticleDescription.class, contentValuesList);
+    }
+
+    protected abstract List<ContentValues> prepareContentValues(List<D> result);
+
+    protected abstract T prepareResponse(Cursor cursor);
 }

@@ -23,7 +23,7 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
     private View view;
     private ListView listView;
     private IngredientSectionCursorAdapter arrayAdapter;
-    private MVPContract.Presenter<Void> presenter;
+    private MVPContract.Presenter<Void, Cursor> presenter;
     private Cursor data;
 
     public IngredientListFragment(){}

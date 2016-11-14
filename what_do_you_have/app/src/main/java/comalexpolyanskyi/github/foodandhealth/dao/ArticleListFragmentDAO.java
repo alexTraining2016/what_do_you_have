@@ -4,12 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,15 +12,25 @@ import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformat
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 
-public class ArticleListFragmentDAO extends BaseDAO<Cursor> implements MVPContract.DAO<ParametersInformationRequest> {
+public class ArticleListFragmentDAO extends BaseDAO<Cursor, ArticleListItemDO> implements MVPContract.DAO<ParametersInformationRequest> {
 
     public ArticleListFragmentDAO(@NonNull MVPContract.RequiredPresenter<Cursor> presenter) {
         super(presenter);
     }
 
-    private void saveToCache(List<ArticleListItemDO> requestList) {
-        List<ContentValues> contentValuesList = new ArrayList<>(requestList.size());
-        for (ArticleListItemDO item : requestList) {
+    @Override
+    protected Cursor prepareResponse(Cursor cursor) {
+        if(cursor.getCount() > 0){
+            return cursor;
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    protected List<ContentValues> prepareContentValues(List<ArticleListItemDO> result) {
+        List<ContentValues> contentValuesList = new ArrayList<>(result.size());
+        for (ArticleListItemDO item : result) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(Article.ID, item.getId());
             contentValues.put(Article.TYPE, item.getType());
@@ -37,21 +41,6 @@ public class ArticleListFragmentDAO extends BaseDAO<Cursor> implements MVPContra
             contentValues.put(Article.AGING_TIME, 3600);
             contentValuesList.add(contentValues);
         }
-        operations.bulkUpdate(Article.class, contentValuesList);
-    }
-
-    @Override
-    protected Cursor update(ParametersInformationRequest parameters) throws Exception{
-        byte [] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl(), true);
-        if(requestBytes != null) {
-            String requestString = new String(requestBytes, Charset.forName("UTF-8"));
-            Type listType = new TypeToken<List<ArticleListItemDO>>() {}.getType();
-            Gson gson = new GsonBuilder().create();
-            final List<ArticleListItemDO> requestList = gson.fromJson(requestString, listType);
-            saveToCache(requestList);
-            return getFromCache(parameters.getSelectParameters());
-        }else{
-            return null;
-        }
+        return contentValuesList;
     }
 }

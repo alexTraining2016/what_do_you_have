@@ -1,6 +1,7 @@
 package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments;
 
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import comalexpolyanskyi.github.foodandhealth.presenter.BasePresenter;
@@ -9,7 +10,7 @@ import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdap
 
 public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTouchHelperAdapter {
 
-    private MVPContract.Presenter<String> presenter;
+    private MVPContract.Presenter<String, Cursor> presenter;
 
     public FitnessFavoritesRVFragment(){
     }

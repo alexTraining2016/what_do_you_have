@@ -3,12 +3,10 @@ package comalexpolyanskyi.github.foodandhealth.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
-import java.nio.charset.Charset;
+
+import java.util.ArrayList;
 import java.util.List;
+
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
@@ -16,38 +14,32 @@ import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 
 
 
-public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DAO<ParametersInformationRequest> {
+public class DescriptionDAO extends BaseDAO<ArticleDO, ArticleDO> implements MVPContract.DAO<ParametersInformationRequest> {
 
     public DescriptionDAO(@NonNull MVPContract.RequiredPresenter<ArticleDO> presenter) {
         super(presenter);
     }
 
     @Override
-    protected Cursor update(ParametersInformationRequest parameters) throws Exception{
-        byte [] requestBytes = super.httpClient.loadDataFromHttp(parameters.getUrl(), true);
-        if(requestBytes != null) {
-            String requestString = new String(requestBytes, Charset.forName("UTF-8"));
-            Type type = new TypeToken<List<ArticleDO>>(){}.getType();
-            Gson gson = new GsonBuilder().create();
-            final List<ArticleDO> result = gson.fromJson(requestString, type);
-            saveToCache(result.get(0));
-            return getFromCache(parameters.getSelectParameters());
-        }else{
-            return null;
+    protected List<ContentValues> prepareContentValues(List<ArticleDO> result) {
+        List<ContentValues> contentValuesList = new ArrayList<>(result.size());
+        for (ArticleDO item : result) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(ArticleDescription.ID, item.getId());
+            contentValues.put(ArticleDescription.NAME, item.getName());
+            contentValues.put(ArticleDescription.DESCRIPTION, item.getDescription());
+            contentValues.put(ArticleDescription.LIKE_COUNT, item.getLikeCount());
+            contentValues.put(ArticleDescription.REPOST_COUNT, item.getFavCount());
+            contentValues.put(ArticleDescription.IMAGE_URI, item.getPhotoUrl());
+            contentValues.put(ArticleDescription.RECORDING_TIME, System.currentTimeMillis());
+            contentValues.put(ArticleDescription.AGING_TIME, 3600);
         }
+        return contentValuesList;
     }
 
-    private void saveToCache(ArticleDO result) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(ArticleDescription.ID, result.getId());
-        contentValues.put(ArticleDescription.NAME, result.getName());
-        contentValues.put(ArticleDescription.DESCRIPTION, result.getDescription());
-        contentValues.put(ArticleDescription.LIKE_COUNT, result.getLikeCount());
-        contentValues.put(ArticleDescription.REPOST_COUNT, result.getFavCount());
-        contentValues.put(ArticleDescription.IMAGE_URI, result.getPhotoUrl());
-        contentValues.put(ArticleDescription.RECORDING_TIME, System.currentTimeMillis());
-        contentValues.put(ArticleDescription.AGING_TIME, 3600);
-        operations.update(ArticleDescription.class, contentValues);
+    @Override
+    protected ArticleDO prepareResponse(Cursor cursor) {
+        return convertToArticleDO(cursor);
     }
 
     private ArticleDO convertToArticleDO(Cursor cursor){
@@ -65,31 +57,4 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DA
         }
     }
 
-    @Override
-    protected void sendAnswer(final Cursor cursor) {
-        final ArticleDO response = convertToArticleDO(cursor);
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if(response != null){
-                        presenter.onSuccess(response);
-                }else{
-                    presenter.onError();
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void displayDataFromCache(final Cursor cursor){
-        final ArticleDO response = convertToArticleDO(cursor);
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (response != null) {
-                    presenter.onSuccess(response);
-                }
-            }
-        });
-    }
 }

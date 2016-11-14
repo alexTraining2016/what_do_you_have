@@ -1,6 +1,7 @@
 package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments;
 
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -12,7 +13,7 @@ import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelp
 
 public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelperAdapter {
 
-    private MVPContract.Presenter<String> presenter;
+    private MVPContract.Presenter<String, Cursor> presenter;
 
     public CookbookRVFragment(){
     }
