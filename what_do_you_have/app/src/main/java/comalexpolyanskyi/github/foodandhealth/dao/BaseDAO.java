@@ -5,31 +5,28 @@ import android.database.Cursor;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
+
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DbOperations;
-import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.CachedTable;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
-abstract class BaseDAO <T,D>  implements MVPContract.DAO<ParametersInformationRequest>  {
+abstract class BaseDAO <T>  implements MVPContract.DAO<ParametersInformationRequest>  {
 
     private static final String CHARSET_NAME = "UTF-8";
     private ExecutorService executorService;
     private MVPContract.RequiredPresenter<T> presenter;
     private Handler handler;
     private AppHttpClient httpClient;
-    private DbOperations operations;
+    protected DbOperations operations;
 
     protected BaseDAO(@NonNull MVPContract.RequiredPresenter<T> presenter) {
         handler = new Handler(Looper.getMainLooper());
@@ -61,12 +58,11 @@ abstract class BaseDAO <T,D>  implements MVPContract.DAO<ParametersInformationRe
                     isNeedUpdate = true;
                 }
                 if(isNeedUpdate && !notUpdate){
-                    try {
-                        cursor = update(parameters);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }finally {
+                    cursor = update(parameters);
+                    if(cursor != null) {
                         sendAnswer(prepareResponse(cursor));
+                    }else{
+                        sendAnswer(null);
                     }
                 }
             }
@@ -99,7 +95,9 @@ abstract class BaseDAO <T,D>  implements MVPContract.DAO<ParametersInformationRe
         byte [] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl(), true);
         if(requestBytes != null){
             String requestString = new String(requestBytes, Charset.forName(CHARSET_NAME));
-            if(processRequest(requestString)){
+            List<ContentValues> contentValuesList = processRequest(requestString);
+            if (contentValuesList != null){
+                saveToCache(contentValuesList);
                 return getFromCache(parameters.getSelectParameters());
             }
         }
@@ -110,24 +108,9 @@ abstract class BaseDAO <T,D>  implements MVPContract.DAO<ParametersInformationRe
         return operations.query(parameters);
     }
 
-    private boolean processRequest(String request){
-        try {
-            Type type = new TypeToken<List<D>>(){}.getType();
-            Gson gson = new GsonBuilder().create();
-            final List<D> result = gson.fromJson(request, type);
-            List<ContentValues> contentValuesList = prepareContentValues(result);
-            saveToCache(contentValuesList);
-        }catch (Exception e){
-            return false;
-        }
-        return true;
-    }
+    protected abstract void saveToCache(List<ContentValues> contentValuesList);
 
-    private void saveToCache(List<ContentValues> contentValuesList){
-        operations.bulkUpdate(ArticleDescription.class, contentValuesList);
-    }
+    protected abstract List<ContentValues>  processRequest(String request);
 
-    protected abstract List<ContentValues> prepareContentValues(List<D> result);
-
-    protected abstract T prepareResponse(Cursor cursor);
+    protected abstract T prepareResponse(@NonNull Cursor cursor);
 }
