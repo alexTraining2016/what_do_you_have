@@ -8,8 +8,8 @@ public interface MVPContract {
         void showProgress(boolean isInProgress);
     }
 
-    interface Presenter<P> {
-        void onConfigurationChanged(RequiredView view);
+    interface Presenter<P, V> {
+        void onConfigurationChanged(RequiredView<V> view);
         void onDestroy();
         void loadData(P parameters);
         void search(P searchParameter);

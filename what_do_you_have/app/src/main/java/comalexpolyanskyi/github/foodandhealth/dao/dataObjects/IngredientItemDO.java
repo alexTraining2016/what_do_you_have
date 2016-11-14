@@ -10,8 +10,6 @@ public class IngredientItemDO {
     @SerializedName("name")
     private String name;
 
-    private boolean isSelected = false;
-
     public IngredientItemDO(int id, String name) {
         this.id = id;
         this.name = name;
@@ -23,13 +21,5 @@ public class IngredientItemDO {
 
     public int getId() {
         return id;
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
     }
 }

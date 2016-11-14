@@ -1,5 +1,7 @@
 package comalexpolyanskyi.github.foodandhealth.utils;
 
+import android.support.annotation.NonNull;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -15,7 +17,7 @@ public final class BlockingLifoQueue<T> implements BlockingQueue<T>
 
     public BlockingLifoQueue()
     {
-        deque = new LinkedBlockingDeque<T>();
+        deque = new LinkedBlockingDeque<>();
     }
 
     public boolean add(T e) {
@@ -28,27 +30,27 @@ public final class BlockingLifoQueue<T> implements BlockingQueue<T>
         return deque.contains(o);
     }
 
-    public int drainTo(Collection<? super T> c)
+    public int drainTo(@NonNull Collection<? super T> c)
     {
         return deque.drainTo(c);
     }
 
-    public int drainTo(Collection<? super T> c, int maxElements)
+    public int drainTo(@NonNull Collection<? super T> c, int maxElements)
     {
         return deque.drainTo(c, maxElements);
     }
 
-    public boolean offer(T e)
+    public boolean offer(@NonNull T e)
     {
         return deque.offerLast(e);
     }
 
-    public boolean offer(T e, long timeout, TimeUnit unit) throws InterruptedException
+    public boolean offer(T e, long timeout, @NonNull TimeUnit unit) throws InterruptedException
     {
         return deque.offerLast(e,timeout,unit);
     }
 
-    public T poll(long timeout, TimeUnit unit) throws InterruptedException
+    public T poll(long timeout, @NonNull TimeUnit unit) throws InterruptedException
     {
         return deque.pollLast(timeout, unit);
     }
@@ -101,7 +103,7 @@ public final class BlockingLifoQueue<T> implements BlockingQueue<T>
         return deque.pollLast();
     }
 
-    public boolean addAll(Collection<? extends T> c)
+    public boolean addAll(@NonNull Collection<? extends T> c)
     {
         for (T e : c) { deque.add(e); }
         return true;
@@ -112,7 +114,7 @@ public final class BlockingLifoQueue<T> implements BlockingQueue<T>
         deque.clear();
     }
 
-    public boolean containsAll(Collection<?> c)
+    public boolean containsAll(@NonNull Collection<?> c)
     {
         return deque.containsAll(c);
     }
@@ -127,12 +129,12 @@ public final class BlockingLifoQueue<T> implements BlockingQueue<T>
         return deque.descendingIterator();
     }
 
-    public boolean removeAll(Collection<?> c)
+    public boolean removeAll(@NonNull Collection<?> c)
     {
         return deque.removeAll(c);
     }
 
-    public boolean retainAll(Collection<?> c)
+    public boolean retainAll(@NonNull Collection<?> c)
     {
         return deque.retainAll(c);
     }
@@ -147,7 +149,7 @@ public final class BlockingLifoQueue<T> implements BlockingQueue<T>
         return deque.toArray();
     }
 
-    public <T> T[] toArray(T[] a)
+    public <R> R[] toArray(@NonNull R[] a)
     {
         return deque.toArray(a);
     }

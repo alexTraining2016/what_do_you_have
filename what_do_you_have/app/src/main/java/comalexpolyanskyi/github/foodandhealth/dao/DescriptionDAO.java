@@ -3,19 +3,17 @@ package comalexpolyanskyi.github.foodandhealth.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
-import android.support.test.espresso.core.deps.guava.base.Charsets;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.util.List;
-
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+
 
 
 public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DAO<ParametersInformationRequest> {
@@ -25,10 +23,10 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DA
     }
 
     @Override
-    protected Cursor update(ParametersInformationRequest parameters){
+    protected Cursor update(ParametersInformationRequest parameters) throws Exception{
         byte [] requestBytes = super.httpClient.loadDataFromHttp(parameters.getUrl(), true);
         if(requestBytes != null) {
-            String requestString = new String(requestBytes, Charsets.UTF_8);
+            String requestString = new String(requestBytes, Charset.forName("UTF-8"));
             Type type = new TypeToken<List<ArticleDO>>(){}.getType();
             Gson gson = new GsonBuilder().create();
             final List<ArticleDO> result = gson.fromJson(requestString, type);
@@ -57,12 +55,7 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DA
             cursor.moveToFirst();
             ArticleDO request = null;
             try {
-                request = new ArticleDO(cursor.getInt(cursor.getColumnIndex(ArticleDescription.ID)),
-                        cursor.getString(cursor.getColumnIndex(ArticleDescription.NAME)),
-                        cursor.getString(cursor.getColumnIndex(ArticleDescription.DESCRIPTION)),
-                        cursor.getString(cursor.getColumnIndex(ArticleDescription.IMAGE_URI)),
-                        cursor.getInt(cursor.getColumnIndex(ArticleDescription.LIKE_COUNT)),
-                        cursor.getInt(cursor.getColumnIndex(ArticleDescription.REPOST_COUNT)));
+                request = new ArticleDO(cursor);
             } catch (Exception e) {
                 e.printStackTrace();
             }

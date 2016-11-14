@@ -23,7 +23,8 @@ public class TrainingListFragmentPresenter extends BasePresenter<Cursor, String>
     public void loadData(String parameters) {
         super.loadData(parameters);
         String url = Api.API_BASE_URL+ Api.API_ARTICLES + TRAINING;
-        String selectSql = "SELECT * FROM " + DBHelper.getTableName(Article.class) + " WHERE " + Article.TYPE + " = " + TRAINING;
+        String selectSql = "SELECT * FROM " + DBHelper.getTableName(Article.class)
+                + " WHERE " + Article.TYPE + " = " + TRAINING;
         dao.get(new ParametersInformationRequest(url, selectSql, null), false);
     }
 
@@ -31,7 +32,9 @@ public class TrainingListFragmentPresenter extends BasePresenter<Cursor, String>
     public void search(String searchParameter) {
         super.search(searchParameter);
         String selectFrom = "SELECT * FROM ";
-        String where = " WHERE " + Article.TYPE + " = " + TRAINING + " AND " + Article.NAME + " LIKE '%" + searchParameter.toLowerCase() + "%'";
+        String where = " WHERE " + Article.TYPE + " = " + TRAINING
+                + " AND " + Article.SEARCH_NAME
+                + " LIKE '%" + searchParameter.toLowerCase() + "%'";
         String selectSql = selectFrom + DBHelper.getTableName(Article.class) + where;
         dao.get(new ParametersInformationRequest(null, selectSql, null), true);
     }

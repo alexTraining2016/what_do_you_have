@@ -1,8 +1,9 @@
 package comalexpolyanskyi.github.foodandhealth.dao.dataObjects;
 
+import android.database.Cursor;
 import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
 
 public class ArticleDO implements Serializable {
 
@@ -27,13 +28,13 @@ public class ArticleDO implements Serializable {
     @SerializedName("type")
     private int type;
 
-    public ArticleDO(int id, String name,  String description, String photo, int likeCount, int repostCount) {
-        this.id = id;
-        this.name = name;
-        this.photo = photo;
-        this.likeCount = likeCount;
-        this.repostCount = repostCount;
-        this.description = description;
+    public ArticleDO(Cursor cursor) {
+        this.id = cursor.getInt(cursor.getColumnIndex(ArticleDescription.ID));
+        this.name = cursor.getString(cursor.getColumnIndex(ArticleDescription.NAME));
+        this.photo = cursor.getString(cursor.getColumnIndex(ArticleDescription.IMAGE_URI));
+        this.likeCount = cursor.getInt(cursor.getColumnIndex(ArticleDescription.LIKE_COUNT));
+        this.repostCount = cursor.getInt(cursor.getColumnIndex(ArticleDescription.REPOST_COUNT));
+        this.description = cursor.getString(cursor.getColumnIndex(ArticleDescription.DESCRIPTION));
     }
 
     public String getDescription() {

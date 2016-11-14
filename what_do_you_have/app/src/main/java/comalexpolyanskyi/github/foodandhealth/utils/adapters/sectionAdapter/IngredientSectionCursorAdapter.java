@@ -34,10 +34,6 @@ public class IngredientSectionCursorAdapter extends SectionCursorAdapter <String
         }
     }
 
-    private Set<Integer> getSelectedId(){
-        return selectedId;
-    }
-
     private boolean isSelected(Integer id){
         return selectedId.contains(id);
     }

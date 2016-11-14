@@ -13,7 +13,7 @@ public class IngredientListFragmentPresenter extends BasePresenter<Cursor, Void>
 
     private MVPContract.DAO<ParametersInformationRequest> dao;
 
-    public IngredientListFragmentPresenter(@NonNull MVPContract.RequiredView view) {
+    public IngredientListFragmentPresenter(@NonNull MVPContract.RequiredView<Cursor> view) {
         super(view);
         this.dao = new IngredientListFragmentDAO(this);
     }

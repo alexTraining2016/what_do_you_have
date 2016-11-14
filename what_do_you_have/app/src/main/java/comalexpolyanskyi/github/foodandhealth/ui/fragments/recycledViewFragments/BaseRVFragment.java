@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.presenter.BasePresenter;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ArticleListFragmentAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
@@ -61,7 +60,6 @@ abstract public class BaseRVFragment extends Fragment implements MVPContract.Req
         setHasOptionsMenu(true);
         view.findViewById(R.id.backgroundImage).setBackgroundResource(AppStyleHolder.initialize().getBgDrawable());
         progressBar = (ProgressBar) view.findViewById(R.id.list_fragment_progress);
-        /////
         progressBar.getIndeterminateDrawable().setColorFilter(AppStyleHolder.initialize().getColor(), PorterDuff.Mode.MULTIPLY);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);
         bindPresenter(savedInstanceState);

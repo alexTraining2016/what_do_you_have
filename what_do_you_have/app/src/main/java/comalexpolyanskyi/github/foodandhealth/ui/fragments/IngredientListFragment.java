@@ -18,8 +18,8 @@ import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter.Ingr
 
 public class IngredientListFragment extends Fragment implements MVPContract.RequiredView<Cursor> {
 
-    private View progressBar;
     private static final String ACTION = "Action";
+    private View progressBar;
     private View view;
     private ListView listView;
     private IngredientSectionCursorAdapter arrayAdapter;

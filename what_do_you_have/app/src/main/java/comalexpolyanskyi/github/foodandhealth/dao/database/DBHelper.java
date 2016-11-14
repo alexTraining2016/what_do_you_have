@@ -17,6 +17,7 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.Table;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbInteger;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbLong;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbString;
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.CachedTable;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Contract;
 
 public class DBHelper extends SQLiteOpenHelper implements DbOperations {
@@ -63,6 +64,9 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                         continue;
                     }
                     final String value = (String) field.get(null);
+                    if(value.equals(CachedTable.ID)){
+                        type += " unique";
+                    }
                     builder.append(String.format(Locale.US, SQL_TABLE_CREATE_FIELD_TEMPLATE, value, type));
                     if (i < fields.length - 2) {
                         builder.append(",");
@@ -107,8 +111,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             long id;
             try {
                 database.beginTransaction();
-                id = database.insert(name, null, values);
-               // id = database.update(name, values, null, null);
+                id = database.insertWithOnConflict(name, null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 database.setTransactionSuccessful();
             } finally {
                 database.endTransaction();
@@ -128,12 +131,12 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             try {
                 database.beginTransaction();
                 for (final ContentValues value : values) {
-                    database.insert(name, null, value);
-               //     database.update(name, value, null, null);
+                    database.insertWithOnConflict(name, null, value, SQLiteDatabase.CONFLICT_REPLACE);
                     count++;
                 }
                 database.setTransactionSuccessful();
-            } finally {
+            }
+            finally {
                 database.endTransaction();
             }
             return count;

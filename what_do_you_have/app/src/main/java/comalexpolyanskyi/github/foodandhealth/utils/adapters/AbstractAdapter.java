@@ -17,20 +17,20 @@ public abstract class AbstractAdapter<Item> extends RecyclerView.Adapter<Abstrac
 
     public static class AbstractViewHolder extends RecyclerView.ViewHolder {
 
-        private SparseArrayCompat<View> mViewSparseArray;
+        final private SparseArrayCompat<View> viewSparseArray;
 
         public AbstractViewHolder(final View itemView, final int... ids) {
             super(itemView);
 
-            mViewSparseArray = new SparseArrayCompat<>(ids.length);
+            viewSparseArray = new SparseArrayCompat<>(ids.length);
 
             for (final int id : ids) {
-                mViewSparseArray.append(id, itemView.findViewById(id));
+                viewSparseArray.append(id, itemView.findViewById(id));
             }
         }
 
         public <T> T get(final int id) {
-            return (T) mViewSparseArray.get(id);
+            return (T) viewSparseArray.get(id);
         }
 
     }

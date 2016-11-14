@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -50,7 +51,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else{
             toolbar.setBackgroundColor(getResources().getColor(appStyleHolder.getColor()));
             headerLayout.setBackground(getResources().getDrawable(appStyleHolder.getDrawable()));
-            getSupportActionBar().setTitle(appStyleHolder.getTitle());
+            ActionBar actionBar = getSupportActionBar();
+            if(actionBar != null) {
+                actionBar.setTitle(appStyleHolder.getTitle());
+            }
         }
     }
 

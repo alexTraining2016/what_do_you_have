@@ -23,7 +23,6 @@ class ImageLoader implements MySimpleImageLoader {
 
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final int THREAD_POOL_SIZE = CPU_COUNT * 2 + 1;
-    private static final int FILE_CACHE_COUNT = 300;
     private static final long FILE_CACHE_SIZE = 300 * 1024 * 1024;
     private Handler handler;
     private FileCache fileCache;
@@ -34,7 +33,7 @@ class ImageLoader implements MySimpleImageLoader {
         handler = new Handler(Looper.getMainLooper());
         int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         int cacheSize = maxMemory / 8;
-        fileCache = FileCache.initialFileCache(ContextHolder.getContext(), FILE_CACHE_COUNT, FILE_CACHE_SIZE);
+        fileCache = FileCache.initialFileCache(ContextHolder.getContext(), FILE_CACHE_SIZE);
         //if override the method sizeOf then the memory cache doesn't work ¯\_(ツ)_/¯
         memoryCache = new LruCache<>(cacheSize);
         /*{

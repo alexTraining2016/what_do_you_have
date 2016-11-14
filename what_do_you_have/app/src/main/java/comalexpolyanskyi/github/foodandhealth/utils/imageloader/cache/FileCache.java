@@ -24,23 +24,21 @@ public class FileCache {
     private static final String TEMP_IMAGES = "TempImages";
     private static final String MAPPING_FILE = "mapping";
     private File cacheDir;
-    private static int DEFAULT_COUNT = 70;
-    //private int maxCountFile = DEFAULT_COUNT;
     private static FileCache fileCache;
     private ConcurrentHashMap<String, Long> map = null;
     private long cacheMaxSize = 150 * 1024 * 1024;
     private final Object lock = new Object();
     private final Object deleteLock = new Object();
 
-    private FileCache(Context context, int maxCountFile, long cacheMaxSize){
-      //  this.maxCountFile = maxCountFile;
+    private FileCache(Context context, long cacheMaxSize){
         this.cacheMaxSize = cacheMaxSize;
         if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
             cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), TEMP_IMAGES);
         else
             cacheDir=context.getCacheDir();
-        if(!cacheDir.exists())
+        if(!cacheDir.exists()) {
             cacheDir.mkdirs();
+        }
     }
 
 
@@ -51,9 +49,13 @@ public class FileCache {
         ObjectOutputStream out = null;
         FileOutputStream outStream = null;
         try {
-            outStream = new FileOutputStream(f);
+            if (f != null) {
+                outStream = new FileOutputStream(f);
+            }
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-            outStream = new FileOutputStream(mappingFile);
+            if (mappingFile != null) {
+                outStream = new FileOutputStream(mappingFile);
+            }
             out = new ObjectOutputStream(outStream);
             out.writeObject(map);
         } catch (IOException e) {
@@ -61,8 +63,12 @@ public class FileCache {
             mappingFile.delete();
         }finally {
             try {
-                outStream.close();
-                out.close();
+                if (outStream != null) {
+                    outStream.close();
+                }
+                if (out != null) {
+                    out.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -99,6 +105,7 @@ public class FileCache {
             try {
                 getMappingFile();
             } catch (Exception e) {
+                int DEFAULT_COUNT = 70;
                 map = new ConcurrentHashMap<>(DEFAULT_COUNT);
             }
         }
@@ -112,9 +119,9 @@ public class FileCache {
         }
     }
 
-    public static FileCache initialFileCache(Context context, int maxCountFile, long cacheMaxSize){
+    public static FileCache initialFileCache(Context context, long cacheMaxSize){
         if(fileCache == null){
-            fileCache = new FileCache(context, maxCountFile, cacheMaxSize);
+            fileCache = new FileCache(context, cacheMaxSize);
         }
         return fileCache;
     }
@@ -132,7 +139,11 @@ public class FileCache {
                 return null;
             }else{
                 File f = getFile(url);
-                return BitmapFactory.decodeStream(new FileInputStream(f));
+                if (f != null) {
+                    return BitmapFactory.decodeStream(new FileInputStream(f));
+                }else {
+                    return null;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,8 +154,7 @@ public class FileCache {
     @Nullable
     private File getFile(String url){
         String filename = String.valueOf(url.hashCode());
-        File f = new File(cacheDir, filename);
-        return f;
+        return new File(cacheDir, filename);
     }
 
     private void getMappingFile() throws IOException, ClassNotFoundException {

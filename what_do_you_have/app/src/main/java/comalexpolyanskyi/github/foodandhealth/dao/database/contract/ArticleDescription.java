@@ -7,17 +7,14 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbString;
 @Table(name = "ARTICLEDESK")
 public class ArticleDescription implements CachedTable {
 
-    @dbInteger
-    public static final String ID = "id";
-
     @dbString
     public static final String NAME = "name";
 
     @dbString
-    public static final String DESCRIPTION = "description";
+    public static final String IMAGE_URI = "imageUrl";
 
     @dbString
-    public static final String IMAGE_URI = "imageUrl";
+    public static final String DESCRIPTION = "description";
 
     @dbInteger
     public static final String LIKE_COUNT = "likeCount";

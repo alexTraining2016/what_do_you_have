@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
-public class BasePresenter<T, P> implements MVPContract.Presenter<P>, MVPContract.RequiredPresenter<T> {
+public class BasePresenter<T, P> implements MVPContract.Presenter<P, T>, MVPContract.RequiredPresenter<T> {
 
     private MVPContract.RequiredView<T> view;
 
@@ -14,7 +14,7 @@ public class BasePresenter<T, P> implements MVPContract.Presenter<P>, MVPContrac
     }
 
     @Override
-    public void onConfigurationChanged(MVPContract.RequiredView view)
+    public void onConfigurationChanged(MVPContract.RequiredView<T> view)
     {
         this.view = view;
     }

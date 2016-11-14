@@ -7,6 +7,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -62,7 +63,10 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
         descriptionText = (TextView) findViewById(R.id.description);
         Toolbar toolbar = (Toolbar) findViewById(R.id.description_tollbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         progressBar = findViewById(R.id.description_progress);
         likeButton = (VectorImageTextView) findViewById(R.id.like_count);
         favButton = (VectorImageTextView) findViewById(R.id.fav_count);
@@ -106,8 +110,8 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
         ((CollapsingToolbarLayout)findViewById(R.id.toolbar_layout)).setTitle(response.getName());
         ((AppBarLayout)findViewById(R.id.app_bar)).setExpanded(true, true);
         descriptionText.setText(response.getDescription());
-        likeButton.setText(response.getLikeCount()+"");
-        favButton.setText(response.getFavCount()+"");
+        likeButton.setText(Integer.toString(response.getLikeCount()));
+        favButton.setText(Integer.toString(response.getFavCount()));
     }
 
     @Override

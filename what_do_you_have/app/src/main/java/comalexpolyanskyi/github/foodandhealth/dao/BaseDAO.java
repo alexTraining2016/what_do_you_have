@@ -4,7 +4,6 @@ import android.database.Cursor;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -55,9 +54,23 @@ abstract class BaseDAO<T>  implements MVPContract.DAO<ParametersInformationReque
                     isNeedUpdate = true;
                 }
                 if(isNeedUpdate && !notUpdate){
-                    cursor = update(parameters);
-                    sendAnswer(cursor);
+                    try {
+                        cursor = update(parameters);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }finally {
+                        sendAnswer(cursor);
+                    }
                 }
+            }
+        });
+    }
+
+    protected void displayDataFromCache(final Cursor cursor){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                presenter.onSuccess((T) cursor);
             }
         });
     }
@@ -80,19 +93,9 @@ abstract class BaseDAO<T>  implements MVPContract.DAO<ParametersInformationReque
     }
 
     protected Cursor getFromCache(String parameters){
-        Log.e("123", parameters);
         return operations.query(parameters);
     }
 
-    protected void displayDataFromCache(final Cursor cursor){
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                presenter.onSuccess((T) cursor);
-            }
-        });
-    }
-
-    protected abstract Cursor update(ParametersInformationRequest parameters);
+    protected abstract Cursor update(ParametersInformationRequest parameters) throws Exception;
 
 }

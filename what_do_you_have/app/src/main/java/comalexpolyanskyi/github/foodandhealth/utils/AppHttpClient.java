@@ -1,8 +1,7 @@
 package comalexpolyanskyi.github.foodandhealth.utils;
 
-import android.support.test.espresso.core.deps.guava.io.ByteStreams;
-
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -32,7 +31,14 @@ public class AppHttpClient {
                 urlConnection.addRequestProperty(IF_MODIFIED_SINCE, urlConnection.getIfModifiedSince() + "");
             }
             inputStream = new BufferedInputStream(urlConnection.getInputStream());
-            bytes = ByteStreams.toByteArray(inputStream);
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            int nRead;
+            byte[] data = new byte[1024];
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+            buffer.flush();
+            bytes = buffer.toByteArray();
         }catch (IOException e){
             e.printStackTrace();
         }finally {

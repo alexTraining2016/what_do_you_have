@@ -24,7 +24,8 @@ public class AllRecipesFragmentPresenter extends BasePresenter<Cursor, String> {
         super.loadData(parameters);
         String select = "SELECT * FROM " + DBHelper.getTableName(Article.class);
         String url = Api.API_BASE_URL+ Api.API_ARTICLES_All;
-        String whereParam = " WHERE " + Article.TYPE + " BETWEEN " + ALL_FOOD_RECIPES + " AND " + ALL_DIET_RECIPES;
+        String whereParam = " WHERE " + Article.TYPE
+                + " BETWEEN " + ALL_FOOD_RECIPES + " AND " + ALL_DIET_RECIPES;
         String selectSql = select + whereParam;
         dao.get(new ParametersInformationRequest(url, selectSql, null), false);
     }
@@ -48,7 +49,7 @@ public class AllRecipesFragmentPresenter extends BasePresenter<Cursor, String> {
         String selectFrom = "SELECT * FROM ";
         String where = " WHERE " + Article.TYPE + " BETWEEN " + ALL_FOOD_RECIPES
                 + " AND " + ALL_DIET_RECIPES
-                + " AND " + Article.NAME
+                + " AND " + Article.SEARCH_NAME
                 + " LIKE '%" + searchParameter.toLowerCase() + "%'";
         String select = selectFrom + DBHelper.getTableName(Article.class) + where;
         dao.get(new ParametersInformationRequest(null, select, null), true);
