@@ -19,23 +19,34 @@ public class VectorImageTextView extends TextView {
 
     public VectorImageTextView(final Context context, final AttributeSet attrs) {
         super(context, attrs, R.attr.icTextViewStyle);
+
         init(attrs, R.attr.icTextViewStyle);
     }
 
     public VectorImageTextView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, R.attr.icTextViewStyle);
+
         init(attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public VectorImageTextView(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, R.attr.icTextViewStyle, defStyleRes);
+
         init(attrs, defStyleAttr);
+    }
+
+    public void setRightDrawable(int drawableId){
+        final AppCompatDrawableManager drawableManager = AppCompatDrawableManager.get();
+        Drawable drawable = drawableManager.getDrawable(getContext(), drawableId);
+
+        setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
     }
 
     private void init(final AttributeSet attrs, final int defStyleAttr) {
         final TintTypedArray a = TintTypedArray.obtainStyledAttributes(getContext(), attrs,
                 R.styleable.icTextViewStyle, defStyleAttr, 0);
+
         try {
             final AppCompatDrawableManager drawableManager = AppCompatDrawableManager.get();
             Drawable leftIcon = a.getDrawableIfKnown(R.styleable.icTextViewStyle_leftIcon);

@@ -5,4 +5,5 @@ public class IllegalCursorMovementException extends RuntimeException {
     public IllegalCursorMovementException(String detailMessage) {
         super(detailMessage);
     }
+
 }

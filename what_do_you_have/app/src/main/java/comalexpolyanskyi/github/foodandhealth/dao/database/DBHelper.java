@@ -38,19 +38,22 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             return null;
         }
     }
-//спрссить что за фигня
+
     @Nullable
-    public static String getTableCreateQuery(final Class<?> clazz) {
+    private static String getTableCreateQuery(final Class<?> clazz) {
         final Table table = clazz.getAnnotation(Table.class);
+
         if (table != null) {
             try {
                 final String name = table.name();
                 final StringBuilder builder = new StringBuilder();
                 final Field[] fields = clazz.getFields();
+
                 for (int i = 0; i < fields.length; i++) {
                     final Field field = fields[i];
                     final Annotation[] annotations = field.getAnnotations();
                     String type = null;
+
                     for (final Annotation annotation : annotations) {
                         if (annotation instanceof dbInteger) {
                             type = ((dbInteger) annotation).value();
@@ -60,18 +63,22 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                             type = ((dbString) annotation).value();
                         }
                     }
+
                     if (type == null) {
                         continue;
                     }
                     final String value = (String) field.get(null);
-                    if(value.equals(CachedTable.ID)){
+
+                    if (value.equals(CachedTable.ID)) {
                         type += " unique";
                     }
                     builder.append(String.format(Locale.US, SQL_TABLE_CREATE_FIELD_TEMPLATE, value, type));
+
                     if (i < fields.length - 2) {
                         builder.append(",");
                     }
                 }
+
                 return String.format(Locale.US, SQL_TABLE_CREATE_TEMPLATE, name, builder);
             } catch (final Exception e) {
                 e.printStackTrace();
@@ -86,6 +93,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
     public void onCreate(final SQLiteDatabase db) {
         for (final Class<?> clazz : Contract.MODELS) {
             final String sql = getTableCreateQuery(clazz);
+
             if (sql != null) {
                 db.execSQL(sql);
             }
@@ -135,8 +143,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                     count++;
                 }
                 database.setTransactionSuccessful();
-            }
-            finally {
+            } finally {
                 database.endTransaction();
             }
             return count;
@@ -159,8 +166,8 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                 database.endTransaction();
             }
             return count;
-            } else {
-                throw new RuntimeException();
-            }
+        } else {
+            throw new RuntimeException();
+        }
     }
 }

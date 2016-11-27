@@ -1,5 +1,6 @@
 package comalexpolyanskyi.github.foodandhealth.ui.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.HashSet;
+
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.presenter.IngredientListFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter.IngredientSectionCursorAdapter;
+import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 
 
 public class IngredientListFragment extends Fragment implements MVPContract.RequiredView<Cursor> {
@@ -23,30 +27,71 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
     private View view;
     private ListView listView;
     private IngredientSectionCursorAdapter arrayAdapter;
-    private MVPContract.Presenter<Void, Cursor> presenter;
+    private MVPContract.Presenter<String, Cursor> presenter;
     private Cursor data;
+    private OnFABClickListener mainActivityCallback;
 
-    public IngredientListFragment(){}
+
+    public interface OnFABClickListener {
+        void onRecipesByIngredient(HashSet<Integer> ingredientsSet);
+    }
+
+    public static IngredientListFragment newInstance(Bundle bundle){
+        IngredientListFragment fragment = new IngredientListFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public IngredientListFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setRetainInstance(true);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mainActivityCallback = (OnFABClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
         view = inflater.inflate(R.layout.fragment_ingredient_list, container, false);
         progressBar = view.findViewById(R.id.list_fragment_progress);
+        view.findViewById(R.id.list_fragment_fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final HashSet<Integer> ingredientSet =  arrayAdapter.getSelectedId();
+                if(ingredientSet.size() != 0) {
+                    mainActivityCallback.onRecipesByIngredient(ingredientSet);
+                }else{
+                    Snackbar.make(view, getContext().getString(R.string.no_ing_mess), Snackbar.LENGTH_LONG).setAction(ACTION, null).show();
+                }
+
+            }
+        });
+
         listView = (ListView) view.findViewById(R.id.ingredient_list_view);
         bindListView();
         bindMVP(savedInstanceState);
+
         return view;
     }
 
-    private void bindListView(){
+    private void bindListView() {
         arrayAdapter = new IngredientSectionCursorAdapter(getContext(), data);
         listView.setFastScrollEnabled(true);
         listView.setFastScrollAlwaysVisible(true);
@@ -56,7 +101,7 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
     public void bindMVP(Bundle savedInstanceState) {
         if (savedInstanceState == null || presenter == null) {
             this.presenter = new IngredientListFragmentPresenter(this);
-            presenter.loadData(null);
+            presenter.loadData(getArguments().getString(AuthConstant.TOKEN));
         } else {
             this.presenter.onConfigurationChanged(this);
         }
@@ -75,10 +120,10 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
 
     @Override
     public void showProgress(boolean isInProgress) {
-        if(isInProgress){
+        if (isInProgress) {
             progressBar.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
-        }else{
+        } else {
             progressBar.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
         }

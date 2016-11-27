@@ -9,9 +9,7 @@ public abstract class ViewHolder {
         this.rootView = rootView;
     }
 
-    /**
-     * @return Auto-Magicly infers your return type. No casting necessary.
-     */
+    @SuppressWarnings("unchecked")
     protected final <T extends View> T findWidgetById(int resId) {
         return (T) rootView.findViewById(resId);
     }

@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.dao.dataObjects;
+package comalexpolyanskyi.github.foodandhealth.dao.dataObject;
 
 import com.google.gson.annotations.SerializedName;
 

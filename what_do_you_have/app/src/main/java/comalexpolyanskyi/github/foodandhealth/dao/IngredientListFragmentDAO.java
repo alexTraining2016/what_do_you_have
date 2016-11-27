@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.IngredientItemDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObject.IngredientItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Ingredient;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 
@@ -31,34 +31,39 @@ public class IngredientListFragmentDAO extends BaseDAO<Cursor> {
     protected Cursor prepareResponse(@NonNull Cursor cursor) {
         if (cursor.getCount() > 0) {
             return cursor;
-        }else{
+        } else {
             return null;
         }
     }
 
     @Override
-    protected List<ContentValues> processRequest(String request){
-        List<ContentValues> contentValuesList = new ArrayList<>();
+    protected List<ContentValues> processRequest(@NonNull String request) {
+        final List<ContentValues> contentValuesList = new ArrayList<>();
+
         try {
-            Type type = new TypeToken<List<IngredientItemDO>>(){}.getType();
-            Gson gson = new GsonBuilder().create();
+            final Type type = new TypeToken<List<IngredientItemDO>>() {
+            }.getType();
+            final Gson gson = new GsonBuilder().create();
             final List<IngredientItemDO> result = gson.fromJson(request, type);
+
             for (IngredientItemDO item : result) {
                 ContentValues contentValue = prepareContentValues(item);
                 contentValuesList.add(contentValue);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
+
         return contentValuesList;
     }
 
     private ContentValues prepareContentValues(IngredientItemDO item) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(Ingredient.ID, item.getId());
-            contentValues.put(Ingredient.NAME, item.getName());
-            contentValues.put(Ingredient.RECORDING_TIME, System.currentTimeMillis());
-            contentValues.put(Ingredient.AGING_TIME, 600);
+        final ContentValues contentValues = new ContentValues();
+        contentValues.put(Ingredient.ID, item.getId());
+        contentValues.put(Ingredient.NAME, item.getName());
+        contentValues.put(Ingredient.RECORDING_TIME, System.currentTimeMillis());
+        contentValues.put(Ingredient.AGING_TIME, 600);
+
         return contentValues;
     }
 }

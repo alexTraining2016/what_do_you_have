@@ -5,86 +5,88 @@ import android.database.Cursor;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SectionIndexer;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 
-public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends ViewHolder>  extends CursorAdapter implements SectionIndexer {
+public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends ViewHolder> extends CursorAdapter implements SectionIndexer {
 
     private static final String ERROR_ILLEGAL_STATE = "IllegalStateException during build sections. "
             + "More then likely your cursor has been disconnected from the database, so your cursor will be set to null. "
             + "In most cases your content observer has already been notified of a database change and SectionCursorAdapter should get a new cursor shortly.";
 
-    public static final int NO_CURSOR_POSITION = -99; // used when mapping section list position to cursor position
+    private static final int NO_CURSOR_POSITION = -99;
+    private static final int VIEW_TYPE_SECTION = 0;
+    private static final int VIEW_TYPE_ITEM = 1;
 
-    protected static final int VIEW_TYPE_SECTION = 0;
-    protected static final int VIEW_TYPE_ITEM = 1;
-
-    private int mSectionLayoutResId;
-    private int mItemLayoutResId;
-
-    protected SortedMap<Integer, T> mSectionMap = new TreeMap<Integer, T>(); // should not be null
-    ArrayList<Integer> mSectionList = new ArrayList<Integer>();
-    private Object[] mFastScrollObjects;
-
-    private LayoutInflater mLayoutInflater;
+    private int sectionLayoutResId;
+    private int itemLayoutResId;
+    private SortedMap<Integer, T> sectionMap = new TreeMap<Integer, T>(); // should not be null
+    private ArrayList<Integer> sectionList = new ArrayList<Integer>();
+    private Object[] fastScrollObjects;
+    private LayoutInflater layoutInflater;
 
     public SectionCursorAdapter(Context context, Cursor cursor, int flags, int sectionLayoutResId, int itemLayoutResId) {
         super(context, cursor, flags);
+
         init(context, null, sectionLayoutResId, itemLayoutResId);
     }
 
     private void init(Context context, SortedMap<Integer, T> sections, int sectionLayoutResId, int itemLayoutResId) {
-        this.mSectionLayoutResId = sectionLayoutResId;
-        this.mItemLayoutResId = itemLayoutResId;
-        mLayoutInflater = LayoutInflater.from(context);
+        this.sectionLayoutResId = sectionLayoutResId;
+        this.itemLayoutResId = itemLayoutResId;
+        layoutInflater = LayoutInflater.from(context);
+
         if (sections != null) {
-            mSectionMap = sections;
+            sectionMap = sections;
         } else {
             buildSections();
         }
     }
 
-    protected LayoutInflater getInflater() {
-        return mLayoutInflater;
+    private LayoutInflater getInflater() {
+        return layoutInflater;
     }
 
     private void buildSections() {
         if (hasOpenCursor()) {
-            Cursor cursor = getCursor();
+            final Cursor cursor = getCursor();
             cursor.moveToPosition(-1);
+
             try {
-                mSectionMap = buildSections(cursor);
+                sectionMap = buildSections(cursor);
             } catch (IllegalStateException e) {
-                Log.w(SectionCursorAdapter.class.getName(), ERROR_ILLEGAL_STATE, e);
                 swapCursor(null);
-                mSectionMap = new TreeMap<Integer, T>();
+                sectionMap = new TreeMap<>();
                 return;
             }
-            if (mSectionMap == null) {
-                mSectionMap = new TreeMap<Integer, T>();
+
+            if (sectionMap == null) {
+                sectionMap = new TreeMap<>();
             }
         }
     }
 
-    protected SortedMap<Integer, T> buildSections(Cursor cursor) throws IllegalStateException {
-        TreeMap<Integer, T> sections = new TreeMap<Integer, T>();
+    private SortedMap<Integer, T> buildSections(Cursor cursor) throws IllegalStateException {
+        final TreeMap<Integer, T> sections = new TreeMap<>();
+
         int cursorPosition = 0;
         while (hasOpenCursor() && cursor.moveToNext()) {
             T section = getSectionFromCursor(cursor);
+
             if (cursor.getPosition() != cursorPosition)
                 throw new IllegalCursorMovementException("Do no move the cursor's position in getSectionFromCursor.");
+
             if (!sections.containsValue(section))
                 sections.put(cursorPosition + sections.size(), section);
             cursorPosition++;
+
         }
         return sections;
     }
@@ -93,7 +95,7 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
 
     @Override
     public int getCount() {
-        return super.getCount() + mSectionMap.size();
+        return super.getCount() + sectionMap.size();
     }
 
     @Override
@@ -104,7 +106,7 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
     @Override
     public Object getItem(int listPosition) {
         if (isSection(listPosition))
-            return mSectionMap.get(listPosition);
+            return sectionMap.get(listPosition);
         else
             return super.getItem(getCursorPositionWithoutSections(listPosition));
     }
@@ -114,8 +116,9 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
         if (isSection(listPosition))
             return listPosition;
         else {
-            int cursorPosition = getCursorPositionWithoutSections(listPosition);
-            Cursor cursor = getCursor();
+            final int cursorPosition = getCursorPositionWithoutSections(listPosition);
+            final Cursor cursor = getCursor();
+
             if (hasOpenCursor() && cursor.moveToPosition(cursorPosition)) {
                 return cursor.getLong(cursor.getColumnIndex("_id"));
             }
@@ -139,8 +142,8 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
     public void notifyDataSetChanged() {
         if (hasOpenCursor()) {
             buildSections();
-            mFastScrollObjects = null;
-            mSectionList.clear();
+            fastScrollObjects = null;
+            sectionList.clear();
         }
         super.notifyDataSetChanged();
     }
@@ -149,41 +152,35 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
     public void notifyDataSetInvalidated() {
         if (hasOpenCursor()) {
             buildSections();
-            mFastScrollObjects = null;
-            mSectionList.clear();
+            fastScrollObjects = null;
+            sectionList.clear();
         }
+
         super.notifyDataSetInvalidated();
     }
 
-    protected boolean hasOpenCursor() {
-        Cursor cursor = getCursor();
+    private boolean hasOpenCursor() {
+        final Cursor cursor = getCursor();
+
         if (cursor != null && cursor.isClosed()) {
             swapCursor(null);
             return false;
+
         }
         return cursor != null;
     }
 
-    public Set<Integer> getSectionListPositions() {
-        return mSectionMap.keySet();
+    private boolean isSection(int listPosition) {
+        return sectionMap.containsKey(listPosition);
     }
 
-    public T getSection(int sectionPosition) {
-        if (mSectionList.contains(sectionPosition)) {
-            return mSectionMap.get(mSectionList.get(sectionPosition));
-        }
-        return null;
-    }
+    private int getCursorPositionWithoutSections(int listPosition) {
 
-    public boolean isSection(int listPosition) {
-        return mSectionMap.containsKey(listPosition);
-    }
-
-    public int getCursorPositionWithoutSections(int listPosition) {
-        if (mSectionMap.size() == 0) {
+        if (sectionMap.size() == 0) {
             return listPosition;
         } else if (!isSection(listPosition)) {
             int sectionIndex = getSectionPosition(listPosition);
+
             if (isListPositionBeforeFirstSection(listPosition, sectionIndex)) {
                 return listPosition;
             } else {
@@ -194,10 +191,10 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
         }
     }
 
-    public int getSectionPosition(int listPosition) {
+    private int getSectionPosition(int listPosition) {
         boolean isSection = false;
         int numPrecedingSections = 0;
-        for (Integer sectionPosition : mSectionMap.keySet()) {
+        for (Integer sectionPosition : sectionMap.keySet()) {
             if (listPosition > sectionPosition)
                 numPrecedingSections++;
             else if (listPosition == sectionPosition)
@@ -205,12 +202,14 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
             else
                 break;
         }
+
         return isSection ? numPrecedingSections : Math.max(numPrecedingSections - 1, 0);
     }
 
     private boolean isListPositionBeforeFirstSection(int listPosition, int sectionIndex) {
-        boolean hasSections = mSectionMap != null && mSectionMap.size() > 0;
-        return sectionIndex == 0 && hasSections && listPosition < mSectionMap.firstKey();
+        boolean hasSections = sectionMap != null && sectionMap.size() > 0;
+
+        return sectionIndex == 0 && hasSections && listPosition < sectionMap.firstKey();
     }
 
     @Override
@@ -218,6 +217,7 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
         return isSection(listPosition) ? VIEW_TYPE_SECTION : VIEW_TYPE_ITEM;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         boolean isSection = isSection(position);
@@ -242,7 +242,7 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
         }
 
         if (isSection) {
-            T section = mSectionMap.get(position);
+            T section = sectionMap.get(position);
             bindSectionViewHolder(position, (S) view.getTag(), parent, section);
         } else {
             bindItemViewHolder((H) view.getTag(), cursor, parent);
@@ -251,8 +251,8 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
         return view;
     }
 
-    protected View newSectionView(ViewGroup parent, T section) {
-        View view = getInflater().inflate(mSectionLayoutResId, parent, false);
+    private View newSectionView(ViewGroup parent, T section) {
+        View view = getInflater().inflate(sectionLayoutResId, parent, false);
         view.setTag(createSectionViewHolder(view, section));
 
         return view;
@@ -262,8 +262,8 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
 
     protected abstract void bindSectionViewHolder(int position, S sectionViewHolder, ViewGroup parent, T section);
 
-    protected View newItemView(Cursor cursor, ViewGroup parent) {
-        View view = getInflater().inflate(mItemLayoutResId, parent, false);
+    private View newItemView(Cursor cursor, ViewGroup parent) {
+        View view = getInflater().inflate(itemLayoutResId, parent, false);
         view.setTag(createItemViewHolder(cursor, view));
 
         return view;
@@ -275,28 +275,30 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
 
     @Override
     public int getPositionForSection(int sectionIndex) {
-        if (mSectionList.size() == 0) {
-            for (Integer key : mSectionMap.keySet()) {
-                mSectionList.add(key);
+        if (sectionList.size() == 0) {
+            for (Integer key : sectionMap.keySet()) {
+                sectionList.add(key);
             }
         }
-        return sectionIndex < mSectionList.size() ? mSectionList.get(sectionIndex) : getCount();
+
+        return sectionIndex < sectionList.size() ? sectionList.get(sectionIndex) : getCount();
     }
 
     @Override
     public int getSectionForPosition(int position) {
-        Object[] objects = getSections(); // the fast scroll section objects
-        int sectionIndex = getSectionPosition(position);
+        final Object[] objects = getSections(); // the fast scroll section objects
+        final int sectionIndex = getSectionPosition(position);
 
         return sectionIndex < objects.length ? sectionIndex : 0;
     }
 
     @Override
     public Object[] getSections() {
-        if (mFastScrollObjects == null) {
-            mFastScrollObjects = getFastScrollDialogLabels();
+        if (fastScrollObjects == null) {
+            fastScrollObjects = getFastScrollDialogLabels();
         }
-        return mFastScrollObjects;
+
+        return fastScrollObjects;
     }
 
     protected int getMaxIndexerLength() {
@@ -304,14 +306,15 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
     }
 
     private Object[] getFastScrollDialogLabels() {
-        if (mSectionMap == null) return new Object[] { };
+        if (sectionMap == null) return new Object[]{};
 
-        int sectionCount = mSectionMap.size();
-        String[] titles = new String[sectionCount];
+        final int sectionCount = sectionMap.size();
+        final String[] titles = new String[sectionCount];
 
-        int max = VERSION.SDK_INT < VERSION_CODES.KITKAT ? getMaxIndexerLength() : Integer.MAX_VALUE;
+        final int max = VERSION.SDK_INT < VERSION_CODES.KITKAT ? getMaxIndexerLength() : Integer.MAX_VALUE;
+
         int i = 0;
-        for (Object object : mSectionMap.values()) {
+        for (Object object : sectionMap.values()) {
             if (object == null) {
                 titles[i] = "";
             } else if (object.toString().length() >= max) {
@@ -321,6 +324,7 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
             }
             i++;
         }
+
         return titles;
     }
 }

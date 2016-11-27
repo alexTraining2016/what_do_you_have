@@ -9,29 +9,29 @@ import java.net.URL;
 
 public class AppHttpClient {
 
-    public static final String IF_MODIFIED_SINCE = "if-Modified-Since";
+    private static final String IF_MODIFIED_SINCE = "if-Modified-Since";
     private final String CACHE_CONTROL = "Cache-Control";
     private final String MAX_STALE = "max-stale=";
     private static AppHttpClient httpClient;
 
+    private AppHttpClient() {
+    }
 
-    private AppHttpClient(){}
-
-    public byte[] loadDataFromHttp(String stringUrl, boolean usesCache)  {
+    public byte[] loadDataFromHttp(String stringUrl, boolean usesCache) {
         HttpURLConnection urlConnection = null;
-        InputStream inputStream = null;
         byte[] bytes = null;
+
         try {
-            URL url = new URL(stringUrl);
+            final URL url = new URL(stringUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setUseCaches(usesCache);
-            if(usesCache) {
+            if (usesCache) {
                 //int maxStale = 60 * 60;
                 // urlConnection.addRequestProperty(CACHE_CONTROL, MAX_STALE + maxStale);
                 urlConnection.addRequestProperty(IF_MODIFIED_SINCE, urlConnection.getIfModifiedSince() + "");
             }
-            inputStream = new BufferedInputStream(urlConnection.getInputStream());
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            final InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+            final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             int nRead;
             byte[] data = new byte[1024];
             while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
@@ -39,26 +39,27 @@ public class AppHttpClient {
             }
             buffer.flush();
             bytes = buffer.toByteArray();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
         }
+
         return bytes;
     }
 
-    public static void install(){
-        if(httpClient == null){
+    public static void install() {
+        if (httpClient == null) {
             httpClient = new AppHttpClient();
         }
     }
 
     public static AppHttpClient getAppHttpClient() throws NullPointerException {
-        if(httpClient != null){
+        if (httpClient != null) {
             return httpClient;
-        }else{
+        } else {
             throw new NullPointerException();
         }
     }

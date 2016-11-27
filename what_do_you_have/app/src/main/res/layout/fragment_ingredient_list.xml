@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@android:color/transparent"
-        android:dividerHeight="0dip"
+        android:dividerHeight="4dip"
         android:clickable="false"/>
 
     <ProgressBar
@@ -33,11 +33,12 @@
         android:visibility="gone"/>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/list_fragment_fab"
         android:padding="@dimen/activity_horizontal_margin"
         android:layout_margin="16dp"
         android:src="@drawable/ic_accept"
         android:layout_width="56dip"
         android:layout_height="56dip"
         android:clickable="true"
-        android:layout_gravity="bottom|right"/>
+        android:layout_gravity="bottom|end"/>
 </FrameLayout>

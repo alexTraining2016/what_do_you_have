@@ -12,11 +12,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleDO;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
-
 
 
 public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DAO<ParametersInformationRequest> {
@@ -31,32 +30,40 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DA
     }
 
     @Override
-    protected List<ContentValues> processRequest(String request){
-        List<ContentValues> contentValuesList = new ArrayList<>();
+    protected List<ContentValues> processRequest(@NonNull String request) {
+        final List<ContentValues> contentValuesList = new ArrayList<>();
+
         try {
-            Type type = new TypeToken<List<ArticleDO>>(){}.getType();
-            Gson gson = new GsonBuilder().create();
+            final Type type = new TypeToken<List<ArticleDO>>() {
+            }.getType();
+            final Gson gson = new GsonBuilder().create();
             final List<ArticleDO> result = gson.fromJson(request, type);
+
             for (ArticleDO item : result) {
-                ContentValues contentValue = prepareContentValues(item);
+                final ContentValues contentValue = prepareContentValues(item);
                 contentValuesList.add(contentValue);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
+
         return contentValuesList;
     }
 
     private ContentValues prepareContentValues(ArticleDO item) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(ArticleDescription.ID, item.getId());
-            contentValues.put(ArticleDescription.NAME, item.getName());
-            contentValues.put(ArticleDescription.DESCRIPTION, item.getDescription());
-            contentValues.put(ArticleDescription.LIKE_COUNT, item.getLikeCount());
-            contentValues.put(ArticleDescription.REPOST_COUNT, item.getFavCount());
-            contentValues.put(ArticleDescription.IMAGE_URI, item.getPhotoUrl());
-            contentValues.put(ArticleDescription.RECORDING_TIME, System.currentTimeMillis());
-            contentValues.put(ArticleDescription.AGING_TIME, 3600);
+        final ContentValues contentValues = new ContentValues();
+        contentValues.put(ArticleDescription.ID, item.getId());
+        contentValues.put(ArticleDescription.NAME, item.getName());
+        contentValues.put(ArticleDescription.DESCRIPTION, item.getDescription());
+        contentValues.put(ArticleDescription.LIKE_COUNT, item.getLikeCount());
+        contentValues.put(ArticleDescription.REPOST_COUNT, item.getFavCount());
+        contentValues.put(ArticleDescription.IMAGE_URI, item.getPhotoUrl());
+        contentValues.put(ArticleDescription.USER_ID, item.getUserId());
+        contentValues.put(ArticleDescription.IS_LIKE, item.getLike());
+        contentValues.put(ArticleDescription.IS_REPOST, item.getRepost());
+        contentValues.put(ArticleDescription.RECORDING_TIME, System.currentTimeMillis());
+        contentValues.put(ArticleDescription.AGING_TIME, 3600);
+
         return contentValues;
     }
 
@@ -65,17 +72,19 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DA
         return convertToArticleDO(cursor);
     }
 
-    private ArticleDO convertToArticleDO(@NonNull Cursor cursor){
+    private ArticleDO convertToArticleDO(@NonNull Cursor cursor) {
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             ArticleDO request = null;
+
             try {
                 request = new ArticleDO(cursor);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             return request;
-        }else{
+        } else {
             return null;
         }
     }

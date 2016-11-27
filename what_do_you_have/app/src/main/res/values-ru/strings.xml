@@ -4,6 +4,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="name_main_part">Еда</string>
+    <string name="can_be">Можете приготовить…</string>
     <string name="i_have">У меня имеется..</string>
     <string name="favorites">Моя кулинарная книга</string>
     <string name="all_recipes">Все рецепты</string>
@@ -14,4 +15,5 @@
     <string name="favorites_program">Избранное</string>
     <string name="action_search">Поиск</string>
     <string name="error_loading">Ошибка загрузки данных</string>
+    <string name="no_ing_mess">Не выбрано ни одного ингредиента</string>
 </resources>

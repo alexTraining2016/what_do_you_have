@@ -29,6 +29,7 @@ public abstract class AbstractAdapter<Item> extends RecyclerView.Adapter<Abstrac
             }
         }
 
+        @SuppressWarnings("unchecked")
         public <T> T get(final int id) {
             return (T) viewSparseArray.get(id);
         }

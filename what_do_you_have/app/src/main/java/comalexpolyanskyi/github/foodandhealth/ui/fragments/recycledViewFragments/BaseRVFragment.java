@@ -46,7 +46,9 @@ abstract public class BaseRVFragment extends Fragment implements MVPContract.Req
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setRetainInstance(true);
+
         if (getArguments() != null) {
             columnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -56,6 +58,7 @@ abstract public class BaseRVFragment extends Fragment implements MVPContract.Req
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
         view = inflater.inflate(R.layout.fragment_article_list, container, false);
         setHasOptionsMenu(true);
         view.findViewById(R.id.backgroundImage).setBackgroundResource(AppStyleHolder.initialize().getBgDrawable());
@@ -64,14 +67,16 @@ abstract public class BaseRVFragment extends Fragment implements MVPContract.Req
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);
         bindPresenter(savedInstanceState);
         bindRecyclerView();
+
         return view;
     }
 
-    protected RecyclerView bindRecyclerView(){
+    protected RecyclerView bindRecyclerView() {
         checkOrientation();
         recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), columnCount));
         adapter = new ArticleListFragmentAdapter(data, listener);
         recyclerView.setAdapter(adapter);
+
         return recyclerView;
     }
 
@@ -80,7 +85,7 @@ abstract public class BaseRVFragment extends Fragment implements MVPContract.Req
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
     }
@@ -96,19 +101,21 @@ abstract public class BaseRVFragment extends Fragment implements MVPContract.Req
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         listener = (OnListFragmentInteractionListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+
         listener = null;
     }
 
     @Override
     public void returnData(Cursor response) {
         this.data = response;
-        adapter.swapCursor(response);
+        adapter.changeCursor(response);
     }
 
     @Override
@@ -118,19 +125,19 @@ abstract public class BaseRVFragment extends Fragment implements MVPContract.Req
 
     @Override
     public void showProgress(boolean isInProgress) {
-        if(isInProgress){
+        if (isInProgress) {
             progressBar.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-        }else{
+        } else {
             progressBar.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
-    private void checkOrientation(){
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+    private void checkOrientation() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             columnCount = 2;
-        }else {
+        } else {
             columnCount = 3;
         }
     }

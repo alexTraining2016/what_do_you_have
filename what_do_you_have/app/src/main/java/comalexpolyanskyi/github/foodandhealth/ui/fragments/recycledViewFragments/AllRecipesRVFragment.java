@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import comalexpolyanskyi.github.foodandhealth.presenter.AllRecipesFragmentPresenter;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 
 public class AllRecipesRVFragment extends BaseRVFragment {
 
@@ -15,11 +16,18 @@ public class AllRecipesRVFragment extends BaseRVFragment {
         super();
     }
 
+    public static AllRecipesRVFragment newInstance(Bundle bundle){
+        AllRecipesRVFragment fragment = new AllRecipesRVFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+
     @Override
     public void bindPresenter(Bundle savedInstanceState) {
         if (savedInstanceState == null || presenter == null) {
             this.presenter = new AllRecipesFragmentPresenter(this);
-            presenter.loadData(null);
+            presenter.loadData(getArguments().getString(AuthConstant.TOKEN));
         } else {
             this.presenter.onConfigurationChanged(this);
         }
@@ -28,6 +36,7 @@ public class AllRecipesRVFragment extends BaseRVFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+
         presenter.onDestroy();
     }
 

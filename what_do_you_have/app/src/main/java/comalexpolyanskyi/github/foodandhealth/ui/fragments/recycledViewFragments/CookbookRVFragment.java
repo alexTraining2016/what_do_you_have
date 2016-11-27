@@ -10,20 +10,31 @@ import comalexpolyanskyi.github.foodandhealth.presenter.BasePresenter;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelperCallback;
+import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 
 public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelperAdapter {
 
     private MVPContract.Presenter<String, Cursor> presenter;
 
-    public CookbookRVFragment(){
+    public CookbookRVFragment() {
+        super();
     }
+
+    public static CookbookRVFragment newInstance(Bundle bundle) {
+        CookbookRVFragment fragment = new CookbookRVFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
 
     @Override
     protected RecyclerView bindRecyclerView() {
         RecyclerView recyclerView = super.bindRecyclerView();
+
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
+
         return recyclerView;
     }
 
@@ -31,7 +42,7 @@ public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelpe
     public void bindPresenter(Bundle savedInstanceState) {
         if (savedInstanceState == null || presenter == null) {
             this.presenter = new BasePresenter(this);
-            presenter.loadData(null);
+            presenter.loadData(getArguments().getString(AuthConstant.TOKEN));
         } else {
             this.presenter.onConfigurationChanged(this);
         }
@@ -40,15 +51,17 @@ public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelpe
     @Override
     public void onDetach() {
         super.onDetach();
+
         presenter.onDestroy();
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if(presenter != null){
+        if (presenter != null) {
             presenter.search(newText);
+
             return true;
-        }else{
+        } else {
             return false;
         }
     }

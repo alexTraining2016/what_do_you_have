@@ -1,8 +1,11 @@
-package comalexpolyanskyi.github.foodandhealth.dao.dataObjects;
+package comalexpolyanskyi.github.foodandhealth.dao.dataObject;
 
 import android.database.Cursor;
+
 import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
+
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
 
 public class ArticleDO implements Serializable {
@@ -28,6 +31,15 @@ public class ArticleDO implements Serializable {
     @SerializedName("type")
     private int type;
 
+    @SerializedName("user_id")
+    private int userId;
+
+    @SerializedName("isLike")
+    private int isLike;
+
+    @SerializedName("isRepost")
+    private int isRepost;
+
     public ArticleDO(Cursor cursor) {
         this.id = cursor.getInt(cursor.getColumnIndex(ArticleDescription.ID));
         this.name = cursor.getString(cursor.getColumnIndex(ArticleDescription.NAME));
@@ -35,6 +47,9 @@ public class ArticleDO implements Serializable {
         this.likeCount = cursor.getInt(cursor.getColumnIndex(ArticleDescription.LIKE_COUNT));
         this.repostCount = cursor.getInt(cursor.getColumnIndex(ArticleDescription.REPOST_COUNT));
         this.description = cursor.getString(cursor.getColumnIndex(ArticleDescription.DESCRIPTION));
+        this.userId = cursor.getInt(cursor.getColumnIndex(ArticleDescription.USER_ID));
+        this.isLike =  cursor.getInt(cursor.getColumnIndex(ArticleDescription.IS_LIKE));
+        this.isRepost = cursor.getInt(cursor.getColumnIndex(ArticleDescription.IS_REPOST));
     }
 
     public String getDescription() {
@@ -50,12 +65,33 @@ public class ArticleDO implements Serializable {
     }
 
     public int getType() {
-        return  type;
+        return type;
     }
 
     public int getId() {
         return id;
     }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public boolean isLike() {
+        return isLike != 0;
+    }
+
+    public boolean isRepost() {
+        return isRepost != 0;
+    }
+
+    public int getRepost() {
+        return isRepost;
+    }
+
+    public int getLike() {
+        return isLike;
+    }
+
 
     public String getName() {
         return name;

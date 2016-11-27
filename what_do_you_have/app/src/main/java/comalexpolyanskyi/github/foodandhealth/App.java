@@ -17,21 +17,25 @@ public class App extends Application {
 
     public static final String HTTP = "http";
     public static final String CACHE_FAILED = "HTTP response cache installation failed:";
+
     private static MySimpleImageLoader mySimpleImageLoader;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         ContextHolder.setContext(this);
         AppHttpClient.install();
+
         try {
-            File httpCacheDir = new File(this.getCacheDir(), HTTP);
-            long httpCacheSize = 5 * 1024 * 1024;
+            final File httpCacheDir = new File(this.getCacheDir(), HTTP);
+            final long httpCacheSize = 5 * 1024 * 1024;
             HttpResponseCache.install(httpCacheDir, httpCacheSize);
         } catch (IOException e) {
             Log.i(TAG, CACHE_FAILED + e);
         }
     }
+
 
     public static MySimpleImageLoader getImageLoader() {
         if (mySimpleImageLoader == null) {

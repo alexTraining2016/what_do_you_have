@@ -2,6 +2,7 @@ package comalexpolyanskyi.github.foodandhealth.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
@@ -17,16 +18,17 @@ import android.widget.TextView;
 
 import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleDO;
 import comalexpolyanskyi.github.foodandhealth.presenter.DescriptionActivityPresenter;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.ui.views.VectorImageTextView;
+import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 
 
 public class DescriptionActivity extends AppCompatActivity implements MVPContract.RequiredView<ArticleDO> {
-    
+
     public static final String EXTRA_IMAGE = "DescriptionActivity:image";
     public static final String ACTION = "Action";
     public static final String DATA_KEY = "data";
@@ -38,33 +40,35 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
     private MVPContract.Presenter<String, ArticleDO> presenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setTheme(AppStyleHolder.initialize().getTheme());
         setContentView(R.layout.desctiption_activity_scrolling);
         bindView();
         bindPresenter(savedInstanceState);
     }
 
-    private void bindPresenter(Bundle savedInstanceState){
-        if(savedInstanceState == null){
+    private void bindPresenter(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
             Intent intent = getIntent();
             this.presenter = new DescriptionActivityPresenter(this);
-            presenter.loadData(intent.getExtras().getString(MainActivity.TITLE_KEY));
-        }else{
+            presenter.loadData(intent.getStringExtra(MainActivity.TITLE_KEY), intent.getStringExtra(AuthConstant.TOKEN), null);
+        } else {
             returnData((ArticleDO) savedInstanceState.getSerializable(DATA_KEY));
             this.presenter = new DescriptionActivityPresenter(this);
         }
     }
 
-    private void bindView(){
+    private void bindView() {
         imageView = (ImageView) findViewById(R.id.imageView);
         ViewCompat.setTransitionName(imageView, EXTRA_IMAGE);
         descriptionText = (TextView) findViewById(R.id.description);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.description_tollbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.description_tollbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
+        final ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         progressBar = findViewById(R.id.description_progress);
@@ -82,6 +86,7 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         outState.putSerializable(DATA_KEY, data);
     }
 
@@ -91,6 +96,7 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
             case android.R.id.home:
                 ActivityCompat.finishAfterTransition(this);
                 onBackPressed();
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -99,19 +105,30 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         presenter.onDestroy();
     }
 
     @Override
     public void returnData(ArticleDO response) {
         data = response;
-        MySimpleImageLoader imageLoader = App.getImageLoader();
+        final MySimpleImageLoader imageLoader = App.getImageLoader();
         imageLoader.loadImageFromUrl(response.getPhotoUrl(), imageView);
-        ((CollapsingToolbarLayout)findViewById(R.id.toolbar_layout)).setTitle(response.getName());
-        ((AppBarLayout)findViewById(R.id.app_bar)).setExpanded(true, true);
+        ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(response.getName());
+        ((AppBarLayout) findViewById(R.id.app_bar)).setExpanded(true, true);
         descriptionText.setText(response.getDescription());
         likeButton.setText(Integer.toString(response.getLikeCount()));
         favButton.setText(Integer.toString(response.getFavCount()));
+        if(response.isLike()){
+            likeButton.setRightDrawable(R.drawable.ic_favorite_blue_24dp);
+        }else{
+            likeButton.setRightDrawable(R.drawable.ic_favorite_black_24dp);
+        }
+        if(response.isRepost()){
+            favButton.setRightDrawable(R.drawable.ic_repeat_blue_24dp);
+        }else {
+            favButton.setRightDrawable(R.drawable.ic_repeat_black_24dp);
+        }
     }
 
     @Override
@@ -121,11 +138,11 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
 
     @Override
     public void showProgress(boolean isInProgress) {
-        if(isInProgress){
+        if (isInProgress) {
             progressBar.setVisibility(View.VISIBLE);
             findViewById(R.id.app_bar).setVisibility(View.GONE);
             descriptionText.setVisibility(View.GONE);
-        }else{
+        } else {
             progressBar.setVisibility(View.GONE);
             findViewById(R.id.app_bar).setVisibility(View.VISIBLE);
             descriptionText.setVisibility(View.VISIBLE);

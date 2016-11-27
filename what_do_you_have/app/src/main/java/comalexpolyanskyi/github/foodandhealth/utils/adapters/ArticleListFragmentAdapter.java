@@ -10,18 +10,18 @@ import android.widget.TextView;
 
 import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ArticleListItemDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.BaseRVFragment;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 
-public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemDO>  {
+public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemDO> {
 
     private Cursor cursor;
     private final BaseRVFragment.OnListFragmentInteractionListener listener;
     private MySimpleImageLoader imageLoader;
 
-    public ArticleListFragmentAdapter(@NonNull Cursor items, @NonNull BaseRVFragment.OnListFragmentInteractionListener listener){
+    public ArticleListFragmentAdapter(@NonNull Cursor items, @NonNull BaseRVFragment.OnListFragmentInteractionListener listener) {
         cursor = items;
         this.listener = listener;
         imageLoader = App.getImageLoader();
@@ -40,8 +40,8 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
         });
     }
 
-    public void swapCursor(Cursor cursor){
-        if(cursor != null){
+    public void changeCursor(Cursor cursor) {
+        if (cursor != null) {
             this.cursor = cursor;
             notifyDataSetChanged();
         }
@@ -49,6 +49,7 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
 
     public ArticleListItemDO getItem(final int position) {
         cursor.moveToPosition(position);
+
         return new ArticleListItemDO(cursor);
     }
 
@@ -58,9 +59,9 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
     }
 
     public int getItemCount() {
-        if(cursor != null){
+        if (cursor != null) {
             return cursor.getCount();
-        }else{
+        } else {
             return 0;
         }
     }

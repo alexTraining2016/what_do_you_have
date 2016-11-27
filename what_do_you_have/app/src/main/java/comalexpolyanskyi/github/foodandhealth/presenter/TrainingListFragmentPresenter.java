@@ -3,39 +3,43 @@ package comalexpolyanskyi.github.foodandhealth.presenter;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import comalexpolyanskyi.github.foodandhealth.dao.IngredientListFragmentDAO;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObjects.ParametersInformationRequest;
+import comalexpolyanskyi.github.foodandhealth.dao.ArticleListFragmentDAO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 
 
-public class TrainingListFragmentPresenter extends BasePresenter<Cursor, String>{
+public class TrainingListFragmentPresenter extends BasePresenter<Cursor, String> {
 
     private MVPContract.DAO<ParametersInformationRequest> dao;
     private static final String TRAINING = "2";
 
     public TrainingListFragmentPresenter(@NonNull MVPContract.RequiredView<Cursor> view) {
         super(view);
-        this.dao = new IngredientListFragmentDAO(this);
+
+        this.dao = new ArticleListFragmentDAO(this);
     }
 
     @Override
-    public void loadData(String parameters) {
+    public void loadData(String... parameters) {
         super.loadData(parameters);
-        String url = Api.API_BASE_URL+ Api.API_ARTICLES + TRAINING;
-        String selectSql = "SELECT * FROM " + DBHelper.getTableName(Article.class)
-                + " WHERE " + Article.TYPE + " = " + TRAINING;
-        dao.get(new ParametersInformationRequest(url, selectSql, null), false);
+
+        final String url = Api.API_BASE_URL + Api.API_ARTICLES + TRAINING + Api.API_BY_AUTH + parameters[0];
+        final String selectSql = SQL.S_F + DBHelper.getTableName(Article.class)
+                + SQL.WHERE + Article.TYPE + " = " + TRAINING;
+
+        dao.get(new ParametersInformationRequest(url, selectSql, null), false, false);
     }
 
     @Override
-    public void search(String searchParameter) {
+    public void search(String... searchParameter) {
         super.search(searchParameter);
-        String selectFrom = "SELECT * FROM ";
-        String where = " WHERE " + Article.TYPE + " = " + TRAINING
-                + " AND " + Article.SEARCH_NAME
-                + " LIKE '%" + searchParameter.toLowerCase() + "%'";
-        String selectSql = selectFrom + DBHelper.getTableName(Article.class) + where;
-        dao.get(new ParametersInformationRequest(null, selectSql, null), true);
+
+        final String where = SQL.WHERE + Article.TYPE + " = " + TRAINING
+                + SQL.AND + Article.SEARCH_NAME
+                + SQL.LIKE + "'%" + searchParameter[0].toLowerCase() + "%'";
+        final String selectSql = SQL.S_F + DBHelper.getTableName(Article.class) + where;
+
+        dao.get(new ParametersInformationRequest(null, selectSql, null), true, false);
     }
 }

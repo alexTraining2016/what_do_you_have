@@ -3,26 +3,52 @@ package comalexpolyanskyi.github.foodandhealth.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleListItemDO;
-import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
+
+import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleByIngredientDO;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObject.IngredientIdDO;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleIngredient;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 
-public class ArticleListFragmentDAO extends BaseDAO<Cursor> implements MVPContract.DAO<ParametersInformationRequest> {
 
-    public ArticleListFragmentDAO(@NonNull MVPContract.RequiredPresenter<Cursor> presenter) {
+public class RecipesByIngFragmentDAO extends BaseDAO<Cursor> {
+
+    public RecipesByIngFragmentDAO(@NonNull MVPContract.RequiredPresenter<Cursor> presenter) {
         super(presenter);
     }
 
     @Override
     protected void saveToCache(List<ContentValues> contentValuesList) {
         operations.bulkUpdate(Article.class, contentValuesList);
+    }
+
+    @Override
+    protected List<ContentValues> processRequest(@NonNull String request) {
+        final List<ContentValues> contentValuesList = new ArrayList<>();
+
+        try {
+            final Type type = new TypeToken<List<ArticleByIngredientDO>>() {
+            }.getType();
+            final Gson gson = new GsonBuilder().create();
+            final List<ArticleByIngredientDO> result = gson.fromJson(request, type);
+
+            for (ArticleByIngredientDO item : result) {
+                ContentValues contentValue = prepareContentValues(item);
+                contentValuesList.add(contentValue);
+            }
+        } catch (Exception e) {
+            return null;
+        }
+
+        return contentValuesList;
     }
 
     @Override
@@ -34,27 +60,20 @@ public class ArticleListFragmentDAO extends BaseDAO<Cursor> implements MVPContra
         }
     }
 
-    @Override
-    protected List<ContentValues> processRequest(@NonNull String request) {
-        final List<ContentValues> contentValuesList = new ArrayList<>();
+    private void saveJunctionTable(List<IngredientIdDO> items, int articleId) {
+        final List<ContentValues> contentList = new ArrayList<>();
 
-        try {
-            final Type type = new TypeToken<List<ArticleListItemDO>>(){
-            }.getType();
-            final Gson gson = new GsonBuilder().create();
-            final List<ArticleListItemDO> result = gson.fromJson(request, type);
-            for (ArticleListItemDO item : result) {
-                final ContentValues contentValue = prepareContentValues(item);
-                contentValuesList.add(contentValue);
-            }
-        } catch (Exception e) {
-            return null;
+        for (IngredientIdDO item : items) {
+            final ContentValues content = new ContentValues();
+            content.put(ArticleIngredient.ID, item.getId());
+            content.put(ArticleIngredient.ARTICLE_ID, articleId);
+            content.put(ArticleIngredient.INGREDIENT_ID, item.getIngredientId());
+            contentList.add(content);
         }
-
-        return contentValuesList;
+        operations.bulkUpdate(ArticleIngredient.class, contentList);
     }
 
-    private ContentValues prepareContentValues(ArticleListItemDO item) {
+    private ContentValues prepareContentValues(ArticleByIngredientDO item) {
         final ContentValues contentValues = new ContentValues();
         contentValues.put(Article.ID, item.getId());
         contentValues.put(Article.TYPE, item.getType());
@@ -63,6 +82,7 @@ public class ArticleListFragmentDAO extends BaseDAO<Cursor> implements MVPContra
         contentValues.put(Article.IMAGE_URI, item.getPhotoUrl());
         contentValues.put(Article.RECORDING_TIME, System.currentTimeMillis());
         contentValues.put(Article.AGING_TIME, 3600);
+        saveJunctionTable(item.getIngredientsId(), item.getId());
 
         return contentValues;
     }

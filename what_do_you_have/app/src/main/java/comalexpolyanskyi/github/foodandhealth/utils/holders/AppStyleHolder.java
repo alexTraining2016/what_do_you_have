@@ -29,18 +29,19 @@ public class AppStyleHolder {
         return title;
     }
 
-    private AppStyleHolder(){
+    private AppStyleHolder() {
         defaultInitialize(ContextHolder.getContext().getString(R.string.all_recipes));
     }
 
-    public static AppStyleHolder initialize(){
-        if(styleHolder == null){
+    public static AppStyleHolder initialize() {
+        if (styleHolder == null) {
             styleHolder = new AppStyleHolder();
         }
+
         return styleHolder;
     }
 
-    public void defaultInitialize(String title){
+    public void defaultInitialize(String title) {
         this.title = title;
         theme = R.style.FoodAppTheme;
         color = R.color.colorPrimaryFood;
@@ -48,7 +49,7 @@ public class AppStyleHolder {
         bgDrawable = R.drawable.food_bg;
     }
 
-    public void fitnessInitialize(String title){
+    public void fitnessInitialize(String title) {
         theme = R.style.TrainingAppTheme;
         this.title = title;
         color = R.color.colorPrimaryTraining;

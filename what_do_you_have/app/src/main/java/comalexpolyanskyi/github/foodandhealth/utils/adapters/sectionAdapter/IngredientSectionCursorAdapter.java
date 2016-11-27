@@ -9,39 +9,39 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.HashSet;
-import java.util.Set;
 
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Ingredient;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapterUtil.SectionCursorAdapter;
 
-public class IngredientSectionCursorAdapter extends SectionCursorAdapter <String, SectionViewHolder, ItemViewHolder> {
+public class IngredientSectionCursorAdapter extends SectionCursorAdapter<String, SectionViewHolder, ItemViewHolder> {
 
     private Context context;
-    private Set<Integer> selectedId = new HashSet<>();
+    private HashSet<Integer> selectedId = new HashSet<>();
 
     public IngredientSectionCursorAdapter(Context context, Cursor c) {
         super(context, c, 0, R.layout.item_section, R.layout.ingredient_list_item);
+
         this.context = context;
     }
 
-    public void updateDataSet(Cursor cursor)
-    {
-        if(cursor != null) {
+    public void updateDataSet(Cursor cursor) {
+        if (cursor != null) {
             changeCursor(cursor);
             notifyDataSetChanged();
             selectedId = new HashSet<>(getCursor().getCount());
         }
     }
 
-    private boolean isSelected(Integer id){
+    private boolean isSelected(Integer id) {
         return selectedId.contains(id);
     }
 
     @Override
     protected String getSectionFromCursor(Cursor cursor) {
-        int columnIndex = cursor.getColumnIndex(Ingredient.NAME);
-        String name = cursor.getString(columnIndex);
+        final int columnIndex = cursor.getColumnIndex(Ingredient.NAME);
+        final String name = cursor.getString(columnIndex);
+
         return name.toUpperCase().substring(0, 1);
     }
 
@@ -62,7 +62,7 @@ public class IngredientSectionCursorAdapter extends SectionCursorAdapter <String
 
     @Override
     protected void bindItemViewHolder(ItemViewHolder itemViewHolder, Cursor cursor, ViewGroup parent) {
-        Integer id = cursor.getInt(cursor.getColumnIndex(Ingredient.ID));
+        final Integer id = cursor.getInt(cursor.getColumnIndex(Ingredient.ID));
         itemViewHolder.rootView.setTag(R.string.app_name, id);
         itemViewHolder.name.setText(cursor.getString(cursor.getColumnIndex(Ingredient.NAME)));
         bindBackground(itemViewHolder.name, itemViewHolder.rootView, isSelected(id));
@@ -73,23 +73,27 @@ public class IngredientSectionCursorAdapter extends SectionCursorAdapter <String
                 ObjectAnimator animAlpha = ObjectAnimator.ofFloat(v, "alpha", 0.1f, 0.9f);
                 animAlpha.setDuration(450);
                 animAlpha.start();
-                boolean isSelected = bindBackground((TextView) v.findViewById(R.id.ingredient_name), v, !isSelected(id));
-                if(isSelected){
+
+                final boolean isSelected = bindBackground((TextView) v.findViewById(R.id.ingredient_name), v, !isSelected(id));
+                if (isSelected) {
                     selectedId.remove(id);
-                }else{
+                } else {
                     selectedId.add(id);
                 }
             }
         });
     }
 
+    public HashSet<Integer> getSelectedId() {
+        return selectedId;
+    }
 
-    private boolean bindBackground(TextView textView, View view, boolean isSelected){
-        if(isSelected) {
+    private boolean bindBackground(TextView textView, View view, boolean isSelected) {
+        if (isSelected) {
             view.setBackground(context.getResources().getDrawable(R.drawable.pressed));
             textView.setTextColor(Color.WHITE);
             return false;
-        }else{
+        } else {
             view.setBackground(context.getResources().getDrawable(R.drawable.normal));
             textView.setTextColor(Color.BLACK);
             return true;

@@ -6,7 +6,9 @@ public final class Contract {
             {
                     Article.class,
                     ArticleDescription.class,
-                    Ingredient.class
+                    Ingredient.class,
+                    ArticleIngredient.class,
+                    Favorites.class
 
             };
 }

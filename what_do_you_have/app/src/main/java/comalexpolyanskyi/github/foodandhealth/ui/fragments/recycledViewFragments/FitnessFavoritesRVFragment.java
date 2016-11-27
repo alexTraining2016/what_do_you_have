@@ -7,19 +7,26 @@ import android.os.Bundle;
 import comalexpolyanskyi.github.foodandhealth.presenter.BasePresenter;
 import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdapter;
+import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 
 public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTouchHelperAdapter {
 
     private MVPContract.Presenter<String, Cursor> presenter;
 
-    public FitnessFavoritesRVFragment(){
+    public FitnessFavoritesRVFragment() {
+    }
+
+    public static FitnessFavoritesRVFragment newInstance(Bundle bundle) {
+        FitnessFavoritesRVFragment fragment = new FitnessFavoritesRVFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
     public void bindPresenter(Bundle savedInstanceState) {
         if (savedInstanceState == null || presenter == null) {
             this.presenter = new BasePresenter(this);
-            presenter.loadData(null);
+            presenter.loadData(getArguments().getString(AuthConstant.TOKEN));
         } else {
             this.presenter.onConfigurationChanged(this);
         }
@@ -28,15 +35,17 @@ public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTo
     @Override
     public void onDetach() {
         super.onDetach();
+
         presenter.onDestroy();
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if(presenter != null){
+        if (presenter != null) {
             presenter.search(newText);
+
             return true;
-        }else{
+        } else {
             return false;
         }
     }

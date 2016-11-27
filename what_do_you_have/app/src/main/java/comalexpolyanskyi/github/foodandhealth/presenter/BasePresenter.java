@@ -25,12 +25,12 @@ public class BasePresenter<T, P> implements MVPContract.Presenter<P, T>, MVPCont
     }
 
     @Override
-    public void loadData(P parameters) {
+    public void loadData(P... parameters) {
         view.showProgress(true);
     }
 
     @Override
-    public void search(P searchParameter) {
+    public void search(P... searchParameter) {
     }
 
     @Override
