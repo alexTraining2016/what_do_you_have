@@ -61,7 +61,7 @@ public class IngredientListFragmentDAO extends BaseDAO<Cursor> {
         final ContentValues contentValues = new ContentValues();
         contentValues.put(Ingredient.ID, item.getId());
         contentValues.put(Ingredient.NAME, item.getName());
-        contentValues.put(Ingredient.RECORDING_TIME, System.currentTimeMillis());
+        contentValues.put(Ingredient.RECORDING_TIME, System.currentTimeMillis()/1000);
         contentValues.put(Ingredient.AGING_TIME, 600);
 
         return contentValues;

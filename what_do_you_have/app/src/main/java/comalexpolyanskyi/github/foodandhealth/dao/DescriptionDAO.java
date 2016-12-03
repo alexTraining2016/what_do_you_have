@@ -61,7 +61,7 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DA
         contentValues.put(ArticleDescription.USER_ID, item.getUserId());
         contentValues.put(ArticleDescription.IS_LIKE, item.getLike());
         contentValues.put(ArticleDescription.IS_REPOST, item.getRepost());
-        contentValues.put(ArticleDescription.RECORDING_TIME, System.currentTimeMillis());
+        contentValues.put(ArticleDescription.RECORDING_TIME, System.currentTimeMillis()/1000);
         contentValues.put(ArticleDescription.AGING_TIME, 3600);
 
         return contentValues;

@@ -14,6 +14,8 @@
     <string name="training_program">Программы тренировок</string>
     <string name="favorites_program">Избранное</string>
     <string name="action_search">Поиск</string>
-    <string name="error_loading">Ошибка загрузки данных</string>
+    <string name="error_loading">Ошибка загрузки данных, вероятно отсутствует  соединение с интернетом</string>
     <string name="no_ing_mess">Не выбрано ни одного ингредиента</string>
+    <string name="favoritesAddMessage">Добавлено в избранное</string>
+    <string name="favoritesDeleteMessage">Удалено из избранного</string>
 </resources>

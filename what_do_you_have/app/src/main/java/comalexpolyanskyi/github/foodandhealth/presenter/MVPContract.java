@@ -16,7 +16,7 @@ public interface MVPContract {
     }
 
     interface DAO<P> {
-        void get(P parameters, boolean flag, boolean forceUpdate);
+        void get(P parameters, boolean forceUpdate);
     }
 
     interface RequiredPresenter<T>{

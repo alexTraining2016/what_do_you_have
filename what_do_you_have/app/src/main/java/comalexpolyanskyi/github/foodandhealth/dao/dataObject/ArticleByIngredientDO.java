@@ -6,10 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by Алексей on 20.11.2016.
- */
-
 public class ArticleByIngredientDO extends ArticleListItemDO {
     public ArticleByIngredientDO(Cursor cursor) {
         super(cursor);

@@ -8,12 +8,11 @@ import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformati
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleIngredient;
+import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
 
 public class RecipesByIngFragmentPresenter extends BasePresenter<Cursor, String> {
 
     private MVPContract.DAO<ParametersInformationRequest> dao;
-    private static final String ALL_DIET_RECIPES = "1";
-    private static final String ALL_FOOD_RECIPES = "0";
 
     public RecipesByIngFragmentPresenter(@NonNull MVPContract.RequiredView<Cursor> view) {
         super(view);
@@ -24,15 +23,14 @@ public class RecipesByIngFragmentPresenter extends BasePresenter<Cursor, String>
     @Override
     public void loadData(String... parameters) {
         super.loadData(parameters);
+        final String url = ApiConstants.API_BASE_URL + ApiConstants.API_BY_INGREDIENT + parameters[0] + ApiConstants.API_BY_AUTH + parameters[1];
+        final String select = SQLConstants.SELECT + "r." + Article.ID + ",r." + Article.AGING_TIME + ",r." + Article.RECORDING_TIME + ",r." + Article.NAME + ",r." + Article.IMAGE_URI + ",r." + Article.TYPE +
+                SQLConstants.FROM + DBHelper.getTableName(Article.class) + " r" +
+                SQLConstants.INNER_JOIN + DBHelper.getTableName(ArticleIngredient.class) + " i" + SQLConstants.ON + "i." + ArticleIngredient.ARTICLE_ID + " = r." + Article.ID +
+                SQLConstants.WHERE + "i." + ArticleIngredient.INGREDIENT_ID + SQLConstants.IN + "( " + parameters[0] + " )" +
+                SQLConstants.GROUP_BY + "r." + Article.ID;
 
-        final String url = Api.API_BASE_URL + Api.API_BY_INGREDIENT + parameters[0] + Api.API_BY_AUTH + parameters[1];
-        final String select = SQL.SELECT + "r." + Article.ID + ",r." + Article.AGING_TIME + ",r." + Article.RECORDING_TIME + ",r." + Article.NAME + ",r." + Article.IMAGE_URI + ",r." + Article.TYPE +
-                SQL.FROM + DBHelper.getTableName(Article.class) + " r" +
-                SQL.INNER_JOIN + DBHelper.getTableName(ArticleIngredient.class) + " i" + SQL.ON + "i." + ArticleIngredient.ARTICLE_ID + " = r." + Article.ID +
-                SQL.WHERE + "i." + ArticleIngredient.INGREDIENT_ID + SQL.IN + "( " + parameters[0] + " )" +
-                SQL.GROUP_BY + "r." + Article.ID;
-
-        dao.get(new ParametersInformationRequest(url, select, null), false, true);
+        dao.get(new ParametersInformationRequest(url, select), true);
     }
 
 
@@ -40,14 +38,14 @@ public class RecipesByIngFragmentPresenter extends BasePresenter<Cursor, String>
     public void search(String... searchParameter) {
         super.search(searchParameter);
 
-        final String select = SQL.SELECT + "r." + Article.ID + ",r." + Article.AGING_TIME + ",r." + Article.RECORDING_TIME + ",r." + Article.NAME + ",r." + Article.IMAGE_URI + ",r." + Article.TYPE +
-                SQL.FROM + DBHelper.getTableName(Article.class) + " r" +
-                SQL.INNER_JOIN + DBHelper.getTableName(ArticleIngredient.class) + " i" + SQL.ON + "i." + ArticleIngredient.ARTICLE_ID + " = r." + Article.ID +
-                SQL.WHERE + "i." + ArticleIngredient.INGREDIENT_ID + SQL.IN + "( " + searchParameter[0] + " )" +
-                SQL.AND + Article.SEARCH_NAME +
-                SQL.LIKE + "'%" + searchParameter[1].toLowerCase() + "%'" +
-                SQL.GROUP_BY + "r." + Article.ID;
+        final String select = SQLConstants.SELECT + "r." + Article.ID + ",r." + Article.AGING_TIME + ",r." + Article.RECORDING_TIME + ",r." + Article.NAME + ",r." + Article.IMAGE_URI + ",r." + Article.TYPE +
+                SQLConstants.FROM + DBHelper.getTableName(Article.class) + " r" +
+                SQLConstants.INNER_JOIN + DBHelper.getTableName(ArticleIngredient.class) + " i" + SQLConstants.ON + "i." + ArticleIngredient.ARTICLE_ID + " = r." + Article.ID +
+                SQLConstants.WHERE + "i." + ArticleIngredient.INGREDIENT_ID + SQLConstants.IN + "( " + searchParameter[0] + " )" +
+                SQLConstants.AND + Article.SEARCH_NAME +
+                SQLConstants.LIKE + "'%" + searchParameter[1].toLowerCase() + "%'" +
+                SQLConstants.GROUP_BY + "r." + Article.ID;
 
-        dao.get(new ParametersInformationRequest(null, select, null), true, false);
+        dao.get(new ParametersInformationRequest(null, select), false);
     }
 }

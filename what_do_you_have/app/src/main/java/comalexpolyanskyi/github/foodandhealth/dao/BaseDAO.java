@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.nio.charset.Charset;
 import java.util.List;
@@ -39,29 +38,24 @@ abstract class BaseDAO<T> implements MVPContract.DAO<ParametersInformationReques
     }
 
     @Override
-    public void get(final ParametersInformationRequest parameters, final boolean notUpdate, final boolean forceUpdate) {
+    public void get(final ParametersInformationRequest parameters, final boolean forceUpdate) {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                boolean isNeedUpdate = false;
-                Cursor cursor = getFromCache(parameters.getSelectParameters());
+                boolean isNeedUpdate = true;
 
-                if (cursor.getCount() != 0) {
-                    displayDataFromCache(prepareResponse(cursor));
-                    Long currentTime = System.currentTimeMillis();
-                    for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                        Long recordingTime = cursor.getLong(cursor.getColumnIndex(CachedTable.RECORDING_TIME));
-                        Long agingTime = cursor.getLong(cursor.getColumnIndex(CachedTable.AGING_TIME));
-                        if (agingTime > currentTime - recordingTime) {
-                            isNeedUpdate = true;
-                            break;
-                        }
+                if(!forceUpdate) {
+                    final Cursor cursor = getFromCache(parameters.getSelectParameters());
+
+                    if (cursor.getCount() != 0) {
+                        displayDataFromCache(prepareResponse(cursor));
+                        isNeedUpdate = forceUpdate || isDataOutdated(parameters.getUrl(), cursor);
                     }
-                } else {
-                    isNeedUpdate = true;
                 }
-                if ((isNeedUpdate && !notUpdate) || forceUpdate) {
-                    cursor = update(parameters);
+
+                if (isNeedUpdate) {
+                    final Cursor cursor = update(parameters);
+
                     if (cursor != null) {
                         sendAnswer(prepareResponse(cursor));
                     } else {
@@ -70,6 +64,24 @@ abstract class BaseDAO<T> implements MVPContract.DAO<ParametersInformationReques
                 }
             }
         });
+    }
+
+    private boolean isDataOutdated(String url, Cursor cursor) {
+        if (url != null) {
+            Long currentTime = System.currentTimeMillis() / 1000;
+
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                Long recordingTime = cursor.getLong(cursor.getColumnIndex(CachedTable.RECORDING_TIME));
+                Long agingTime = cursor.getLong(cursor.getColumnIndex(CachedTable.AGING_TIME));
+
+                if (recordingTime <= (currentTime - agingTime)) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private void displayDataFromCache(final T response) {
@@ -97,10 +109,8 @@ abstract class BaseDAO<T> implements MVPContract.DAO<ParametersInformationReques
     @Nullable
     private Cursor update(ParametersInformationRequest parameters) {
         byte[] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl(), true);
-        Log.i("123", parameters.getUrl());
         if (requestBytes != null) {
             String requestString = new String(requestBytes, Charset.forName(CHARSET_NAME));
-            Log.i("123", requestString);
             List<ContentValues> contentValuesList = processRequest(requestString);
             if (contentValuesList != null) {
                 saveToCache(contentValuesList);

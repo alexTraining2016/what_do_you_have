@@ -8,6 +8,7 @@ import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformati
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
+import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
 
 
 public class DescriptionActivityPresenter extends BasePresenter<ArticleDO, String> {
@@ -22,13 +23,18 @@ public class DescriptionActivityPresenter extends BasePresenter<ArticleDO, Strin
 
     @Override
     public void loadData(String... parameters) {
-        super.loadData(parameters);
 
         final boolean isNeedForceUpdate = parameters[2] != null;
-        final String url = Api.API_BASE_URL + Api.API_ARTICLES_DESC + parameters[0] + Api.API_BY_AUTH + parameters[1];
-        final String whereParam = SQL.WHERE + Article.ID + " = " + parameters[0];
-        final String select = SQL.S_F + DBHelper.getTableName(ArticleDescription.class) + whereParam;
+        String act = "";
+        if(isNeedForceUpdate) {
+            act = parameters[2];
+        }else{
+            super.loadData(parameters);
+        }
+        final String url = ApiConstants.API_BASE_URL + ApiConstants.API_ARTICLES_DESC + parameters[0] + ApiConstants.API_BY_AUTH + parameters[1]+act;
+        final String whereParam = SQLConstants.WHERE + Article.ID + " = " + parameters[0];
+        final String select = SQLConstants.S_F + DBHelper.getTableName(ArticleDescription.class) + whereParam;
 
-        dao.get(new ParametersInformationRequest(url, select, null), false, isNeedForceUpdate);
+        dao.get(new ParametersInformationRequest(url, select), isNeedForceUpdate);
     }
 }

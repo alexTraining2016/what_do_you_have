@@ -87,8 +87,8 @@ class ImageLoader implements MySimpleImageLoader {
             BitmapFactory.Options o = new BitmapFactory.Options();
             o.inJustDecodeBounds = true;
             BitmapFactory.decodeByteArray(bytes, 0, bytes.length, o);
-            int requiredWidth = imageView.getMeasuredWidth();
-            int requiredHeight = imageView.getMeasuredHeight();
+            final int requiredWidth = imageView.getMeasuredWidth();
+            final int requiredHeight = imageView.getMeasuredHeight();
             int outWidth = o.outWidth, outHeight = o.outHeight;
             int scale = 1;
 
@@ -112,7 +112,7 @@ class ImageLoader implements MySimpleImageLoader {
             Bitmap bitmap = fileCache.get(stringUrl);
 
             if (bitmap == null) {
-                byte[] bytes = AppHttpClient.getAppHttpClient().loadDataFromHttp(stringUrl, false);
+                final byte[] bytes = AppHttpClient.getAppHttpClient().loadDataFromHttp(stringUrl, false);
                 bitmap = decodeAndResizeFile(bytes, imageViewReference.get());
                 fileCache.put(stringUrl, bitmap);
             }

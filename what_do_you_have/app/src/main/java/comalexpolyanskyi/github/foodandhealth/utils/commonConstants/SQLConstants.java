@@ -1,6 +1,6 @@
-package comalexpolyanskyi.github.foodandhealth.presenter;
+package comalexpolyanskyi.github.foodandhealth.utils.commonConstants;
 
-interface SQL {
+public interface SQLConstants {
     String SELECT = "SELECT ";
     String FROM = " FROM ";
     String S_F = "SELECT * FROM ";

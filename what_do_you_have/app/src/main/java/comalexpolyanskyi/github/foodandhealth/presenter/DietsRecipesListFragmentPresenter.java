@@ -7,6 +7,7 @@ import comalexpolyanskyi.github.foodandhealth.dao.IngredientListFragmentDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
+import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
 
 
 public class DietsRecipesListFragmentPresenter extends BasePresenter<Cursor, String> {
@@ -24,22 +25,22 @@ public class DietsRecipesListFragmentPresenter extends BasePresenter<Cursor, Str
     public void loadData(String... parameters) {
         super.loadData(parameters);
 
-        final String url = Api.API_BASE_URL + Api.API_ARTICLES + ALL_DIET_RECIPES + Api.API_BY_AUTH + parameters[0];
-        final String selectSql = SQL.S_F + DBHelper.getTableName(Article.class)
-                + SQL.WHERE + Article.TYPE + "=" + ALL_DIET_RECIPES;
+        final String url = ApiConstants.API_BASE_URL + ApiConstants.API_ARTICLES + ALL_DIET_RECIPES + ApiConstants.API_BY_AUTH + parameters[0];
+        final String selectSql = SQLConstants.S_F + DBHelper.getTableName(Article.class)
+                + SQLConstants.WHERE + Article.TYPE + "=" + ALL_DIET_RECIPES;
 
-        dao.get(new ParametersInformationRequest(url, selectSql, null), false, false);
+        dao.get(new ParametersInformationRequest(url, selectSql), false);
     }
 
     @Override
     public void search(String... searchParameter) {
         super.search(searchParameter);
 
-        final String where = SQL.WHERE + Article.TYPE + "=" + ALL_DIET_RECIPES
-                + SQL.AND + Article.SEARCH_NAME
-                + SQL.LIKE + "'%" + searchParameter[0].toLowerCase() + "%'";
-        final String selectSql = SQL.S_F + DBHelper.getTableName(Article.class) + where;
+        final String where = SQLConstants.WHERE + Article.TYPE + "=" + ALL_DIET_RECIPES
+                + SQLConstants.AND + Article.SEARCH_NAME
+                + SQLConstants.LIKE + "'%" + searchParameter[0].toLowerCase() + "%'";
+        final String selectSql = SQLConstants.S_F + DBHelper.getTableName(Article.class) + where;
 
-        dao.get(new ParametersInformationRequest(null, selectSql, null), true, false);
+        dao.get(new ParametersInformationRequest(null, selectSql), false);
     }
 }
