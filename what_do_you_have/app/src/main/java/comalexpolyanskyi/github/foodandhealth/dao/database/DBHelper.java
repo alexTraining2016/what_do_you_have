@@ -110,26 +110,6 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
         return database.rawQuery(sql, args);
     }
 
-
-    @Override
-    public long update(final Class<?> table, final ContentValues values) {
-        final String name = getTableName(table);
-        if (name != null) {
-            final SQLiteDatabase database = getWritableDatabase();
-            long id;
-            try {
-                database.beginTransaction();
-                id = database.insertWithOnConflict(name, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                database.setTransactionSuccessful();
-            } finally {
-                database.endTransaction();
-            }
-            return id;
-        } else {
-            throw new RuntimeException();
-        }
-    }
-
     @Override
     public long bulkUpdate(Class<?> table, final List<ContentValues> values) {
         final String name = getTableName(table);

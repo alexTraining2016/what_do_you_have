@@ -3,8 +3,6 @@ package comalexpolyanskyi.github.foodandhealth.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
@@ -38,6 +36,7 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
     private TextView descriptionText;
     private VectorImageTextView favButton, likeButton;
     private MVPContract.Presenter<String, ArticleDO> presenter;
+    private boolean waitFavoritState = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,8 +53,10 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
             Intent intent = getIntent();
             this.presenter = new DescriptionActivityPresenter(this);
             presenter.loadData(intent.getStringExtra(MainActivity.TITLE_KEY), intent.getStringExtra(AuthConstant.TOKEN), null);
+            waitFavoritState = false;
         } else {
             returnData((ArticleDO) savedInstanceState.getSerializable(DATA_KEY));
+            //here need to save presenter
             this.presenter = new DescriptionActivityPresenter(this);
         }
     }
@@ -71,14 +72,27 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
         if (actionBar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
         progressBar = findViewById(R.id.description_progress);
         likeButton = (VectorImageTextView) findViewById(R.id.like_count);
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = getIntent();
+                final String param = "&act=like";
+                waitFavoritState = false;
+                presenter.loadData(intent.getStringExtra(MainActivity.TITLE_KEY), intent.getStringExtra(AuthConstant.TOKEN), param);
+            }
+        });
+
         favButton = (VectorImageTextView) findViewById(R.id.fav_count);
         favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Добавлено в избранное", Snackbar.LENGTH_LONG)
-                        .setAction(ACTION, null).show();
+                final Intent intent = getIntent();
+                final String param = "&act=repost";
+                waitFavoritState = true;
+                presenter.loadData(intent.getStringExtra(MainActivity.TITLE_KEY), intent.getStringExtra(AuthConstant.TOKEN), param);
             }
         });
     }
@@ -86,7 +100,6 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putSerializable(DATA_KEY, data);
     }
 
@@ -96,7 +109,6 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
             case android.R.id.home:
                 ActivityCompat.finishAfterTransition(this);
                 onBackPressed();
-
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -105,29 +117,45 @@ public class DescriptionActivity extends AppCompatActivity implements MVPContrac
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         presenter.onDestroy();
+    }
+
+    private void bindHeader() {
+        final MySimpleImageLoader imageLoader = App.getImageLoader();
+        imageLoader.loadImageFromUrl(data.getPhotoUrl(), imageView);
+        descriptionText.setText(data.getDescription());
+        likeButton.setText(Integer.toString(data.getLikeCount()));
+        favButton.setText(Integer.toString(data.getFavCount()));
+        if (data.isLike()) {
+            likeButton.setRightDrawable(R.drawable.ic_favorite_blue_24dp);
+        } else {
+            likeButton.setRightDrawable(R.drawable.ic_favorite_black_24dp);
+        }
+        if (data.isRepost()) {
+            favButton.setRightDrawable(R.drawable.ic_repeat_blue_24dp);
+        } else {
+            favButton.setRightDrawable(R.drawable.ic_repeat_black_24dp);
+        }
+        if(waitFavoritState){
+            makeActRepostMessage(data.isRepost());
+        }
+    }
+
+    private void makeActRepostMessage(boolean isRepost){
+        int str = R.string.favoritesDeleteMessage;
+        if(isRepost){
+            str = R.string.favoritesAddMessage;
+        }
+        final String message = getString(str);
+        Snackbar.make(favButton, message, Snackbar.LENGTH_LONG)
+                .setAction(ACTION, null).show();
     }
 
     @Override
     public void returnData(ArticleDO response) {
         data = response;
-        final MySimpleImageLoader imageLoader = App.getImageLoader();
-        imageLoader.loadImageFromUrl(response.getPhotoUrl(), imageView);
-        ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(response.getName());
-        ((AppBarLayout) findViewById(R.id.app_bar)).setExpanded(true, true);
-        descriptionText.setText(response.getDescription());
-        likeButton.setText(Integer.toString(response.getLikeCount()));
-        favButton.setText(Integer.toString(response.getFavCount()));
-        if(response.isLike()){
-            likeButton.setRightDrawable(R.drawable.ic_favorite_blue_24dp);
-        }else{
-            likeButton.setRightDrawable(R.drawable.ic_favorite_black_24dp);
-        }
-        if(response.isRepost()){
-            favButton.setRightDrawable(R.drawable.ic_repeat_blue_24dp);
-        }else {
-            favButton.setRightDrawable(R.drawable.ic_repeat_black_24dp);
+        if(data != null) {
+            bindHeader();
         }
     }
 

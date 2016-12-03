@@ -7,6 +7,7 @@ import comalexpolyanskyi.github.foodandhealth.dao.ArticleListFragmentDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
+import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
 
 public class AllRecipesFragmentPresenter extends BasePresenter<Cursor, String> {
 
@@ -24,37 +25,24 @@ public class AllRecipesFragmentPresenter extends BasePresenter<Cursor, String> {
     public void loadData(String... parameters) {
         super.loadData(parameters);
 
-        final String url = Api.API_BASE_URL + Api.API_ARTICLES_All + Api.API_BY_AUTH + parameters[0];
-        final String whereParam = SQL.WHERE + Article.TYPE
-                + SQL.BETWEEN + ALL_FOOD_RECIPES + SQL.AND + ALL_DIET_RECIPES;
-        final String selectSql = SQL.S_F + DBHelper.getTableName(Article.class) + whereParam;
+        final String url = ApiConstants.API_BASE_URL + ApiConstants.API_ARTICLES_All + ApiConstants.API_BY_AUTH + parameters[0];
+        final String whereParam = SQLConstants.WHERE + Article.TYPE
+                + SQLConstants.BETWEEN + ALL_FOOD_RECIPES + SQLConstants.AND + ALL_DIET_RECIPES;
+        final String selectSql = SQLConstants.S_F + DBHelper.getTableName(Article.class) + whereParam;
 
-        dao.get(new ParametersInformationRequest(url, selectSql, null), false, false);
+        dao.get(new ParametersInformationRequest(url, selectSql), false);
     }
-
-   /* @Override
-            case ArticlesTypeRequest.FOOD_RECIPES_BY_INGREDIENT:
-                url = REQUEST_URL;
-                break;
-            case ArticlesTypeRequest.FAVORITES_FOOD_RECIPES:
-                url = REQUEST_URL;
-                break;
-            case ArticlesTypeRequest.FAVORITES_TRAINING_AND_DIET_RECIPES:
-                url = REQUEST_URL;
-                break;
-        }
-    }*/
 
     @Override
     public void search(String... searchParameter) {
         super.search(searchParameter);
 
-        final String where = SQL.WHERE + Article.TYPE + SQL.BETWEEN + ALL_FOOD_RECIPES
-                + SQL.AND + ALL_DIET_RECIPES
-                + SQL.AND + Article.SEARCH_NAME
-                + SQL.LIKE + "'%" + searchParameter[0].toLowerCase() + "%'";
-        final String select = SQL.S_F + DBHelper.getTableName(Article.class) + where;
+        final String where = SQLConstants.WHERE + Article.TYPE + SQLConstants.BETWEEN + ALL_FOOD_RECIPES
+                + SQLConstants.AND + ALL_DIET_RECIPES
+                + SQLConstants.AND + Article.SEARCH_NAME
+                + SQLConstants.LIKE + "'%" + searchParameter[0].toLowerCase() + "%'";
+        final String select = SQLConstants.S_F + DBHelper.getTableName(Article.class) + where;
 
-        dao.get(new ParametersInformationRequest(null, select, null), true, false);
+        dao.get(new ParametersInformationRequest(null, select), false);
     }
 }

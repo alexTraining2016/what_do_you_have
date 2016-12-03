@@ -7,6 +7,7 @@ import comalexpolyanskyi.github.foodandhealth.dao.IngredientListFragmentDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Ingredient;
+import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
 
 
 public class IngredientListFragmentPresenter extends BasePresenter<Cursor, String>{
@@ -23,10 +24,10 @@ public class IngredientListFragmentPresenter extends BasePresenter<Cursor, Strin
     public void loadData(String... parameters) {
         super.loadData(parameters);
 
-        final String url = Api.API_BASE_URL+Api.API_ALL_INGREDIENT + Api.API_BY_AUTH + parameters[0];
+        final String url = ApiConstants.API_BASE_URL+ ApiConstants.API_ALL_INGREDIENT + ApiConstants.API_BY_AUTH + parameters[0];
         final String where = " ORDER BY "+ Ingredient.NAME;
-        final String select = SQL.S_F + DBHelper.getTableName(Ingredient.class) + where;
+        final String select = SQLConstants.S_F + DBHelper.getTableName(Ingredient.class) + where;
 
-        dao.get(new ParametersInformationRequest(url, select, null), false, false);
+        dao.get(new ParametersInformationRequest(url, select), false);
     }
 }

@@ -11,8 +11,6 @@ public interface DbOperations {
 
     Cursor query(String sql, String... args);
 
-    long update(Class<?> table, ContentValues values);
-
     long bulkUpdate(Class<?> table, List<ContentValues> values);
 
     int delete(Class<?> table, String sql, String... args);

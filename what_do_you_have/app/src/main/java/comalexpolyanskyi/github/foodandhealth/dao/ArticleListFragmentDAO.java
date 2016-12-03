@@ -61,7 +61,7 @@ public class ArticleListFragmentDAO extends BaseDAO<Cursor> implements MVPContra
         contentValues.put(Article.NAME, item.getName());
         contentValues.put(Article.SEARCH_NAME, item.getName().toLowerCase());
         contentValues.put(Article.IMAGE_URI, item.getPhotoUrl());
-        contentValues.put(Article.RECORDING_TIME, System.currentTimeMillis());
+        contentValues.put(Article.RECORDING_TIME, System.currentTimeMillis()/1000);
         contentValues.put(Article.AGING_TIME, 3600);
 
         return contentValues;

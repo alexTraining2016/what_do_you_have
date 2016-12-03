@@ -7,12 +7,12 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbInteger
 public class Favorites {
 
     @dbInteger
-    String ID = "_id";
+    public static final String ID = "_id";
 
     @dbInteger
-    String USET_ID = "user_id";
+    public static final String USET_ID = "user_id";
 
     @dbInteger
-    String TYPE = "type";
+    public static final String TYPE = "type";
 
 }

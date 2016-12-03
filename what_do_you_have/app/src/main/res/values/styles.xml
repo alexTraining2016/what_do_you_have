@@ -24,7 +24,6 @@
 
     <style name="CollapsedAppBar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">20sp</item>
-        <item name="android:maxLength">14</item>
         <item name="android:textStyle">normal</item>
     </style>
 
@@ -32,6 +31,9 @@
         <item name="android:paddingBottom">16dip</item>
         <item name="android:paddingTop">16dip</item>
         <item name="android:paddingLeft">8dip</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:clickable">true</item>
     </style>
