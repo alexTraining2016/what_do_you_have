@@ -1,16 +1,15 @@
 package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments;
 
 
-import android.database.Cursor;
 import android.os.Bundle;
 
-import comalexpolyanskyi.github.foodandhealth.presenter.AllRecipesFragmentPresenter;
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.AllRecipesFragmentMediator;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 
 public class AllRecipesRVFragment extends BaseRVFragment {
 
-    private MVPContract.Presenter<String, Cursor> presenter;
+    private InteractionContract.Mediator<String> mediator;
 
     public AllRecipesRVFragment(){
         super();
@@ -25,11 +24,9 @@ public class AllRecipesRVFragment extends BaseRVFragment {
 
     @Override
     public void bindPresenter(Bundle savedInstanceState) {
-        if (savedInstanceState == null || presenter == null) {
-            this.presenter = new AllRecipesFragmentPresenter(this);
-            presenter.loadData(getArguments().getString(AuthConstant.TOKEN));
-        } else {
-            this.presenter.onConfigurationChanged(this);
+        if (savedInstanceState == null || mediator == null) {
+            this.mediator = new AllRecipesFragmentMediator(this);
+            mediator.loadData(getArguments().getString(AuthConstant.TOKEN));
         }
     }
 
@@ -37,13 +34,13 @@ public class AllRecipesRVFragment extends BaseRVFragment {
     public void onDetach() {
         super.onDetach();
 
-        presenter.onDestroy();
+        mediator.onDestroy();
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if(presenter != null){
-            presenter.search(newText);
+        if(mediator != null){
+            mediator.search(newText);
             return true;
         }else{
             return false;

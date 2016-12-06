@@ -16,12 +16,12 @@ import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleByIngredient
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.IngredientIdDO;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleIngredient;
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 
 
 public class RecipesByIngFragmentDAO extends BaseDAO<Cursor> {
 
-    public RecipesByIngFragmentDAO(@NonNull MVPContract.RequiredPresenter<Cursor> presenter) {
+    public RecipesByIngFragmentDAO(@NonNull InteractionContract.RequiredPresenter<Cursor> presenter) {
         super(presenter);
     }
 

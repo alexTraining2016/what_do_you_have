@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.presenter;
+package comalexpolyanskyi.github.foodandhealth.mediators;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
@@ -10,11 +10,11 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleIngredient;
 import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
 
-public class RecipesByIngFragmentPresenter extends BasePresenter<Cursor, String> {
+public class RecipesByIngFragmentMediator extends BaseMediator<Cursor, String> {
 
-    private MVPContract.DAO<ParametersInformationRequest> dao;
+    private InteractionContract.DAO<ParametersInformationRequest> dao;
 
-    public RecipesByIngFragmentPresenter(@NonNull MVPContract.RequiredView<Cursor> view) {
+    public RecipesByIngFragmentMediator(@NonNull InteractionContract.RequiredView<Cursor> view) {
         super(view);
 
         this.dao = new RecipesByIngFragmentDAO(this);

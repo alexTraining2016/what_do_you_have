@@ -36,9 +36,18 @@ public class VectorImageTextView extends TextView {
         init(attrs, defStyleAttr);
     }
 
+    public Drawable getRightDrawable(){
+        final Drawable[] drawables = getCompoundDrawables();
+        return drawables[0];
+    }
+
+    public void setRightDrawable(Drawable drawable){
+        setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+    }
+
     public void setRightDrawable(int drawableId){
         final AppCompatDrawableManager drawableManager = AppCompatDrawableManager.get();
-        Drawable drawable = drawableManager.getDrawable(getContext(), drawableId);
+        final Drawable drawable = drawableManager.getDrawable(getContext(), drawableId);
 
         setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
     }

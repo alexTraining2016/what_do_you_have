@@ -1,20 +1,19 @@
 package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments;
 
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import comalexpolyanskyi.github.foodandhealth.presenter.BasePresenter;
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.BaseMediator;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelperCallback;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 
 public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelperAdapter {
 
-    private MVPContract.Presenter<String, Cursor> presenter;
+    private InteractionContract.Mediator<String> mediator;
 
     public CookbookRVFragment() {
         super();
@@ -40,11 +39,9 @@ public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelpe
 
     @Override
     public void bindPresenter(Bundle savedInstanceState) {
-        if (savedInstanceState == null || presenter == null) {
-            this.presenter = new BasePresenter(this);
-            presenter.loadData(getArguments().getString(AuthConstant.TOKEN));
-        } else {
-            this.presenter.onConfigurationChanged(this);
+        if (savedInstanceState == null || mediator == null) {
+            this.mediator = new BaseMediator(this);
+            mediator.loadData(getArguments().getString(AuthConstant.TOKEN));
         }
     }
 
@@ -52,13 +49,13 @@ public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelpe
     public void onDetach() {
         super.onDetach();
 
-        presenter.onDestroy();
+        mediator.onDestroy();
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (presenter != null) {
-            presenter.search(newText);
+        if (mediator != null) {
+            mediator.search(newText);
 
             return true;
         } else {

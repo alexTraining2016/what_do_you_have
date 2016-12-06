@@ -15,12 +15,12 @@ import java.util.List;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 
 
-public class DescriptionDAO extends BaseDAO<ArticleDO> implements MVPContract.DAO<ParametersInformationRequest> {
+public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionContract.DAO<ParametersInformationRequest> {
 
-    public DescriptionDAO(@NonNull MVPContract.RequiredPresenter<ArticleDO> presenter) {
+    public DescriptionDAO(@NonNull InteractionContract.RequiredPresenter<ArticleDO> presenter) {
         super(presenter);
     }
 

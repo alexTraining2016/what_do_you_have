@@ -16,20 +16,20 @@ import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformati
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DbOperations;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.CachedTable;
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
-abstract class BaseDAO<T> implements MVPContract.DAO<ParametersInformationRequest> {
+abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersInformationRequest> {
 
     private static final String CHARSET_NAME = "UTF-8";
     private ExecutorService executorService;
-    private MVPContract.RequiredPresenter<T> presenter;
+    private InteractionContract.RequiredPresenter<T> presenter;
     private Handler handler;
     private AppHttpClient httpClient;
     protected DbOperations operations;
 
-    protected BaseDAO(@NonNull MVPContract.RequiredPresenter<T> presenter) {
+    protected BaseDAO(@NonNull InteractionContract.RequiredPresenter<T> presenter) {
         handler = new Handler(Looper.getMainLooper());
         this.presenter = presenter;
         operations = new DBHelper(ContextHolder.getContext(), DbOperations.FOOD_AND_HEAL, DbOperations.VERSION);
@@ -68,11 +68,11 @@ abstract class BaseDAO<T> implements MVPContract.DAO<ParametersInformationReques
 
     private boolean isDataOutdated(String url, Cursor cursor) {
         if (url != null) {
-            Long currentTime = System.currentTimeMillis() / 1000;
+            final Long currentTime = System.currentTimeMillis() / 1000;
 
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                Long recordingTime = cursor.getLong(cursor.getColumnIndex(CachedTable.RECORDING_TIME));
-                Long agingTime = cursor.getLong(cursor.getColumnIndex(CachedTable.AGING_TIME));
+                final Long recordingTime = cursor.getLong(cursor.getColumnIndex(CachedTable.RECORDING_TIME));
+                final Long agingTime = cursor.getLong(cursor.getColumnIndex(CachedTable.AGING_TIME));
 
                 if (recordingTime <= (currentTime - agingTime)) {
 
@@ -108,10 +108,10 @@ abstract class BaseDAO<T> implements MVPContract.DAO<ParametersInformationReques
 
     @Nullable
     private Cursor update(ParametersInformationRequest parameters) {
-        byte[] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl(), true);
+        final byte[] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl(), true);
         if (requestBytes != null) {
-            String requestString = new String(requestBytes, Charset.forName(CHARSET_NAME));
-            List<ContentValues> contentValuesList = processRequest(requestString);
+            final String requestString = new String(requestBytes, Charset.forName(CHARSET_NAME));
+            final List<ContentValues> contentValuesList = processRequest(requestString);
             if (contentValuesList != null) {
                 saveToCache(contentValuesList);
                 return getFromCache(parameters.getSelectParameters());

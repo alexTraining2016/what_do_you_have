@@ -12,11 +12,11 @@ import java.util.List;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 
-public class ArticleListFragmentDAO extends BaseDAO<Cursor> implements MVPContract.DAO<ParametersInformationRequest> {
+public class ArticleListFragmentDAO extends BaseDAO<Cursor> implements InteractionContract.DAO<ParametersInformationRequest> {
 
-    public ArticleListFragmentDAO(@NonNull MVPContract.RequiredPresenter<Cursor> presenter) {
+    public ArticleListFragmentDAO(@NonNull InteractionContract.RequiredPresenter<Cursor> presenter) {
         super(presenter);
     }
 

@@ -14,20 +14,20 @@ import android.widget.ListView;
 import java.util.HashSet;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.presenter.IngredientListFragmentPresenter;
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.IngredientListFragmentMediator;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter.IngredientSectionCursorAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 
 
-public class IngredientListFragment extends Fragment implements MVPContract.RequiredView<Cursor> {
+public class IngredientListFragment extends Fragment implements InteractionContract.RequiredView<Cursor> {
 
     private static final String ACTION = "Action";
     private View progressBar;
     private View view;
     private ListView listView;
     private IngredientSectionCursorAdapter arrayAdapter;
-    private MVPContract.Presenter<String, Cursor> presenter;
+    private InteractionContract.Mediator<String> mediator;
     private Cursor data;
     private OnFABClickListener mainActivityCallback;
 
@@ -99,11 +99,9 @@ public class IngredientListFragment extends Fragment implements MVPContract.Requ
     }
 
     public void bindMVP(Bundle savedInstanceState) {
-        if (savedInstanceState == null || presenter == null) {
-            this.presenter = new IngredientListFragmentPresenter(this);
-            presenter.loadData(getArguments().getString(AuthConstant.TOKEN));
-        } else {
-            this.presenter.onConfigurationChanged(this);
+        if (savedInstanceState == null || mediator == null) {
+            this.mediator = new IngredientListFragmentMediator(this);
+            mediator.loadData(getArguments().getString(AuthConstant.TOKEN));
         }
     }
 

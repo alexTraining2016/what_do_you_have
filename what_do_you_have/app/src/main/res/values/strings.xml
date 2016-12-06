@@ -19,4 +19,5 @@
     <string name="no_ing_mess">Unspecified any ingredient</string>
     <string name="favoritesAddMessage">Added to favorites</string>
     <string name="favoritesDeleteMessage">Remove from favorites</string>
+    <string name="likeState">like</string>
 </resources>

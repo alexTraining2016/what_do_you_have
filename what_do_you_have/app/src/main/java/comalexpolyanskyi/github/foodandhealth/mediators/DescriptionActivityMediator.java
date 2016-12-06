@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.presenter;
+package comalexpolyanskyi.github.foodandhealth.mediators;
 
 import android.support.annotation.NonNull;
 
@@ -11,11 +11,11 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescr
 import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
 
 
-public class DescriptionActivityPresenter extends BasePresenter<ArticleDO, String> {
+public class DescriptionActivityMediator extends BaseMediator<ArticleDO, String> {
 
-    private MVPContract.DAO<ParametersInformationRequest> dao;
+    private InteractionContract.DAO<ParametersInformationRequest> dao;
 
-    public DescriptionActivityPresenter(@NonNull MVPContract.RequiredView<ArticleDO> view) {
+    public DescriptionActivityMediator(@NonNull InteractionContract.RequiredView<ArticleDO> view) {
         super(view);
 
         dao = new DescriptionDAO(this);

@@ -14,11 +14,11 @@ import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.IngredientItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Ingredient;
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 
 public class IngredientListFragmentDAO extends BaseDAO<Cursor> {
 
-    public IngredientListFragmentDAO(@NonNull MVPContract.RequiredPresenter<Cursor> presenter) {
+    public IngredientListFragmentDAO(@NonNull InteractionContract.RequiredPresenter<Cursor> presenter) {
         super(presenter);
     }
 

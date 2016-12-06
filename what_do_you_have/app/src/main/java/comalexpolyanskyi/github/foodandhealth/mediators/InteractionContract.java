@@ -1,6 +1,6 @@
-package comalexpolyanskyi.github.foodandhealth.presenter;
+package comalexpolyanskyi.github.foodandhealth.mediators;
 
-public interface MVPContract {
+public interface InteractionContract {
 
     interface RequiredView<T> {
         void returnData(T response);
@@ -8,8 +8,7 @@ public interface MVPContract {
         void showProgress(boolean isInProgress);
     }
 
-    interface Presenter<P, V> {
-        void onConfigurationChanged(RequiredView<V> view);
+    interface Mediator<P> {
         void onDestroy();
         void loadData(P... parameters);
         void search(P... searchParameter);

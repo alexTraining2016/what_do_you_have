@@ -1,17 +1,16 @@
 package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments;
 
-import android.database.Cursor;
 import android.os.Bundle;
 
 import java.util.HashSet;
 
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
-import comalexpolyanskyi.github.foodandhealth.presenter.RecipesByIngFragmentPresenter;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.RecipesByIngFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 
 public class RecipesByIngredientFragment extends BaseRVFragment {
 
-    private MVPContract.Presenter<String, Cursor> presenter;
+    private InteractionContract.Mediator<String> mediator;
     public static final String INGREDIENT_ID_SET = "ingredientIdSet";
 
     public static RecipesByIngredientFragment newInstance(Bundle args) {
@@ -23,28 +22,26 @@ public class RecipesByIngredientFragment extends BaseRVFragment {
 
     @Override
     public void bindPresenter(Bundle savedInstanceState) {
-        if (savedInstanceState == null || presenter == null) {
-            this.presenter = new RecipesByIngFragmentPresenter(this);
+        if (savedInstanceState == null || mediator == null) {
+            this.mediator = new RecipesByIngFragmentMediator(this);
             final String setOfPicking = pickingSet();
-            presenter.loadData(setOfPicking, getArguments().getString(AuthConstant.TOKEN));
-        } else {
-            this.presenter.onConfigurationChanged(this);
+            mediator.loadData(setOfPicking, getArguments().getString(AuthConstant.TOKEN));
         }
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if(presenter != null){
+        if (mediator != null) {
             final String setOfPicking = pickingSet();
-            presenter.search(setOfPicking, newText);
+            mediator.search(setOfPicking, newText);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     @SuppressWarnings("unchecked")
-    private String pickingSet(){
+    private String pickingSet() {
         final HashSet<Integer> ingredientsIdSet = (HashSet<Integer>) getArguments().getSerializable(INGREDIENT_ID_SET);
         String params = "";
         if (ingredientsIdSet != null) {

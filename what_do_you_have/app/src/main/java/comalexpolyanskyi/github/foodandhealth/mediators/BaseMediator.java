@@ -1,21 +1,15 @@
-package comalexpolyanskyi.github.foodandhealth.presenter;
+package comalexpolyanskyi.github.foodandhealth.mediators;
 
 import android.support.annotation.NonNull;
 
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
-public class BasePresenter<T, P> implements MVPContract.Presenter<P, T>, MVPContract.RequiredPresenter<T> {
+public class BaseMediator<T, P> implements InteractionContract.Mediator<P>, InteractionContract.RequiredPresenter<T> {
 
-    private MVPContract.RequiredView<T> view;
+    private InteractionContract.RequiredView<T> view;
 
-    public BasePresenter(@NonNull MVPContract.RequiredView<T> view) {
-        this.view = view;
-    }
-
-    @Override
-    public void onConfigurationChanged(MVPContract.RequiredView<T> view)
-    {
+    public BaseMediator(@NonNull InteractionContract.RequiredView<T> view) {
         this.view = view;
     }
 

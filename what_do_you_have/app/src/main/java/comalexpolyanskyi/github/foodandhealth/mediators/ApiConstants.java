@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.presenter;
+package comalexpolyanskyi.github.foodandhealth.mediators;
 
 
 public interface ApiConstants {
@@ -9,4 +9,5 @@ public interface ApiConstants {
     String API_ALL_INGREDIENT = "index2.php?ingredients";
     String API_BY_INGREDIENT = "index2.php?byIng=";
     String API_BY_AUTH = "&token=";
+    String API_ACT = "&act=";
 }

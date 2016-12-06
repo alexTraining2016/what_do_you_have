@@ -20,11 +20,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.presenter.MVPContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ArticleListFragmentAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 
-abstract public class BaseRVFragment extends Fragment implements MVPContract.RequiredView<Cursor>, SearchView.OnQueryTextListener {
+abstract public class BaseRVFragment extends Fragment implements InteractionContract.RequiredView<Cursor>, SearchView.OnQueryTextListener {
 
     private static final String ACTION = "Action";
     private static final String ARG_COLUMN_COUNT = "column-count";
