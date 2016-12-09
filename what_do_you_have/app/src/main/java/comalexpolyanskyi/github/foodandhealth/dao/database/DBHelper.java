@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.Table;
+import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbAutoInteger;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbInteger;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbLong;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbString;
@@ -57,6 +58,8 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                     for (final Annotation annotation : annotations) {
                         if (annotation instanceof dbInteger) {
                             type = ((dbInteger) annotation).value();
+                        } else if (annotation instanceof dbAutoInteger) {
+                            type = ((dbAutoInteger) annotation).value();
                         } else if (annotation instanceof dbLong) {
                             type = ((dbLong) annotation).value();
                         } else if (annotation instanceof dbString) {
@@ -119,7 +122,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             try {
                 database.beginTransaction();
                 for (final ContentValues value : values) {
-                    database.insertWithOnConflict(name, null, value, SQLiteDatabase.CONFLICT_REPLACE);
+                    database.insertWithOnConflict(name, null, value, SQLiteDatabase.CONFLICT_IGNORE);
                     count++;
                 }
                 database.setTransactionSuccessful();
@@ -127,6 +130,23 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                 database.endTransaction();
             }
             return count;
+        } else {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void updateForParam(Class<?> table, ContentValues values, String wClause, String[] wArg) {
+        final String name = getTableName(table);
+        if (name != null) {
+            final SQLiteDatabase database = getWritableDatabase();
+            try {
+                database.beginTransaction();
+                database.updateWithOnConflict(name, values, wClause, wArg, SQLiteDatabase.CONFLICT_REPLACE);
+                database.setTransactionSuccessful();
+            } finally {
+                database.endTransaction();
+            }
         } else {
             throw new RuntimeException();
         }

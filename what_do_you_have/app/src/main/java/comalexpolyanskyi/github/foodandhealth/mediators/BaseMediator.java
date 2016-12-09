@@ -29,7 +29,7 @@ public class BaseMediator<T, P> implements InteractionContract.Mediator<P>, Inte
 
     @Override
     public void onError() {
-        if(view != null){
+        if (view != null) {
             view.showProgress(false);
             view.returnError(ContextHolder.getContext().getString(R.string.error_loading));
         }
@@ -37,7 +37,7 @@ public class BaseMediator<T, P> implements InteractionContract.Mediator<P>, Inte
 
     @Override
     public void onSuccess(T request) {
-        if(view != null) {
+        if (view != null) {
             view.showProgress(false);
             view.returnData(request);
         }

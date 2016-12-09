@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import comalexpolyanskyi.github.foodandhealth.mediators.BaseMediator;
+import comalexpolyanskyi.github.foodandhealth.mediators.FavoritesFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelperCallback;
@@ -14,6 +14,7 @@ import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelperAdapter {
 
     private InteractionContract.Mediator<String> mediator;
+    private static final String TYPE_ART = "all_type";
 
     public CookbookRVFragment() {
         super();
@@ -40,8 +41,8 @@ public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelpe
     @Override
     public void bindPresenter(Bundle savedInstanceState) {
         if (savedInstanceState == null || mediator == null) {
-            this.mediator = new BaseMediator(this);
-            mediator.loadData(getArguments().getString(AuthConstant.TOKEN));
+            this.mediator = new FavoritesFragmentMediator(this);
+            mediator.loadData(getArguments().getString(AuthConstant.TOKEN), getArguments().getString(AuthConstant.ID), TYPE_ART);
         }
     }
 

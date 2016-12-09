@@ -5,12 +5,14 @@ import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.DAButtonDAO;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
-public class DAButtonMediator implements InteractionContract.Mediator<String>, InteractionContract.RequiredPresenter<Void> {
+public class DAButtonMediator extends BaseMediator<Void, String> {
 
     private InteractionContract.RequiredView<Void> view;
     private InteractionContract.DAO<String> dao;
 
     public DAButtonMediator(final InteractionContract.RequiredView<Void> view) {
+        super(view);
+
         this.view = view;
         this.dao = new DAButtonDAO(this);
     }
@@ -32,15 +34,5 @@ public class DAButtonMediator implements InteractionContract.Mediator<String>, I
     @Override
     public void onSuccess(Void response) {
         view.returnData(null);
-    }
-
-    @Override
-    public void search(String... searchParameter) {
-
-    }
-
-    @Override
-    public void onDestroy() {
-
     }
 }

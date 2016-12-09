@@ -12,4 +12,5 @@ public interface SQLConstants {
     String BETWEEN = " BETWEEN ";
     String AND = " AND ";
     String LIKE = " LIKE ";
+    String ORDER_BY = " ORDER BY ";
 }

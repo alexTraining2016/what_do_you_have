@@ -13,6 +13,8 @@ public interface DbOperations {
 
     long bulkUpdate(Class<?> table, List<ContentValues> values);
 
+    void updateForParam(Class<?> table, ContentValues values, String wClause, String[] wArg);
+
     int delete(Class<?> table, String sql, String... args);
 
 }

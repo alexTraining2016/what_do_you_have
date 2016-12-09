@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Favorites;
 
 public class ArticleDO implements Serializable {
 
@@ -21,6 +22,9 @@ public class ArticleDO implements Serializable {
 
     @SerializedName("id")
     private int id;
+
+    @SerializedName("uid")
+    private int uid;
 
     @SerializedName("name")
     private String name;
@@ -47,9 +51,9 @@ public class ArticleDO implements Serializable {
         this.likeCount = cursor.getInt(cursor.getColumnIndex(ArticleDescription.LIKE_COUNT));
         this.repostCount = cursor.getInt(cursor.getColumnIndex(ArticleDescription.REPOST_COUNT));
         this.description = cursor.getString(cursor.getColumnIndex(ArticleDescription.DESCRIPTION));
-        this.userId = cursor.getInt(cursor.getColumnIndex(ArticleDescription.USER_ID));
-        this.isLike =  cursor.getInt(cursor.getColumnIndex(ArticleDescription.IS_LIKE));
-        this.isRepost = cursor.getInt(cursor.getColumnIndex(ArticleDescription.IS_REPOST));
+        this.userId = cursor.getInt(cursor.getColumnIndex(Favorites.USER_ID));
+        this.isLike =  cursor.getInt(cursor.getColumnIndex(Favorites.ISLIKE));
+        this.isRepost = cursor.getInt(cursor.getColumnIndex(Favorites.ISFAVORITES));
     }
 
     public String getDescription() {
@@ -70,6 +74,10 @@ public class ArticleDO implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public int getUid() {
+        return uid;
     }
 
     public int getUserId() {

@@ -25,7 +25,7 @@ public class StartActivity extends Activity {
         //} else {
           //  startMainActivity(token, sharedPreferences.getString(AuthConstant.NAME, AuthConstant.EMPTY));
         //}
-        startMainActivity("1234", "Alex Polynskij");
+        startMainActivity("1234", "Alex Polynskij", "1");
     }
 
     @Override
@@ -35,23 +35,26 @@ public class StartActivity extends Activity {
         if (requestCode == 0) {
             final String token = data.getStringExtra(AuthConstant.TOKEN);
             final String name = data.getStringExtra(AuthConstant.NAME);
-            saveAuthData(token, name);
-            startMainActivity(token, name);
+            final String id = data.getStringExtra(AuthConstant.ID);
+            saveAuthData(token, name, id);
+            startMainActivity(token, name, id);
         }
     }
 
-    private void startMainActivity(final String token, final String name) {
+    private void startMainActivity(final String token, final String name, final String id) {
         final Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(AuthConstant.TOKEN, token);
         intent.putExtra(AuthConstant.NAME, name);
+        intent.putExtra(AuthConstant.ID, id);
         startActivity(intent);
     }
 
-    private void saveAuthData(final String token, final String name) {
+    private void saveAuthData(final String token, final String name, final String id) {
         SharedPreferences preferences = getSharedPreferences(AuthConstant.AUTH, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(AuthConstant.TOKEN, token);
         editor.putString(AuthConstant.NAME, name);
+        editor.putString(AuthConstant.ID, id);
         editor.apply();
     }
 }

@@ -25,7 +25,7 @@ public class IngredientListFragmentMediator extends BaseMediator<Cursor, String>
         super.loadData(parameters);
 
         final String url = ApiConstants.API_BASE_URL+ ApiConstants.API_ALL_INGREDIENT + ApiConstants.API_BY_AUTH + parameters[0];
-        final String where = " ORDER BY "+ Ingredient.NAME;
+        final String where = SQLConstants.ORDER_BY + Ingredient.NAME;
         final String select = SQLConstants.S_F + DBHelper.getTableName(Ingredient.class) + where;
 
         dao.get(new ParametersInformationRequest(url, select), false);

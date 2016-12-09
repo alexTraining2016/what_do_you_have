@@ -10,9 +10,17 @@ public class Favorites {
     public static final String ID = "_id";
 
     @dbInteger
-    public static final String USET_ID = "user_id";
+    public static final String USER_ID = "user_id";
 
     @dbInteger
-    public static final String TYPE = "type";
+    public static final String ART_ID = "art_id";
+
+    @dbInteger
+    public static final String ISFAVORITES = "fav";
+
+    @dbInteger
+    public static final String ISLIKE = "like";
+
+
 
 }

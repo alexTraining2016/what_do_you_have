@@ -15,6 +15,7 @@ import java.util.List;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Favorites;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 
 
@@ -58,13 +59,24 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionCon
         contentValues.put(ArticleDescription.LIKE_COUNT, item.getLikeCount());
         contentValues.put(ArticleDescription.REPOST_COUNT, item.getFavCount());
         contentValues.put(ArticleDescription.IMAGE_URI, item.getPhotoUrl());
-        contentValues.put(ArticleDescription.USER_ID, item.getUserId());
-        contentValues.put(ArticleDescription.IS_LIKE, item.getLike());
-        contentValues.put(ArticleDescription.IS_REPOST, item.getRepost());
         contentValues.put(ArticleDescription.RECORDING_TIME, System.currentTimeMillis()/1000);
         contentValues.put(ArticleDescription.AGING_TIME, 3600);
+        bindingData(item);
 
         return contentValues;
+    }
+
+    private void bindingData(ArticleDO item){
+        final ContentValues contentValues = new ContentValues();
+        contentValues.put(Favorites.ID, item.getUid());
+        contentValues.put(Favorites.ART_ID, item.getId());
+        contentValues.put(Favorites.USER_ID, item.getUserId());
+        contentValues.put(Favorites.ISLIKE, item.getLike());
+        contentValues.put(Favorites.ISFAVORITES, item.getRepost());
+        final List<ContentValues> list = new ArrayList<>();
+        list.add(contentValues);
+
+        operations.bulkUpdate(Favorites.class, list);
     }
 
     @Override

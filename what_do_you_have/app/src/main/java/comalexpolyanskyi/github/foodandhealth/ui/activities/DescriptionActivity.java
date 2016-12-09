@@ -21,6 +21,7 @@ import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleDO;
 import comalexpolyanskyi.github.foodandhealth.mediators.DescriptionActivityMediator;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
+import comalexpolyanskyi.github.foodandhealth.ui.activities.buttonManagers.abstractManagers.AbstractButtonManager;
 import comalexpolyanskyi.github.foodandhealth.ui.activities.buttonManagers.FavoritesButtonManager;
 import comalexpolyanskyi.github.foodandhealth.ui.activities.buttonManagers.LikeButtonManager;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
@@ -28,7 +29,7 @@ import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 
 
-public class DescriptionActivity extends AppCompatActivity implements InteractionContract.RequiredView<ArticleDO> {
+public class DescriptionActivity extends AppCompatActivity implements InteractionContract.RequiredView<ArticleDO>, AbstractButtonManager.DataUpdateCallback {
 
     public static final String EXTRA_IMAGE = "DescriptionActivity:image";
     public static final String ACTION = "Action";
@@ -53,11 +54,14 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             this.mediator = new DescriptionActivityMediator(this);
-            mediator.loadData(intent.getStringExtra(MainActivity.TITLE_KEY), intent.getStringExtra(AuthConstant.TOKEN), null);
+            mediator.loadData(intent.getStringExtra(MainActivity.TITLE_KEY), intent.getStringExtra(AuthConstant.TOKEN), intent.getStringExtra(AuthConstant.ID));
         } else {
             returnData((ArticleDO) savedInstanceState.getSerializable(DATA_KEY));
-            //here need to save mediator
             this.mediator = new DescriptionActivityMediator(this);
+            if (data == null) {
+                Intent intent = getIntent();
+                mediator.loadData(intent.getStringExtra(MainActivity.TITLE_KEY), intent.getStringExtra(AuthConstant.TOKEN), intent.getStringExtra(AuthConstant.ID));
+            }
         }
     }
 
@@ -106,18 +110,19 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
         descriptionText.setText(data.getDescription());
         final Intent intent = getIntent();
         new LikeButtonManager(
-                intent.getStringExtra(MainActivity.TITLE_KEY),
                 intent.getStringExtra(AuthConstant.TOKEN),
+                intent.getStringExtra(MainActivity.TITLE_KEY),
                 findViewById(R.id.like_count),
                 data.isLike(),
-                Integer.toString(data.getLikeCount()));
+                Integer.toString(data.getLikeCount()),
+                this );
         new FavoritesButtonManager(
-                intent.getStringExtra(MainActivity.TITLE_KEY),
                 intent.getStringExtra(AuthConstant.TOKEN),
+                intent.getStringExtra(MainActivity.TITLE_KEY),
                 findViewById(R.id.fav_count),
                 data.isRepost(),
-                Integer.toString(data.getFavCount())
-        );
+                Integer.toString(data.getFavCount()),
+                this );
     }
 
     @Override
@@ -144,5 +149,11 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
             findViewById(R.id.app_bar).setVisibility(View.VISIBLE);
             descriptionText.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void refresh() {
+        final Intent intent = getIntent();
+        mediator.loadData(intent.getStringExtra(MainActivity.TITLE_KEY), intent.getStringExtra(AuthConstant.TOKEN), intent.getStringExtra(AuthConstant.ID));
     }
 }
