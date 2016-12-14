@@ -28,7 +28,7 @@ abstract public class BaseRVFragment extends Fragment implements InteractionCont
 
     private static final String ACTION = "Action";
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private int columnCount = 2;
+    private int columnCount = 1;
     private OnListFragmentInteractionListener listener;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
@@ -61,7 +61,7 @@ abstract public class BaseRVFragment extends Fragment implements InteractionCont
 
         view = inflater.inflate(R.layout.fragment_article_list, container, false);
         setHasOptionsMenu(true);
-        view.findViewById(R.id.backgroundImage).setBackgroundResource(AppStyleHolder.initialize().getBgDrawable());
+        //view.findViewById(R.id.backgroundImage).setBackgroundResource(AppStyleHolder.initialize().getBgDrawable());
         progressBar = (ProgressBar) view.findViewById(R.id.list_fragment_progress);
         progressBar.getIndeterminateDrawable().setColorFilter(AppStyleHolder.initialize().getColor(), PorterDuff.Mode.MULTIPLY);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);
@@ -69,6 +69,10 @@ abstract public class BaseRVFragment extends Fragment implements InteractionCont
         bindRecyclerView();
 
         return view;
+    }
+
+    protected ArticleListFragmentAdapter getAdapter(){
+        return adapter;
     }
 
     protected RecyclerView bindRecyclerView() {
@@ -136,9 +140,9 @@ abstract public class BaseRVFragment extends Fragment implements InteractionCont
 
     private void checkOrientation() {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            columnCount = 2;
+            columnCount = 1;
         } else {
-            columnCount = 3;
+            columnCount = 2;
         }
     }
 }

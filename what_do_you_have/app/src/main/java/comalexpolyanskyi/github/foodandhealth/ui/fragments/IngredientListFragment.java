@@ -14,7 +14,7 @@ import android.widget.ListView;
 import java.util.HashSet;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.mediators.IngredientListFragmentMediator;
+import comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators.IngredientListFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter.IngredientSectionCursorAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
@@ -85,14 +85,17 @@ public class IngredientListFragment extends Fragment implements InteractionContr
         });
 
         listView = (ListView) view.findViewById(R.id.ingredient_list_view);
-        bindListView();
+
+        bindListView(savedInstanceState);
         bindMVP(savedInstanceState);
 
         return view;
     }
 
-    private void bindListView() {
-        arrayAdapter = new IngredientSectionCursorAdapter(getContext(), data);
+    private void bindListView(Bundle savedInstanceState) {
+        if(savedInstanceState == null) {
+            arrayAdapter = new IngredientSectionCursorAdapter(getContext(), data);
+        }
         listView.setFastScrollEnabled(true);
         listView.setFastScrollAlwaysVisible(true);
         listView.setAdapter(arrayAdapter);

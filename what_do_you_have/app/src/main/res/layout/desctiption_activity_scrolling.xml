@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom"
-                android:background="#39000000"
+                android:background="@drawable/image_foreground"
                 android:gravity="end|bottom"
                 android:orientation="horizontal">
 

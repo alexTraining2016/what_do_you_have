@@ -114,7 +114,13 @@ class ImageLoader implements MySimpleImageLoader {
             if (bitmap == null) {
                 final byte[] bytes = AppHttpClient.getAppHttpClient().loadDataFromHttp(stringUrl, false);
                 bitmap = decodeAndResizeFile(bytes, imageViewReference.get());
-                fileCache.put(stringUrl, bitmap);
+                final Bitmap finalBitmap = bitmap;
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        fileCache.put(stringUrl, finalBitmap);
+                    }
+                });
             }
 
             memoryCache.put(stringUrl, bitmap);

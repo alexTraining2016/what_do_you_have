@@ -19,11 +19,11 @@ import android.widget.TextView;
 import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleDO;
-import comalexpolyanskyi.github.foodandhealth.mediators.DescriptionActivityMediator;
+import comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators.DescriptionActivityMediator;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
-import comalexpolyanskyi.github.foodandhealth.ui.activities.buttonManagers.abstractManagers.AbstractButtonManager;
-import comalexpolyanskyi.github.foodandhealth.ui.activities.buttonManagers.FavoritesButtonManager;
-import comalexpolyanskyi.github.foodandhealth.ui.activities.buttonManagers.LikeButtonManager;
+import comalexpolyanskyi.github.foodandhealth.ui.buttonManagers.abstractManagers.AbstractButtonManager;
+import comalexpolyanskyi.github.foodandhealth.ui.buttonManagers.FavoritesButtonManager;
+import comalexpolyanskyi.github.foodandhealth.ui.buttonManagers.LikeButtonManager;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
@@ -115,14 +115,14 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
                 findViewById(R.id.like_count),
                 data.isLike(),
                 Integer.toString(data.getLikeCount()),
-                this );
+                this);
         new FavoritesButtonManager(
                 intent.getStringExtra(AuthConstant.TOKEN),
                 intent.getStringExtra(MainActivity.TITLE_KEY),
                 findViewById(R.id.fav_count),
                 data.isRepost(),
                 Integer.toString(data.getFavCount()),
-                this );
+                this);
     }
 
     @Override

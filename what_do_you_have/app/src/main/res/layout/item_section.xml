@@ -1,12 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textColor="@color/colorAccentFood"
-    tools:text="Two Toasters"
-    android:textSize="16pt"
-    android:gravity="start"
-    android:clickable="false"/>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorAccentFood"
+        android:textSize="16pt"
+        tools:text="Two Toasters" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_margin="16dip"
+        android:layout_centerVertical="true"
+        android:background="#9e9e9e"
+        android:layout_toStartOf="@id/text"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_margin="16dip"
+        android:background="#9e9e9e"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/text" />
+</RelativeLayout>

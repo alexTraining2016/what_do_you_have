@@ -6,17 +6,9 @@
     android:background="@color/colorBackgroundListView"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/backgroundImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:alpha="0.3"
-        android:src="@drawable/v1"/>
-
     <ListView
         android:id="@+id/ingredient_list_view"
-        android:padding="8dip"
+        android:padding="16dip"
         android:fastScrollEnabled="true"
         android:scrollbarStyle="outsideOverlay"
         android:layout_width="match_parent"

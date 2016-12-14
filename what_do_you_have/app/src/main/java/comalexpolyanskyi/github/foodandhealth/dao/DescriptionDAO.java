@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import comalexpolyanskyi.github.foodandhealth.dao.baseFragmentsDAO.BaseDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
@@ -27,7 +28,7 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionCon
 
     @Override
     protected void saveToCache(List<ContentValues> contentValuesList) {
-        operations.bulkUpdate(ArticleDescription.class, contentValuesList);
+        operations.bulkInsert(ArticleDescription.class, contentValuesList);
     }
 
     @Override
@@ -43,6 +44,7 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionCon
             for (ArticleDO item : result) {
                 final ContentValues contentValue = prepareContentValues(item);
                 contentValuesList.add(contentValue);
+                processingAdditionalData(item);
             }
         } catch (Exception e) {
             return null;
@@ -59,24 +61,21 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionCon
         contentValues.put(ArticleDescription.LIKE_COUNT, item.getLikeCount());
         contentValues.put(ArticleDescription.REPOST_COUNT, item.getFavCount());
         contentValues.put(ArticleDescription.IMAGE_URI, item.getPhotoUrl());
-        contentValues.put(ArticleDescription.RECORDING_TIME, System.currentTimeMillis()/1000);
+        contentValues.put(ArticleDescription.RECORDING_TIME, System.currentTimeMillis() / 1000);
         contentValues.put(ArticleDescription.AGING_TIME, 3600);
-        bindingData(item);
 
         return contentValues;
     }
 
-    private void bindingData(ArticleDO item){
+    private void processingAdditionalData(ArticleDO item) {
         final ContentValues contentValues = new ContentValues();
         contentValues.put(Favorites.ID, item.getUid());
         contentValues.put(Favorites.ART_ID, item.getId());
         contentValues.put(Favorites.USER_ID, item.getUserId());
         contentValues.put(Favorites.ISLIKE, item.getLike());
         contentValues.put(Favorites.ISFAVORITES, item.getRepost());
-        final List<ContentValues> list = new ArrayList<>();
-        list.add(contentValues);
 
-        operations.bulkUpdate(Favorites.class, list);
+        operations.insert(Favorites.class, contentValues);
     }
 
     @Override

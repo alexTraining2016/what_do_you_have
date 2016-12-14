@@ -3,7 +3,7 @@ package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragment
 
 import android.os.Bundle;
 
-import comalexpolyanskyi.github.foodandhealth.mediators.BaseMediator;
+import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
@@ -51,6 +51,6 @@ public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTo
     public void onItemDismiss(int position) {
         // data.remove(position);
         // data.
-        //  adapter.notifyItemRemoved(position);
+        //adapter.notifyItemRemoved(position);
     }
 }

@@ -1,10 +1,10 @@
-package comalexpolyanskyi.github.foodandhealth.ui.activities.buttonManagers;
+package comalexpolyanskyi.github.foodandhealth.ui.buttonManagers;
 
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import comalexpolyanskyi.github.foodandhealth.R;
-import comalexpolyanskyi.github.foodandhealth.ui.activities.buttonManagers.abstractManagers.AbstractButtonManager;
+import comalexpolyanskyi.github.foodandhealth.ui.buttonManagers.abstractManagers.AbstractButtonManager;
 import comalexpolyanskyi.github.foodandhealth.ui.views.VectorImageTextView;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 

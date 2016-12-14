@@ -8,12 +8,6 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 
 public class ArticleListItemDO {
 
-    public ArticleListItemDO(Cursor cursor) {
-        this.id = cursor.getInt(cursor.getColumnIndex(Article.ID));
-        this.name = cursor.getString(cursor.getColumnIndex(Article.NAME));
-        this.photo = cursor.getString(cursor.getColumnIndex(Article.IMAGE_URI));
-    }
-
     @SerializedName("id")
     private int id;
 
@@ -25,6 +19,12 @@ public class ArticleListItemDO {
 
     @SerializedName("type")
     private int type;
+
+    public ArticleListItemDO(Cursor cursor) {
+        this.id = cursor.getInt(cursor.getColumnIndex(Article.ID));
+        this.name = cursor.getString(cursor.getColumnIndex(Article.NAME));
+        this.photo = cursor.getString(cursor.getColumnIndex(Article.IMAGE_URI));
+    }
 
     public int getType() {
         return type;

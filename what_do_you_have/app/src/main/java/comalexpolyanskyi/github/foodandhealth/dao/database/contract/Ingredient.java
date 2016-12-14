@@ -9,4 +9,7 @@ public class Ingredient implements CachedTable {
     @dbString
     public static final String NAME = "name";
 
+    @dbString
+    public static final String IMAGE = "src";
+
 }

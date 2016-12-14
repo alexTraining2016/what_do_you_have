@@ -11,10 +11,12 @@ public interface DbOperations {
 
     Cursor query(String sql, String... args);
 
-    long bulkUpdate(Class<?> table, List<ContentValues> values);
+    long bulkInsert(Class<?> table, List<ContentValues> values);
 
-    void updateForParam(Class<?> table, ContentValues values, String wClause, String[] wArg);
+    void insert(Class<?> table, ContentValues value);
 
-    int delete(Class<?> table, String sql, String... args);
+    void updateForParam(Class<?> table, ContentValues values, String wClause, String... wArg);
+
+    int delete(Class<?> table, String whereClause, String... args);
 
 }

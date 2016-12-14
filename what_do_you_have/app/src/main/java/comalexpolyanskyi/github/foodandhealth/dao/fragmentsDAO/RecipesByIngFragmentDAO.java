@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.dao;
+package comalexpolyanskyi.github.foodandhealth.dao.fragmentsDAO;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import comalexpolyanskyi.github.foodandhealth.dao.baseFragmentsDAO.BaseDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleByIngredientDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.IngredientIdDO;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
@@ -27,7 +28,7 @@ public class RecipesByIngFragmentDAO extends BaseDAO<Cursor> {
 
     @Override
     protected void saveToCache(List<ContentValues> contentValuesList) {
-        operations.bulkUpdate(Article.class, contentValuesList);
+        operations.bulkInsert(Article.class, contentValuesList);
     }
 
     @Override
@@ -43,6 +44,7 @@ public class RecipesByIngFragmentDAO extends BaseDAO<Cursor> {
             for (ArticleByIngredientDO item : result) {
                 ContentValues contentValue = prepareContentValues(item);
                 contentValuesList.add(contentValue);
+                processingAdditionalData(item.getIngredientsId(), item.getId());
             }
         } catch (Exception e) {
             return null;
@@ -60,7 +62,7 @@ public class RecipesByIngFragmentDAO extends BaseDAO<Cursor> {
         }
     }
 
-    private void saveJunctionTable(List<IngredientIdDO> items, int articleId) {
+    private void processingAdditionalData(List<IngredientIdDO> items, int articleId) {
         final List<ContentValues> contentList = new ArrayList<>();
 
         for (IngredientIdDO item : items) {
@@ -70,7 +72,8 @@ public class RecipesByIngFragmentDAO extends BaseDAO<Cursor> {
             content.put(ArticleIngredient.INGREDIENT_ID, item.getIngredientId());
             contentList.add(content);
         }
-        operations.bulkUpdate(ArticleIngredient.class, contentList);
+
+        operations.bulkInsert(ArticleIngredient.class, contentList);
     }
 
     private ContentValues prepareContentValues(ArticleByIngredientDO item) {
@@ -82,7 +85,6 @@ public class RecipesByIngFragmentDAO extends BaseDAO<Cursor> {
         contentValues.put(Article.IMAGE_URI, item.getPhotoUrl());
         contentValues.put(Article.RECORDING_TIME, System.currentTimeMillis()/1000);
         contentValues.put(Article.AGING_TIME, 3600);
-        saveJunctionTable(item.getIngredientsId(), item.getId());
 
         return contentValues;
     }

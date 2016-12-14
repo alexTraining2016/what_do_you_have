@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.dao;
+package comalexpolyanskyi.github.foodandhealth.dao.fragmentsDAO;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -9,6 +9,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import comalexpolyanskyi.github.foodandhealth.dao.baseFragmentsDAO.BaseDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
@@ -22,7 +24,7 @@ public class ArticleListFragmentDAO extends BaseDAO<Cursor> implements Interacti
 
     @Override
     protected void saveToCache(List<ContentValues> contentValuesList) {
-        operations.bulkUpdate(Article.class, contentValuesList);
+        operations.bulkInsert(Article.class, contentValuesList);
     }
 
     @Override

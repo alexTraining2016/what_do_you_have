@@ -7,19 +7,15 @@
     android:layout_height="match_parent"
     tools:context="comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.BaseRVFragment"
     xmlns:tools="http://schemas.android.com/tools">
-    <ImageView
-        android:id="@+id/backgroundImage"
-        android:alpha="0.15"
-        android:scaleType="centerCrop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_fragment"
-        android:padding="6dip"
+        android:padding="16dip"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/fragment_article_list_item" />
+
     <ProgressBar
         android:id="@+id/list_fragment_progress"
         android:layout_width="wrap_content"

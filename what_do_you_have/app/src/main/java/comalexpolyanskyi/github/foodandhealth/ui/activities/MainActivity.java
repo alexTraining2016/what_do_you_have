@@ -78,12 +78,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         headerLayout = navigationView.getHeaderView(0);
-        ((TextView)headerLayout.findViewById(R.id.user_name)).setText(getIntent().getStringExtra(AuthConstant.NAME));
-        headerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
+        final String userName = getIntent().getStringExtra(AuthConstant.NAME);
+        ((TextView) headerLayout.findViewById(R.id.user_name)).setText(userName);
 
         return navigationView;
     }

@@ -1,28 +1,28 @@
 package comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.HashSet;
 
+import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Ingredient;
+import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter.viewHolders.ItemViewHolder;
+import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter.viewHolders.SectionViewHolder;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapterUtil.SectionCursorAdapter;
 
 public class IngredientSectionCursorAdapter extends SectionCursorAdapter<String, SectionViewHolder, ItemViewHolder> {
 
-    private Context context;
-    private HashSet<Integer> selectedId = new HashSet<>();
+    private HashSet<Integer> selectedId;
 
     public IngredientSectionCursorAdapter(Context context, Cursor c) {
         super(context, c, 0, R.layout.item_section, R.layout.ingredient_list_item);
+        selectedId = new HashSet<>();
 
-        this.context = context;
     }
 
     public void updateDataSet(Cursor cursor) {
@@ -65,20 +65,23 @@ public class IngredientSectionCursorAdapter extends SectionCursorAdapter<String,
         final Integer id = cursor.getInt(cursor.getColumnIndex(Ingredient.ID));
         itemViewHolder.rootView.setTag(R.string.app_name, id);
         itemViewHolder.name.setText(cursor.getString(cursor.getColumnIndex(Ingredient.NAME)));
-        bindBackground(itemViewHolder.name, itemViewHolder.rootView, isSelected(id));
+        App.getImageLoader().loadImageFromUrl(cursor.getString(cursor.getColumnIndex(Ingredient.IMAGE)), itemViewHolder.background);
+        if(isSelected(id)){
+            itemViewHolder.checkedView.setImageResource(R.drawable.ic_beenhere_green_60dp);
+        }else{
+            itemViewHolder.checkedView.setImageResource(R.drawable.ic_beenhere_white_60dp);
+        }
         itemViewHolder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Integer id = (Integer) v.getTag(R.string.app_name);
-                ObjectAnimator animAlpha = ObjectAnimator.ofFloat(v, "alpha", 0.1f, 0.9f);
-                animAlpha.setDuration(450);
-                animAlpha.start();
 
-                final boolean isSelected = bindBackground((TextView) v.findViewById(R.id.ingredient_name), v, !isSelected(id));
-                if (isSelected) {
+                if (isSelected(id)) {
                     selectedId.remove(id);
+                    ((AppCompatImageView) v.findViewById(R.id.checked_image)).setImageResource(R.drawable.ic_beenhere_white_60dp);
                 } else {
                     selectedId.add(id);
+                    ((AppCompatImageView) v.findViewById(R.id.checked_image)).setImageResource(R.drawable.ic_beenhere_green_60dp);
                 }
             }
         });
@@ -86,18 +89,6 @@ public class IngredientSectionCursorAdapter extends SectionCursorAdapter<String,
 
     public HashSet<Integer> getSelectedId() {
         return selectedId;
-    }
-
-    private boolean bindBackground(TextView textView, View view, boolean isSelected) {
-        if (isSelected) {
-            view.setBackground(context.getResources().getDrawable(R.drawable.pressed));
-            textView.setTextColor(Color.WHITE);
-            return false;
-        } else {
-            view.setBackground(context.getResources().getDrawable(R.drawable.normal));
-            textView.setTextColor(Color.BLACK);
-            return true;
-        }
     }
 
     @Override

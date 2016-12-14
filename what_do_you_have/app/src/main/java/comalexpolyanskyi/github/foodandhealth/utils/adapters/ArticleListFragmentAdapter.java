@@ -31,7 +31,7 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
     public void onBind(final AbstractViewHolder holder, final ArticleListItemDO data, int position, int viewType) {
         holder.<TextView>get(R.id.article_name).setText(data.getName());
         imageLoader.loadImageFromUrl(data.getPhotoUrl(), holder.<ImageView>get(R.id.article_image));
-        holder.<View>get(R.id.article_card).setOnClickListener(new View.OnClickListener() {
+        holder.<View>get(R.id.article_item_root).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.setTag(data.getId());
@@ -41,10 +41,8 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
     }
 
     public void changeCursor(Cursor cursor) {
-        if (cursor != null) {
             this.cursor = cursor;
             notifyDataSetChanged();
-        }
     }
 
     public ArticleListItemDO getItem(final int position) {
@@ -55,7 +53,7 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
 
     @Override
     public AbstractViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new AbstractViewHolder(LayoutInflater.from(ContextHolder.getContext()).inflate(R.layout.fragment_article_list_item, parent, false), R.id.article_name, R.id.article_image, R.id.article_card);
+        return new AbstractViewHolder(LayoutInflater.from(ContextHolder.getContext()).inflate(R.layout.fragment_article_list_item, parent, false), R.id.article_name, R.id.article_image, R.id.article_item_root);
     }
 
     public int getItemCount() {

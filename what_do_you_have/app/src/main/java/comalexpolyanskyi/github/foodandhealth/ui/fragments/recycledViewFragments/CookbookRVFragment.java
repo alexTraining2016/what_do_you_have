@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import comalexpolyanskyi.github.foodandhealth.mediators.FavoritesFragmentMediator;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleListItemDO;
+import comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators.FavoritesFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelperCallback;
@@ -66,8 +67,13 @@ public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelpe
 
     @Override
     public void onItemDismiss(int position) {
-        // data.remove(position);
-        // data.
-        //  adapter.notifyItemRemoved(position);
+        getAdapter().notifyItemRemoved(position);
+        ArticleListItemDO itemDO = getAdapter().getItem(position);
+
+        if(getAdapter().getItemCount() == 1){
+            getAdapter().changeCursor(null);
+        }
+
+        mediator.loadData(getArguments().getString(AuthConstant.TOKEN), getArguments().getString(AuthConstant.ID), TYPE_ART, String.valueOf(itemDO.getId()));
     }
 }

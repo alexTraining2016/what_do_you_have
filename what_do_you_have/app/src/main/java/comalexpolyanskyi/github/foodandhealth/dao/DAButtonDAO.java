@@ -22,9 +22,18 @@ import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public class DAButtonDAO implements InteractionContract.DAO<String> {
 
+    private static final String REPOST_COUNT = "repost_count";
     private static final String DATA_NAME = "0";
     private static final String CHARSET_NAME = "UTF-8";
     private static final String SUCCESSFULLY = "successfully";
+    private static final String UID = "uid";
+    private static final String IS_REPOST = "isRepost";
+    private static final String IS_LIKE = "isLike";
+    private static final String AND = " = ? and ";
+    private static final String RECEPTE_ID = "recepte_id";
+    private static final String USER_ID = "user_id";
+    private static final String EQUALLY = " = ?";
+    private static final String LIKE = "like";
     private ExecutorService executorService;
     private InteractionContract.RequiredPresenter<Void> presenter;
     private Handler handler;
@@ -40,7 +49,7 @@ public class DAButtonDAO implements InteractionContract.DAO<String> {
     }
 
     @Override
-    public void get(final String parameters, final boolean forceUpdate) {
+    public void get(final String parameters, final boolean forceUpdate, final boolean noUpdate) {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -51,54 +60,50 @@ public class DAButtonDAO implements InteractionContract.DAO<String> {
 
                     try {
                         final JSONObject object = new JSONObject(requestString);
-                        final boolean isSuccess = object.getBoolean(SUCCESSFULLY);
 
-                        if (!isSuccess) {
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    presenter.onError();
-                                }
-                            });
+                        if (object.getBoolean(SUCCESSFULLY)) {
+                            final JSONObject data = object.getJSONObject(DATA_NAME);
+                            toPrepareFavoriteData(data);
+                            toPrepareDescriptionData(data);
                         } else {
-                            updateData(object.getJSONObject(DATA_NAME));
+                            showError();
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                presenter.onError();
-                            }
-                        });
+                        showError();
                     }
                 } else {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            presenter.onError();
-                        }
-                    });
+                    showError();
                 }
             }
         });
     }
 
-    private void updateData(JSONObject data) throws JSONException {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Favorites.ID, data.getString("uid"));
-        contentValues.put(Favorites.ISFAVORITES, data.getString("isRepost"));
-        contentValues.put(Favorites.ISLIKE, data.getString("isLike"));
-        String where = Favorites.ART_ID + " = ? and " + Favorites.USER_ID + " = ?";
-        String[] arg = new String[]{data.getString("recepte_id"), data.getString("user_id")};
-        operations.updateForParam(Favorites.class, contentValues, where, arg);
+    private void showError() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                presenter.onError();
+            }
+        });
+    }
 
-        contentValues.clear();
-        contentValues.put(ArticleDescription.REPOST_COUNT, data.getString("repost_count"));
-        contentValues.put(ArticleDescription.LIKE_COUNT, data.getString("like"));
-        where = ArticleDescription.ID + " = ?";
-        arg = new String[]{data.getString("recepte_id")};
-        operations.updateForParam(ArticleDescription.class, contentValues, where, arg);
+    private void toPrepareDescriptionData(JSONObject data) throws JSONException {
+        final ContentValues contentValues = new ContentValues();
+        contentValues.put(Favorites.ID, data.getString(UID));
+        contentValues.put(Favorites.ISFAVORITES, data.getString(IS_REPOST));
+        contentValues.put(Favorites.ISLIKE, data.getString(IS_LIKE));
+        final String where = Favorites.ART_ID + AND + Favorites.USER_ID + EQUALLY;
+        operations.updateForParam(Favorites.class, contentValues, where, data.getString(RECEPTE_ID), data.getString(USER_ID));
+    }
+
+    private void toPrepareFavoriteData(JSONObject data) throws JSONException {
+        final ContentValues contentValues = new ContentValues();
+        contentValues.put(ArticleDescription.REPOST_COUNT, data.getString(REPOST_COUNT));
+        contentValues.put(ArticleDescription.LIKE_COUNT, data.getString(LIKE));
+        final String where = ArticleDescription.ID + EQUALLY;
+
+        operations.updateForParam(ArticleDescription.class, contentValues, where, data.getString(RECEPTE_ID));
     }
 }

@@ -3,6 +3,7 @@ package comalexpolyanskyi.github.foodandhealth.mediators;
 
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.DAButtonDAO;
+import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public class DAButtonMediator extends BaseMediator<Void, String> {
@@ -23,7 +24,7 @@ public class DAButtonMediator extends BaseMediator<Void, String> {
                 ApiConstants.API_ARTICLES_DESC + parameters[0] +
                 ApiConstants.API_BY_AUTH + parameters[1] +
                 ApiConstants.API_ACT + parameters[2];
-        dao.get(url, true);
+        dao.get(url, true, false);
     }
 
     @Override

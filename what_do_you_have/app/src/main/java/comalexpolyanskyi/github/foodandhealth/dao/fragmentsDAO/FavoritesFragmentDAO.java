@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.dao;
+package comalexpolyanskyi.github.foodandhealth.dao.fragmentsDAO;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import comalexpolyanskyi.github.foodandhealth.dao.baseFragmentsDAO.BaseDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.BindingUserDataDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.FavArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
@@ -27,7 +28,7 @@ public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements Interaction
 
     @Override
     protected void saveToCache(List<ContentValues> contentValuesList) {
-        operations.bulkUpdate(Article.class, contentValuesList);
+        operations.bulkInsert(Article.class, contentValuesList);
     }
 
     @Override
@@ -37,6 +38,15 @@ public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements Interaction
         } else {
             return null;
         }
+    }
+
+    @Override
+    protected Cursor getFromCache(ParametersInformationRequest parameters) {
+        final String updateParameters = parameters.getUpdateParameters();
+        if(updateParameters != null){
+            operations.updateForParam(Favorites.class, parameters.getUpdateContent(), updateParameters);
+        }
+        return super.getFromCache(parameters);
     }
 
     @Override
@@ -51,6 +61,7 @@ public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements Interaction
             for (FavArticleListItemDO item : result) {
                 final ContentValues contentValue = prepareContentValues(item);
                 contentValuesList.add(contentValue);
+                processingAdditionalData(item.getUserDataList());
             }
         } catch (Exception e) {
             return null;
@@ -69,11 +80,10 @@ public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements Interaction
         contentValues.put(Article.RECORDING_TIME, System.currentTimeMillis()/1000);
         contentValues.put(Article.AGING_TIME, 3600);
 
-        bindingData(item.getUserDataList());
         return contentValues;
     }
 
-    private void bindingData(List<BindingUserDataDO> items){
+    private void processingAdditionalData(List<BindingUserDataDO> items){
         final List<ContentValues> list = new ArrayList<>();
         for (BindingUserDataDO item:items) {
             final ContentValues contentValues = new ContentValues();
@@ -85,6 +95,6 @@ public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements Interaction
             list.add(contentValues);
         }
 
-        operations.bulkUpdate(Favorites.class, list);
+        operations.bulkInsert(Favorites.class, list);
     }
 }

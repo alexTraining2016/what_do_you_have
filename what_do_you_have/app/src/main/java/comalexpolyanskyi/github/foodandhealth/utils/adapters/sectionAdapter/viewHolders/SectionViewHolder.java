@@ -1,8 +1,9 @@
-package comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter;
+package comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter.viewHolders;
 
 import android.view.View;
 import android.widget.TextView;
 
+import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapterUtil.ViewHolder;
 
 public class SectionViewHolder extends ViewHolder {
@@ -11,6 +12,6 @@ public class SectionViewHolder extends ViewHolder {
 
     public SectionViewHolder(View rootView) {
         super(rootView);
-        textView = (TextView) rootView;
+        textView = findWidgetById(R.id.text);
     }
 }

@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.mediators;
+package comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators;
 
 import android.support.annotation.NonNull;
 
@@ -9,6 +9,9 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Favorites;
+import comalexpolyanskyi.github.foodandhealth.mediators.ApiConstants;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
 import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
 
 
@@ -36,6 +39,6 @@ public class DescriptionActivityMediator extends BaseMediator<ArticleDO, String>
                 SQLConstants.ON + "a." + Article.ID + " = " + "f." + Favorites.ART_ID
                 + whereParam;
 
-        dao.get(new ParametersInformationRequest(url, select), false);
+        dao.get(new ParametersInformationRequest(url, select), false, false);
     }
 }

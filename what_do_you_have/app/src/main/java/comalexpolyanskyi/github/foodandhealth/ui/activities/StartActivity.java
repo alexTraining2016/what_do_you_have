@@ -19,11 +19,11 @@ public class StartActivity extends Activity {
         final SharedPreferences sharedPreferences = getSharedPreferences(AuthConstant.AUTH, MODE_PRIVATE);
         final String token = sharedPreferences.getString(AuthConstant.TOKEN, AuthConstant.EMPTY);
 
-       // if (token.equals(AuthConstant.EMPTY)) {
-         //   final Intent intent = new Intent(this, AuthorizationActivity.class);
-          //  startActivityForResult(intent, REQUEST_CODE);
+        // if (token.equals(AuthConstant.EMPTY)) {
+        //   final Intent intent = new Intent(this, AuthorizationActivity.class);
+        //  startActivityForResult(intent, REQUEST_CODE);
         //} else {
-          //  startMainActivity(token, sharedPreferences.getString(AuthConstant.NAME, AuthConstant.EMPTY));
+        //  startMainActivity(token, sharedPreferences.getString(AuthConstant.NAME, AuthConstant.EMPTY));
         //}
         startMainActivity("1234", "Alex Polynskij", "1");
     }

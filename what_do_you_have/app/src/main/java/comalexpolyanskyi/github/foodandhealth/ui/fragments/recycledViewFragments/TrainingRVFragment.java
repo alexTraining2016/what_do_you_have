@@ -4,7 +4,7 @@ package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragment
 import android.os.Bundle;
 
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
-import comalexpolyanskyi.github.foodandhealth.mediators.TrainingListFragmentMediator;
+import comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators.TrainingListFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 
 public class TrainingRVFragment extends BaseRVFragment {

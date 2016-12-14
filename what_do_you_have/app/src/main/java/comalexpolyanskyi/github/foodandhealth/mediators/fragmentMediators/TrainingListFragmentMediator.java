@@ -1,12 +1,15 @@
-package comalexpolyanskyi.github.foodandhealth.mediators;
+package comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import comalexpolyanskyi.github.foodandhealth.dao.ArticleListFragmentDAO;
+import comalexpolyanskyi.github.foodandhealth.dao.fragmentsDAO.ArticleListFragmentDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
+import comalexpolyanskyi.github.foodandhealth.mediators.ApiConstants;
+import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
 import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
 
 
@@ -29,7 +32,7 @@ public class TrainingListFragmentMediator extends BaseMediator<Cursor, String> {
         final String selectSql = SQLConstants.S_F + DBHelper.getTableName(Article.class)
                 + SQLConstants.WHERE + Article.TYPE + " = " + TRAINING;
 
-        dao.get(new ParametersInformationRequest(url, selectSql), false);
+        dao.get(new ParametersInformationRequest(url, selectSql), false, false);
     }
 
     @Override
@@ -41,6 +44,6 @@ public class TrainingListFragmentMediator extends BaseMediator<Cursor, String> {
                 + SQLConstants.LIKE + "'%" + searchParameter[0].toLowerCase() + "%'";
         final String selectSql = SQLConstants.S_F + DBHelper.getTableName(Article.class) + where;
 
-        dao.get(new ParametersInformationRequest(null, selectSql), false);
+        dao.get(new ParametersInformationRequest(null, selectSql), false, true);
     }
 }

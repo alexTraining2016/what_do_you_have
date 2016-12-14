@@ -18,4 +18,5 @@
     <string name="no_ing_mess">Не выбрано ни одного ингредиента</string>
     <string name="favoritesAddMessage">Добавлено в избранное</string>
     <string name="favoritesDeleteMessage">Удалено из избранного</string>
+    <string name="empty_favorites">У вас ничего не добавлено в избранное</string>
 </resources>

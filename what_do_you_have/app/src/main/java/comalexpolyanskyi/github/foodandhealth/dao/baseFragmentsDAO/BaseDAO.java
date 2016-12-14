@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.dao;
+package comalexpolyanskyi.github.foodandhealth.dao.baseFragmentsDAO;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -20,7 +20,7 @@ import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
-abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersInformationRequest> {
+public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersInformationRequest> {
 
     private static final String CHARSET_NAME = "UTF-8";
     private ExecutorService executorService;
@@ -38,22 +38,22 @@ abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersInformati
     }
 
     @Override
-    public void get(final ParametersInformationRequest parameters, final boolean forceUpdate) {
+    public void get(final ParametersInformationRequest parameters, final boolean forceUpdate, final boolean noUpdate) {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
                 boolean isNeedUpdate = true;
+                final Cursor cacheData= getFromCache(parameters);
 
-                if(!forceUpdate) {
-                    final Cursor cursor = getFromCache(parameters.getSelectParameters());
+                if (cacheData.getCount() != 0) {
+                    displayDataFromCache(prepareResponse(cacheData));
 
-                    if (cursor.getCount() != 0) {
-                        displayDataFromCache(prepareResponse(cursor));
-                        isNeedUpdate = forceUpdate || isDataOutdated(parameters.getUrl(), cursor);
+                    if (forceUpdate) {
+                        isNeedUpdate = isDataOutdated(parameters.getUrl(), cacheData);
                     }
                 }
 
-                if (isNeedUpdate) {
+                if (isNeedUpdate && !noUpdate) {
                     final Cursor cursor = update(parameters);
 
                     if (cursor != null) {
@@ -114,15 +114,15 @@ abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersInformati
             final List<ContentValues> contentValuesList = processRequest(requestString);
             if (contentValuesList != null) {
                 saveToCache(contentValuesList);
-                return getFromCache(parameters.getSelectParameters());
+                return getFromCache(parameters);
             }
         }
 
         return null;
     }
 
-    private Cursor getFromCache(String parameters) {
-        return operations.query(parameters);
+    protected Cursor getFromCache(ParametersInformationRequest parameters) {
+        return operations.query(parameters.getSelectParameters());
     }
 
     protected abstract void saveToCache(List<ContentValues> contentValuesList);

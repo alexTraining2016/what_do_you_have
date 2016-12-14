@@ -25,7 +25,8 @@
             android:theme="@style/FoodAppTheme"/>
         <activity
             android:name="comalexpolyanskyi.github.foodandhealth.ui.activities.DescriptionActivity"
-            android:theme="@style/FoodAppTheme"/>
+            android:theme="@style/FoodAppTheme"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>

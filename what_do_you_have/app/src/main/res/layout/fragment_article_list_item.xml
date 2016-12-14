@@ -1,51 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/article_list_item_root"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="160dip"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:foreground="?attr/selectableItemBackground">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/article_item_root"
+    android:layout_width="match_parent"
+    android:layout_height="200dip"
+    android:layout_gravity="bottom"
+    android:layout_margin="@dimen/card_margin"
+    card_view:cardCornerRadius="8dip"
+    card_view:cardElevation="6dp"
+    card_view:cardPreventCornerOverlap="false"
+    card_view:cardUseCompatPadding="true">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/article_card"
+    <ImageView
+        android:id="@+id/article_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:layout_margin="@dimen/card_margin"
-        card_view:cardElevation="4dp"
-        card_view:cardCornerRadius="0dip"
-        card_view:cardUseCompatPadding="true">
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        android:transitionName="photo_hero"
+        tools:targetApi="lollipop" />
 
-        <ImageView
-            android:id="@+id/article_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:transitionName="photo_hero"
-            android:scaleType="centerCrop"
-            android:layout_centerInParent="true"
-            tools:targetApi="lollipop" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#7000"
-            android:layout_gravity="bottom"
-            android:gravity="center|start"
-            android:orientation="horizontal">
+    <TextView
+        android:id="@+id/article_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/image_foreground"
+        android:gravity="start|bottom"
+        android:maxLines="2"
+        android:padding="8dp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="#ffff"
+        android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/article_name"
-                android:textColor="#ffff"
-                android:gravity="clip_horizontal|center_horizontal"
-                android:textSize="16sp"
-                android:maxLines="2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem" />
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+</android.support.v7.widget.CardView>

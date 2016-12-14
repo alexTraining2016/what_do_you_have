@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.dao;
+package comalexpolyanskyi.github.foodandhealth.dao.fragmentsDAO;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import comalexpolyanskyi.github.foodandhealth.dao.baseFragmentsDAO.BaseDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.IngredientItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Ingredient;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
@@ -24,7 +25,7 @@ public class IngredientListFragmentDAO extends BaseDAO<Cursor> {
 
     @Override
     protected void saveToCache(List<ContentValues> contentValuesList) {
-        operations.bulkUpdate(Ingredient.class, contentValuesList);
+        operations.bulkInsert(Ingredient.class, contentValuesList);
     }
 
     @Override
@@ -61,6 +62,7 @@ public class IngredientListFragmentDAO extends BaseDAO<Cursor> {
         final ContentValues contentValues = new ContentValues();
         contentValues.put(Ingredient.ID, item.getId());
         contentValues.put(Ingredient.NAME, item.getName());
+        contentValues.put(Ingredient.IMAGE, item.getImage());
         contentValues.put(Ingredient.RECORDING_TIME, System.currentTimeMillis()/1000);
         contentValues.put(Ingredient.AGING_TIME, 600);
 

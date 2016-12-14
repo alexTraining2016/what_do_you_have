@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Locale;
 
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.Table;
-import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbAutoInteger;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbInteger;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbLong;
 import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbString;
@@ -25,6 +25,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
 
     private static final String SQL_TABLE_CREATE_TEMPLATE = "CREATE TABLE IF NOT EXISTS %s (%s);";
     private static final String SQL_TABLE_CREATE_FIELD_TEMPLATE = "%s %s";
+    public static final String UNIQUE = " unique ";
 
     public DBHelper(final Context context, final String name, final int version) {
         super(context, name, null, version);
@@ -58,8 +59,6 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                     for (final Annotation annotation : annotations) {
                         if (annotation instanceof dbInteger) {
                             type = ((dbInteger) annotation).value();
-                        } else if (annotation instanceof dbAutoInteger) {
-                            type = ((dbAutoInteger) annotation).value();
                         } else if (annotation instanceof dbLong) {
                             type = ((dbLong) annotation).value();
                         } else if (annotation instanceof dbString) {
@@ -73,11 +72,11 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                     final String value = (String) field.get(null);
 
                     if (value.equals(CachedTable.ID)) {
-                        type += " unique";
+                        type += UNIQUE;
                     }
                     builder.append(String.format(Locale.US, SQL_TABLE_CREATE_FIELD_TEMPLATE, value, type));
 
-                    if (i < fields.length - 2) {
+                    if (i < (fields.length - 2)) {
                         builder.append(",");
                     }
                 }
@@ -96,6 +95,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
     public void onCreate(final SQLiteDatabase db) {
         for (final Class<?> clazz : Contract.MODELS) {
             final String sql = getTableCreateQuery(clazz);
+            Log.i("123", sql);
 
             if (sql != null) {
                 db.execSQL(sql);
@@ -114,7 +114,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
     }
 
     @Override
-    public long bulkUpdate(Class<?> table, final List<ContentValues> values) {
+    public long bulkInsert(Class<?> table, final List<ContentValues> values) {
         final String name = getTableName(table);
         if (name != null) {
             final SQLiteDatabase database = getWritableDatabase();
@@ -136,7 +136,25 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
     }
 
     @Override
-    public void updateForParam(Class<?> table, ContentValues values, String wClause, String[] wArg) {
+    public void insert(final Class<?> table, final ContentValues value) {
+        final String name = getTableName(table);
+        if (name != null) {
+            final SQLiteDatabase database = getWritableDatabase();
+            try {
+                database.beginTransaction();
+                database.insertWithOnConflict(name, null, value, SQLiteDatabase.CONFLICT_IGNORE);
+                database.setTransactionSuccessful();
+            } finally {
+                database.endTransaction();
+            }
+
+        } else {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void updateForParam(final Class<?> table, final ContentValues values, final String wClause, final String... wArg) {
         final String name = getTableName(table);
         if (name != null) {
             final SQLiteDatabase database = getWritableDatabase();
@@ -153,14 +171,14 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
     }
 
     @Override
-    public int delete(final Class<?> table, final String sql, final String... args) {
+    public int delete(final Class<?> table, final String whereClause, final String... args) {
         final String name = getTableName(table);
         if (name != null) {
             final SQLiteDatabase database = getWritableDatabase();
             int count = 0;
             try {
                 database.beginTransaction();
-                count = database.delete(name, sql, args);
+                count = database.delete(name, whereClause, args);
                 database.setTransactionSuccessful();
             } finally {
                 database.endTransaction();

@@ -100,7 +100,6 @@ public class ArticleDO implements Serializable {
         return isLike;
     }
 
-
     public String getName() {
         return name;
     }

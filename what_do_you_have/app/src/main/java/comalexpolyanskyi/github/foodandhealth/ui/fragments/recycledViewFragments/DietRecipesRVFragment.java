@@ -3,7 +3,7 @@ package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragment
 
 import android.os.Bundle;
 
-import comalexpolyanskyi.github.foodandhealth.mediators.DietsRecipesListFragmentMediator;
+import comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators.DietsRecipesListFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 

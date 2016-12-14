@@ -15,7 +15,7 @@ public interface InteractionContract {
     }
 
     interface DAO<P> {
-        void get(P parameters, boolean forceUpdate);
+        void get(P parameters, boolean forceUpdate, boolean noUpdate);
     }
 
     interface RequiredPresenter<T>{

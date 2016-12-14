@@ -5,7 +5,7 @@ import android.os.Bundle;
 import java.util.HashSet;
 
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
-import comalexpolyanskyi.github.foodandhealth.mediators.RecipesByIngFragmentMediator;
+import comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators.RecipesByIngFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 
 public class RecipesByIngredientFragment extends BaseRVFragment {
