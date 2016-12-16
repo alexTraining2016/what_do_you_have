@@ -1,49 +1,88 @@
-package comalexpolyanskyi.github.foodandhealth.dao.fragmentsDAO;
+package comalexpolyanskyi.github.foodandhealth.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import comalexpolyanskyi.github.foodandhealth.dao.baseFragmentsDAO.BaseDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.BindingUserDataDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.FavArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
+import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
+import comalexpolyanskyi.github.foodandhealth.dao.database.DbOperations;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Favorites;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
+import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
+import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
-public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements InteractionContract.DAO<ParametersInformationRequest> {
 
-    private final static String DELETE = "del";
+public class SwipeDeleteDAO implements InteractionContract.DAO<ParametersInformationRequest> {
+    private static final String CHARSET_NAME = "UTF-8";
+    private ExecutorService executorService;
+    private InteractionContract.RequiredPresenter<Cursor> presenter;
+    private Handler handler;
+    private AppHttpClient httpClient;
+    private DbOperations operations;
 
-    public FavoritesFragmentDAO(@NonNull InteractionContract.RequiredPresenter<Cursor> presenter) {
-        super(presenter);
+    public SwipeDeleteDAO(@NonNull InteractionContract.RequiredPresenter<Cursor> presenter)  {
+        handler = new Handler(Looper.getMainLooper());
+        this.presenter = presenter;
+        operations = new DBHelper(ContextHolder.getContext(), DbOperations.FOOD_AND_HEAL, DbOperations.VERSION);
+        executorService = Executors.newSingleThreadExecutor();
+        httpClient = AppHttpClient.getAppHttpClient();
     }
 
     @Override
-    protected void saveToCache(List<ContentValues> contentValuesList) {
-        operations.bulkInsert(Article.class, contentValuesList);
+    public void get(final ParametersInformationRequest parameters, final boolean forceUpdate, final boolean noUpdate) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                final Cursor cursor = update(parameters);
+                handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(cursor != null) {
+                                presenter.onSuccess(cursor);
+                            }else{
+                                presenter.onError();
+                            }
+                        }
+                    });
+
+            }
+        });
     }
 
-    @Override
-    protected Cursor prepareResponse(@NonNull Cursor cursor) {
-        if (cursor.getCount() > 0) {
-            return cursor;
-        } else {
-            return null;
+    @Nullable
+    private Cursor update(ParametersInformationRequest parameters) {
+        final byte[] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl(), false);
+        if (requestBytes != null) {
+            final String requestString = new String(requestBytes, Charset.forName(CHARSET_NAME));
+            final List<ContentValues> contentValuesList = processRequest(requestString);
+            if (contentValuesList != null) {
+                operations.bulkInsert(Article.class, contentValuesList);
+                return operations.query(parameters.getSelectParameters());
+            }
         }
+
+        return null;
     }
 
-    @Override
-    protected List<ContentValues> processRequest(@NonNull String request) {
+    private List<ContentValues> processRequest(@NonNull String request) {
         final List<ContentValues> contentValuesList = new ArrayList<>();
 
         try {
@@ -57,6 +96,7 @@ public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements Interaction
                 processingAdditionalData(item.getUserDataList());
             }
         } catch (Exception e) {
+
             return null;
         }
 
@@ -85,6 +125,7 @@ public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements Interaction
             contentValues.put(Favorites.USER_ID, item.getUserId());
             contentValues.put(Favorites.ISLIKE, item.getIsLike());
             contentValues.put(Favorites.ISFAVORITES, item.getIsRepost());
+
             list.add(contentValues);
         }
 

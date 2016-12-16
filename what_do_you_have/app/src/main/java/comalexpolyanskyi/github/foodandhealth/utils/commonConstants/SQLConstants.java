@@ -13,4 +13,6 @@ public interface SQLConstants {
     String AND = " AND ";
     String LIKE = " LIKE ";
     String ORDER_BY = " ORDER BY ";
+    String ASC = " ASC";
+    String EQ = " = ";
 }

@@ -89,6 +89,7 @@ public class DAButtonDAO implements InteractionContract.DAO<String> {
         });
     }
 
+    ////android палит
     private void toPrepareDescriptionData(JSONObject data) throws JSONException {
         final ContentValues contentValues = new ContentValues();
         contentValues.put(Favorites.ID, data.getString(UID));

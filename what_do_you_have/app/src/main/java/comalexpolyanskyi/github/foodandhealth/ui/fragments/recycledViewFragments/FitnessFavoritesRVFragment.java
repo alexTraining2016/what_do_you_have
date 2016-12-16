@@ -2,15 +2,22 @@ package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragment
 
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 
-import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
+import comalexpolyanskyi.github.foodandhealth.R;
+import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators.FavoritesFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdapter;
+import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelperCallback;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
+import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTouchHelperAdapter {
 
     private InteractionContract.Mediator<String> mediator;
+    public static final String TYPE_ART = "2";
 
     public FitnessFavoritesRVFragment() {
     }
@@ -22,18 +29,38 @@ public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTo
     }
 
     @Override
+    protected RecyclerView bindRecyclerView() {
+        RecyclerView recyclerView = super.bindRecyclerView();
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(this);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
+
+        return recyclerView;
+    }
+
+    @Override
     public void bindPresenter(Bundle savedInstanceState) {
         if (savedInstanceState == null || mediator == null) {
-            this.mediator = new BaseMediator(this);
-            mediator.loadData(getArguments().getString(AuthConstant.TOKEN));
+            this.mediator = new FavoritesFragmentMediator(this);
+            mediator.loadData(getArguments().getString(AuthConstant.TOKEN), getArguments().getString(AuthConstant.ID), TYPE_ART);
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-
         mediator.onDestroy();
+    }
+
+    @Override
+    public void returnError(String message) {
+        int count = getAdapter().getItemCount();
+        if(count > 0){
+            super.returnError(message);
+        }else{
+            super.returnError(ContextHolder.getContext().getString(R.string.empty_favorites));
+        }
     }
 
     @Override
@@ -49,8 +76,13 @@ public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTo
 
     @Override
     public void onItemDismiss(int position) {
-        // data.remove(position);
-        // data.
-        //adapter.notifyItemRemoved(position);
+        getAdapter().notifyItemRemoved(position);
+        ArticleListItemDO itemDO = getAdapter().getItem(position);
+
+        if(getAdapter().getItemCount() == 1){
+            getAdapter().changeCursor(null);
+        }
+
+        mediator.loadData(getArguments().getString(AuthConstant.TOKEN), getArguments().getString(AuthConstant.ID), TYPE_ART, String.valueOf(itemDO.getId()));
     }
 }

@@ -24,7 +24,7 @@ public class AppHttpClient {
         try {
             final URL url = new URL(stringUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setUseCaches(usesCache);
+            urlConnection.setUseCaches(true);
             if (usesCache) {
                 //int maxStale = 60 * 60;
                 // urlConnection.addRequestProperty(CACHE_CONTROL, MAX_STALE + maxStale);

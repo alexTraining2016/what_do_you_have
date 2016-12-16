@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -95,7 +94,6 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
     public void onCreate(final SQLiteDatabase db) {
         for (final Class<?> clazz : Contract.MODELS) {
             final String sql = getTableCreateQuery(clazz);
-            Log.i("123", sql);
 
             if (sql != null) {
                 db.execSQL(sql);
@@ -122,7 +120,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             try {
                 database.beginTransaction();
                 for (final ContentValues value : values) {
-                    database.insertWithOnConflict(name, null, value, SQLiteDatabase.CONFLICT_IGNORE);
+                    database.insertWithOnConflict(name, null, value, SQLiteDatabase.CONFLICT_REPLACE);
                     count++;
                 }
                 database.setTransactionSuccessful();
@@ -142,7 +140,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             final SQLiteDatabase database = getWritableDatabase();
             try {
                 database.beginTransaction();
-                database.insertWithOnConflict(name, null, value, SQLiteDatabase.CONFLICT_IGNORE);
+                database.insertWithOnConflict(name, null, value, SQLiteDatabase.CONFLICT_REPLACE);
                 database.setTransactionSuccessful();
             } finally {
                 database.endTransaction();

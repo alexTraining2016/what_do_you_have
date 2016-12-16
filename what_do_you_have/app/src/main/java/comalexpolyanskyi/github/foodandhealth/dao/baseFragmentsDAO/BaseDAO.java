@@ -43,12 +43,12 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
             @Override
             public void run() {
                 boolean isNeedUpdate = true;
-                final Cursor cacheData= getFromCache(parameters);
+                final Cursor cacheData = getFromCache(parameters);
 
-                if (cacheData.getCount() != 0) {
+                if (cacheData != null && cacheData.getCount() != 0) {
                     displayDataFromCache(prepareResponse(cacheData));
 
-                    if (forceUpdate) {
+                    if (!forceUpdate) {
                         isNeedUpdate = isDataOutdated(parameters.getUrl(), cacheData);
                     }
                 }
@@ -121,7 +121,7 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
         return null;
     }
 
-    protected Cursor getFromCache(ParametersInformationRequest parameters) {
+    private Cursor getFromCache(ParametersInformationRequest parameters) {
         return operations.query(parameters.getSelectParameters());
     }
 

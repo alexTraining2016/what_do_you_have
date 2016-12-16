@@ -30,7 +30,8 @@ public class DietsRecipesListFragmentMediator extends BaseMediator<Cursor, Strin
 
         final String url = ApiConstants.API_BASE_URL + ApiConstants.API_ARTICLES + ALL_DIET_RECIPES + ApiConstants.API_BY_AUTH + parameters[0];
         final String selectSql = SQLConstants.S_F + DBHelper.getTableName(Article.class)
-                + SQLConstants.WHERE + Article.TYPE + "=" + ALL_DIET_RECIPES;
+                + SQLConstants.WHERE + Article.TYPE + "=" + ALL_DIET_RECIPES
+                + SQLConstants.ORDER_BY + Article.NAME + SQLConstants.ASC;
 
         dao.get(new ParametersInformationRequest(url, selectSql), false, false);
     }

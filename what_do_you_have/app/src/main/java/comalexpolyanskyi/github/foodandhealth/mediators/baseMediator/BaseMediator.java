@@ -9,7 +9,7 @@ import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 public class BaseMediator<T, P> implements InteractionContract.Mediator<P>, InteractionContract.RequiredPresenter<T> {
 
     private InteractionContract.RequiredView<T> view;
-    protected String noDataErrorMessage = ContextHolder.getContext().getString(R.string.error_loading);
+    private final static String noDataErrorMessage = ContextHolder.getContext().getString(R.string.error_loading);
 
     public BaseMediator(@NonNull InteractionContract.RequiredView<T> view) {
         this.view = view;

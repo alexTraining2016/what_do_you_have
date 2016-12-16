@@ -5,17 +5,19 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
+import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleListItemDO;
-import comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators.FavoritesFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
+import comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators.FavoritesFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ItemTouchHelperAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.SimpleItemTouchHelperCallback;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
+import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelperAdapter {
 
     private InteractionContract.Mediator<String> mediator;
-    private static final String TYPE_ART = "all_type";
+    public static final String TYPE_ART = "0,1";
 
     public CookbookRVFragment() {
         super();
@@ -66,11 +68,21 @@ public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelpe
     }
 
     @Override
+    public void returnError(String message) {
+        int count = getAdapter().getItemCount();
+        if(count > 0){
+            super.returnError(message);
+        }else{
+            super.returnError(ContextHolder.getContext().getString(R.string.empty_favorites));
+        }
+    }
+
+    @Override
     public void onItemDismiss(int position) {
         getAdapter().notifyItemRemoved(position);
         ArticleListItemDO itemDO = getAdapter().getItem(position);
 
-        if(getAdapter().getItemCount() == 1){
+        if (getAdapter().getItemCount() == 1) {
             getAdapter().changeCursor(null);
         }
 

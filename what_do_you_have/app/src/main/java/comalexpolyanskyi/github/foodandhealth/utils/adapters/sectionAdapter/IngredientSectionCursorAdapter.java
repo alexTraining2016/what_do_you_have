@@ -18,11 +18,25 @@ import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapterUtil.
 public class IngredientSectionCursorAdapter extends SectionCursorAdapter<String, SectionViewHolder, ItemViewHolder> {
 
     private HashSet<Integer> selectedId;
+    private View.OnClickListener clickListener;
 
     public IngredientSectionCursorAdapter(Context context, Cursor c) {
         super(context, c, 0, R.layout.item_section, R.layout.ingredient_list_item);
         selectedId = new HashSet<>();
+        clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer id = (Integer) v.getTag(R.string.app_name);
 
+                if (isSelected(id)) {
+                    selectedId.remove(id);
+                    ((AppCompatImageView) v.findViewById(R.id.checked_image)).setImageResource(R.drawable.ic_beenhere_white_60dp);
+                } else {
+                    selectedId.add(id);
+                    ((AppCompatImageView) v.findViewById(R.id.checked_image)).setImageResource(R.drawable.ic_beenhere_green_60dp);
+                }
+            }
+        };
     }
 
     public void updateDataSet(Cursor cursor) {
@@ -71,20 +85,7 @@ public class IngredientSectionCursorAdapter extends SectionCursorAdapter<String,
         }else{
             itemViewHolder.checkedView.setImageResource(R.drawable.ic_beenhere_white_60dp);
         }
-        itemViewHolder.rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Integer id = (Integer) v.getTag(R.string.app_name);
-
-                if (isSelected(id)) {
-                    selectedId.remove(id);
-                    ((AppCompatImageView) v.findViewById(R.id.checked_image)).setImageResource(R.drawable.ic_beenhere_white_60dp);
-                } else {
-                    selectedId.add(id);
-                    ((AppCompatImageView) v.findViewById(R.id.checked_image)).setImageResource(R.drawable.ic_beenhere_green_60dp);
-                }
-            }
-        });
+        itemViewHolder.rootView.setOnClickListener(clickListener);
     }
 
     public HashSet<Integer> getSelectedId() {
