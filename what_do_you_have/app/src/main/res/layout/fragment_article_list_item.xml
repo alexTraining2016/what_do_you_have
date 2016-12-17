@@ -7,19 +7,19 @@
     android:layout_height="200dip"
     android:layout_gravity="bottom"
     android:layout_margin="@dimen/card_margin"
+    android:transitionName="DescriptionActivity:image"
     card_view:cardCornerRadius="8dip"
     card_view:cardElevation="6dp"
     card_view:cardPreventCornerOverlap="false"
-    card_view:cardUseCompatPadding="true">
+    card_view:cardUseCompatPadding="true"
+    tools:targetApi="lollipop">
 
     <ImageView
         android:id="@+id/article_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:scaleType="centerCrop"
-        android:transitionName="photo_hero"
-        tools:targetApi="lollipop" />
+        android:scaleType="centerCrop" />
 
 
     <TextView

@@ -31,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
+                android:fitsSystemWindows="true"
                 android:scaleType="centerCrop" />
 
             <LinearLayout
@@ -40,29 +41,37 @@
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom"
                 android:background="@drawable/image_foreground"
+                android:fitsSystemWindows="true"
                 android:gravity="end|bottom"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_collapseMode="pin">
 
                 <comalexpolyanskyi.github.foodandhealth.ui.views.VectorImageTextView
                     android:id="@+id/like_count"
                     style="@style/VectorImageTextViewStyleClickable"
+                    android:fitsSystemWindows="true"
                     android:paddingEnd="8dip"
+                    app:layout_collapseMode="pin"
                     app:leftIcon="@drawable/ic_favorite_black_24dp" />
 
                 <comalexpolyanskyi.github.foodandhealth.ui.views.VectorImageTextView
                     android:id="@+id/fav_count"
                     style="@style/VectorImageTextViewStyleClickable"
+                    android:fitsSystemWindows="true"
                     android:paddingEnd="16dip"
+                    app:layout_collapseMode="pin"
                     app:leftIcon="@drawable/ic_repeat_black_24dp" />
+
             </LinearLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/description_tollbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:fitsSystemWindows="true"
+                android:fitsSystemWindows="false"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
+
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 

@@ -9,6 +9,5 @@
     <color name="colorAccentTraining">#7C4DFF</color>
 
     <color name="colorBackgroundListView">#f0f0f0</color>
-    <color name="colorPrimaryDark">#000</color>
     <color name="colorBackgroundRecycledView">#f0f0f0</color>
 </resources>

@@ -75,9 +75,13 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
                     }
                     builder.append(String.format(Locale.US, SQL_TABLE_CREATE_FIELD_TEMPLATE, value, type));
 
-                    if (i < (fields.length - 2)) {
+                    if (i < (fields.length - 1)) {
                         builder.append(",");
                     }
+                }
+
+                if (builder.substring(builder.length() - 1).equals(",")) {
+                    builder.deleteCharAt(builder.length() - 1);
                 }
 
                 return String.format(Locale.US, SQL_TABLE_CREATE_TEMPLATE, name, builder);

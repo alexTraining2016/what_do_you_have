@@ -71,7 +71,8 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
 
     private void bindView() {
         imageView = (ImageView) findViewById(R.id.imageView);
-        ViewCompat.setTransitionName(imageView, EXTRA_IMAGE);
+        View v = findViewById(R.id.toolbar_layout);
+        ViewCompat.setTransitionName(v, EXTRA_IMAGE);
         descriptionText = (TextView) findViewById(R.id.description);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.description_tollbar);
         setSupportActionBar(toolbar);
@@ -107,7 +108,7 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
     }
 
     private void bindHeader() {
-        if(!isUpdate) {
+        if (!isUpdate) {
             final MySimpleImageLoader imageLoader = App.getImageLoader();
             imageLoader.loadImageFromUrl(data.getPhotoUrl(), imageView);
             ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(data.getName());
@@ -123,7 +124,7 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
                     data.isRepost(),
                     Integer.toString(data.getFavCount()),
                     this);
-        }else{
+        } else {
             isUpdate = false;
             likeButtonManager.updateDrawable(data.isLike());
             likeButtonManager.setText(Integer.toString(data.getLikeCount()));

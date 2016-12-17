@@ -5,7 +5,6 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimaryFood</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccentFood</item>
         <item name="android:fastScrollTextColor">@color/colorAccentFood</item>
         <item name="android:fastScrollPreviewBackgroundRight">@drawable/bg_default_focused_holo_light</item>
@@ -14,7 +13,6 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimaryTraining</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccentTraining</item>
     </style>
 

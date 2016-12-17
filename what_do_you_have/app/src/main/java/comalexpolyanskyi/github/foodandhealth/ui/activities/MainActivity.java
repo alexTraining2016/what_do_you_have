@@ -1,9 +1,11 @@
 package comalexpolyanskyi.github.foodandhealth.ui.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -19,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
 import java.util.HashSet;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         appStyleHolder = AppStyleHolder.initialize();
         setSupportActionBar(toolbar);
+
         final NavigationView navigationView = setupNavigationDrawer(toolbar);
 
         if (savedInstanceState == null) {
@@ -133,6 +137,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return fragment;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void colorizeStatusBar(){
+        Window window = this.getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, appStyleHolder.getColor()));
+
+    }
+
     private void completeTransaction(Fragment fragment, String title) {
         final FragmentTransaction fragmentTransaction;
         final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -141,7 +152,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
         toolbar.setBackgroundColor(ContextCompat.getColor(this, appStyleHolder.getColor()));
         headerLayout.setBackground(ContextCompat.getDrawable(this, appStyleHolder.getDrawable()));
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            colorizeStatusBar();
+        }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
         }
@@ -151,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onRecipesFragmentInteraction(View v) {
         final ActivityOptionsCompat options =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this, v.findViewById(R.id.imageView), DescriptionActivity.EXTRA_IMAGE);
+                        this, v, DescriptionActivity.EXTRA_IMAGE);
         final Intent intent = new Intent(this, DescriptionActivity.class);
         intent.putExtra(AuthConstant.TOKEN, getIntent().getStringExtra(AuthConstant.TOKEN));
         intent.putExtra(TITLE_KEY, v.getTag().toString());
