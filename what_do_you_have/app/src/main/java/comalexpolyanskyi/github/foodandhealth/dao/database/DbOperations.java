@@ -17,6 +17,4 @@ public interface DbOperations {
 
     void updateForParam(Class<?> table, ContentValues values, String wClause, String... wArg);
 
-    int delete(Class<?> table, String whereClause, String... args);
-
 }

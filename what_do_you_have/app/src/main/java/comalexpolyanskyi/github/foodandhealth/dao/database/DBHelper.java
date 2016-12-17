@@ -24,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
 
     private static final String SQL_TABLE_CREATE_TEMPLATE = "CREATE TABLE IF NOT EXISTS %s (%s);";
     private static final String SQL_TABLE_CREATE_FIELD_TEMPLATE = "%s %s";
-    public static final String UNIQUE = " unique ";
+    private static final String UNIQUE = " unique ";
 
     public DBHelper(final Context context, final String name, final int version) {
         super(context, name, null, version);
@@ -108,6 +108,7 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
     @Override
     public Cursor query(final String sql, final String... args) {
         final SQLiteDatabase database = getReadableDatabase();
+
         return database.rawQuery(sql, args);
     }
 
@@ -163,25 +164,6 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             } finally {
                 database.endTransaction();
             }
-        } else {
-            throw new RuntimeException();
-        }
-    }
-
-    @Override
-    public int delete(final Class<?> table, final String whereClause, final String... args) {
-        final String name = getTableName(table);
-        if (name != null) {
-            final SQLiteDatabase database = getWritableDatabase();
-            int count = 0;
-            try {
-                database.beginTransaction();
-                count = database.delete(name, whereClause, args);
-                database.setTransactionSuccessful();
-            } finally {
-                database.endTransaction();
-            }
-            return count;
         } else {
             throw new RuntimeException();
         }

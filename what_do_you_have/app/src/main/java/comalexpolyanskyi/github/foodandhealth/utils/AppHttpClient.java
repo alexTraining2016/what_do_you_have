@@ -10,15 +10,14 @@ import java.net.URL;
 public class AppHttpClient {
 
     private static final String IF_MODIFIED_SINCE = "if-Modified-Since";
-    private final String CACHE_CONTROL = "Cache-Control";
-    private final String MAX_STALE = "max-stale=";
     private static AppHttpClient httpClient;
+    private HttpURLConnection urlConnection;
 
     private AppHttpClient() {
     }
 
     public byte[] loadDataFromHttp(String stringUrl, boolean usesCache) {
-        HttpURLConnection urlConnection = null;
+        urlConnection = null;
         byte[] bytes = null;
 
         try {
@@ -26,8 +25,6 @@ public class AppHttpClient {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setUseCaches(true);
             if (usesCache) {
-                //int maxStale = 60 * 60;
-                // urlConnection.addRequestProperty(CACHE_CONTROL, MAX_STALE + maxStale);
                 urlConnection.addRequestProperty(IF_MODIFIED_SINCE, urlConnection.getIfModifiedSince() + "");
             }
             final InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());

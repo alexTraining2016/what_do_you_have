@@ -99,5 +99,4 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionCon
             return null;
         }
     }
-
 }

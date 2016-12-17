@@ -38,6 +38,11 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
     }
 
     @Override
+    public void onDestroy() {
+        executorService.shutdown();
+    }
+
+    @Override
     public void get(final ParametersInformationRequest parameters, final boolean forceUpdate, final boolean noUpdate) {
         executorService.execute(new Runnable() {
             @Override
@@ -54,7 +59,7 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
                 }
 
                 if (isNeedUpdate && !noUpdate) {
-                    final Cursor cursor = update(parameters);
+                    final Cursor cursor = updateDatabase(parameters);
 
                     if (cursor != null) {
                         sendAnswer(prepareResponse(cursor));
@@ -107,7 +112,7 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
     }
 
     @Nullable
-    private Cursor update(ParametersInformationRequest parameters) {
+    private Cursor updateDatabase(ParametersInformationRequest parameters) {
         final byte[] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl(), true);
         if (requestBytes != null) {
             final String requestString = new String(requestBytes, Charset.forName(CHARSET_NAME));
@@ -123,6 +128,20 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
 
     private Cursor getFromCache(ParametersInformationRequest parameters) {
         return operations.query(parameters.getSelectParameters());
+    }
+
+    @Override
+    public void update(final ParametersInformationRequest parameters) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                final Cursor cursor = updateDatabase(parameters);
+                if (cursor != null) {
+                    sendAnswer(prepareResponse(cursor));
+                }
+
+            }
+        });
     }
 
     protected abstract void saveToCache(List<ContentValues> contentValuesList);

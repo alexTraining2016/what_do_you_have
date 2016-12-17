@@ -18,6 +18,8 @@ import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants
 public class DescriptionActivityMediator extends BaseMediator<ArticleDO, String> {
 
     private InteractionContract.DAO<ParametersInformationRequest> dao;
+    public static final String LOAD = "load";
+    public static final String UPDATE = "update";
 
     public DescriptionActivityMediator(@NonNull InteractionContract.RequiredView<ArticleDO> view) {
         super(view);
@@ -27,10 +29,7 @@ public class DescriptionActivityMediator extends BaseMediator<ArticleDO, String>
 
     @Override
     public void loadData(String... parameters) {
-        super.loadData(parameters);
-
-        final String url = ApiConstants.API_BASE_URL + ApiConstants.API_ARTICLES_DESC + parameters[0] + ApiConstants.API_BY_AUTH + parameters[1];
-        final String whereParam = SQLConstants.WHERE + "a." + ArticleDescription.ID + " = " + parameters[0];
+        final String whereParam = SQLConstants.WHERE + "a." + ArticleDescription.ID + " = " + parameters[1];
         final String select = SQLConstants.SELECT + "a." + ArticleDescription.ID + ", a." + ArticleDescription.NAME + ", a." + ArticleDescription.DESCRIPTION +
                 ", a." + ArticleDescription.LIKE_COUNT + ", a." + ArticleDescription.REPOST_COUNT + ", a." + ArticleDescription.AGING_TIME + ", a." + ArticleDescription.RECORDING_TIME +
                 ", a." + ArticleDescription.IMAGE_URI + ", f." + Favorites.ISLIKE + ", f." + Favorites.ISFAVORITES + ", f." + Favorites.USER_ID +
@@ -39,6 +38,18 @@ public class DescriptionActivityMediator extends BaseMediator<ArticleDO, String>
                 SQLConstants.ON + "a." + Article.ID + " = " + "f." + Favorites.ART_ID
                 + whereParam;
 
-        dao.get(new ParametersInformationRequest(url, select), false, false);
+        if (parameters[0].equals(LOAD)) {
+            super.loadData(parameters);
+            final String url = ApiConstants.API_BASE_URL + ApiConstants.API_ARTICLES_DESC + parameters[1] + ApiConstants.API_BY_AUTH + parameters[2];
+
+            dao.get(new ParametersInformationRequest(url, select), true, false);
+        } else if (parameters[0].equals(UPDATE)) {
+            final String url = ApiConstants.API_BASE_URL +
+                    ApiConstants.API_ARTICLES_DESC + parameters[1] +
+                    ApiConstants.API_BY_AUTH + parameters[2] +
+                    ApiConstants.API_ACT + parameters[3];
+
+            dao.update(new ParametersInformationRequest(url, select));
+        }
     }
 }

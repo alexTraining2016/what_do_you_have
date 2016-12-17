@@ -50,15 +50,16 @@ public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTo
     @Override
     public void onDetach() {
         super.onDetach();
+
         mediator.onDestroy();
     }
 
     @Override
     public void returnError(String message) {
         int count = getAdapter().getItemCount();
-        if(count > 0){
+        if (count > 0) {
             super.returnError(message);
-        }else{
+        } else {
             super.returnError(ContextHolder.getContext().getString(R.string.empty_favorites));
         }
     }
@@ -79,7 +80,7 @@ public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTo
         getAdapter().notifyItemRemoved(position);
         ArticleListItemDO itemDO = getAdapter().getItem(position);
 
-        if(getAdapter().getItemCount() == 1){
+        if (getAdapter().getItemCount() == 1) {
             getAdapter().changeCursor(null);
         }
 

@@ -40,6 +40,13 @@ public class RecipesByIngredientFragment extends BaseRVFragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        mediator.onDestroy();
+    }
+
     @SuppressWarnings("unchecked")
     private String pickingSet() {
         final HashSet<Integer> ingredientsIdSet = (HashSet<Integer>) getArguments().getSerializable(INGREDIENT_ID_SET);

@@ -57,7 +57,8 @@ public class RecipesByIngFragmentMediator extends BaseMediator<Cursor, String> {
                 SQLConstants.WHERE + SITN_PLUS_DOT + ArticleIngredient.INGREDIENT_ID + SQLConstants.IN + "( " + searchParameter[0] + " )" +
                 SQLConstants.AND + Article.SEARCH_NAME +
                 SQLConstants.LIKE + "'%" + searchParameter[1].toLowerCase() + "%'" +
-                SQLConstants.GROUP_BY + SATN_PLUS_DOT + Article.ID;
+                SQLConstants.GROUP_BY + SATN_PLUS_DOT + Article.ID +
+                SQLConstants.ORDER_BY + Article.NAME + SQLConstants.ASC;
 
         dao.get(new ParametersInformationRequest(null, select), false, true);
     }

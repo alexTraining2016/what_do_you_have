@@ -64,6 +64,13 @@ public class IngredientListFragment extends Fragment implements InteractionContr
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        mediator.onDestroy();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

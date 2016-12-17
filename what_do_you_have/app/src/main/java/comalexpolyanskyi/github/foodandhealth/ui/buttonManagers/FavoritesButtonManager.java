@@ -12,13 +12,12 @@ public class FavoritesButtonManager extends AbstractButtonManager {
 
     public static String TYPE = "repost";
 
-    public FavoritesButtonManager(final String token, final String id, final View view,
-                                  final boolean isLike, final String initValue, final DataUpdateCallback updateCallback) {
-        super(token, id, view, isLike, initValue, TYPE, updateCallback);
+    public FavoritesButtonManager(final View view, final boolean isLike, final String initValue, final DataUpdateCallback updateCallback) {
+        super(view, isLike, initValue, TYPE, updateCallback);
     }
 
     @Override
-    protected void selectDrawable(final VectorImageTextView view, final boolean isChecked, final boolean isUpdateState) {
+    public void selectDrawable(final VectorImageTextView view, final boolean isChecked, final boolean isUpdateState) {
         if (isUpdateState) {
             makeActFavoriteMessage(isChecked, view);
         }

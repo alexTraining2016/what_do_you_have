@@ -44,7 +44,8 @@ public class AllRecipesFragmentMediator extends BaseMediator<Cursor, String> {
         final String where = SQLConstants.WHERE + Article.TYPE + SQLConstants.BETWEEN + ALL_FOOD_RECIPES
                 + SQLConstants.AND + ALL_DIET_RECIPES
                 + SQLConstants.AND + Article.SEARCH_NAME
-                + SQLConstants.LIKE + "'%" + searchParameter[0].toLowerCase() + "%'";
+                + SQLConstants.LIKE + "'%" + searchParameter[0].toLowerCase() + "%'"
+                + SQLConstants.ORDER_BY + Article.NAME + SQLConstants.ASC;
         final String select = SQLConstants.S_F + DBHelper.getTableName(Article.class) + where;
 
         dao.get(new ParametersInformationRequest(null, select), false, true);

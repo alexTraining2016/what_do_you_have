@@ -4,7 +4,6 @@ package comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import comalexpolyanskyi.github.foodandhealth.dao.SwipeDeleteDAO;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
@@ -21,15 +20,12 @@ public class FavoritesFragmentMediator extends BaseMediator<Cursor, String> {
     private static final String COMMA = ", ";
     private static final String SATN_PLUS_DOT = SHORT_ART_T_NAME + ".";
     private static final String SATN_PLUS_C_DOT = COMMA + SATN_PLUS_DOT;
-    private static final String SHORT_FAV_T_NAME = " f";
-    private static final String SFTN_PLUS_DOT = SHORT_FAV_T_NAME + ".";
 
-    private InteractionContract.DAO<ParametersInformationRequest> dao, swipeDao;
+
 
     public FavoritesFragmentMediator(@NonNull InteractionContract.RequiredView<Cursor> view) {
         super(view);
         this.dao = new FavoritesFragmentDAO(this);
-        this.swipeDao = new SwipeDeleteDAO(this);
     }
 
     @Override
@@ -44,7 +40,7 @@ public class FavoritesFragmentMediator extends BaseMediator<Cursor, String> {
         final String url = ApiConstants.API_BASE_URL + ApiConstants.API_FOR_FAVORITES + parameters[2] + ApiConstants.API_BY_AUTH + parameters[0];
 
         if (parameters.length > 3) {
-            swipeDao.get(new ParametersInformationRequest(url + ApiConstants.API_REMOVE_FROM_FAVORITES + parameters[3], select), true, false);
+            dao.update(new ParametersInformationRequest(url + ApiConstants.API_REMOVE_FROM_FAVORITES + parameters[3], select));
         } else {
             super.loadData(parameters);
             dao.get(new ParametersInformationRequest(url, select), true, false);
