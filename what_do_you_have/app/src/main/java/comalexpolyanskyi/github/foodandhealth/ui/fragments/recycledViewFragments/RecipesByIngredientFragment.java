@@ -45,6 +45,7 @@ public class RecipesByIngredientFragment extends BaseRVFragment {
         super.onDetach();
 
         mediator.onDestroy();
+        mediator = null;
     }
 
     @SuppressWarnings("unchecked")

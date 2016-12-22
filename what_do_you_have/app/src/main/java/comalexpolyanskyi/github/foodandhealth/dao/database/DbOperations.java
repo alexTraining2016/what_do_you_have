@@ -15,6 +15,4 @@ public interface DbOperations {
 
     void insert(Class<?> table, ContentValues value);
 
-    void updateForParam(Class<?> table, ContentValues values, String wClause, String... wArg);
-
 }

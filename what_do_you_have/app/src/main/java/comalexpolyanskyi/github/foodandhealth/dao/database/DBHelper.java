@@ -155,21 +155,4 @@ public class DBHelper extends SQLiteOpenHelper implements DbOperations {
             throw new RuntimeException();
         }
     }
-
-    @Override
-    public void updateForParam(final Class<?> table, final ContentValues values, final String wClause, final String... wArg) {
-        final String name = getTableName(table);
-        if (name != null) {
-            final SQLiteDatabase database = getWritableDatabase();
-            try {
-                database.beginTransaction();
-                database.updateWithOnConflict(name, values, wClause, wArg, SQLiteDatabase.CONFLICT_REPLACE);
-                database.setTransactionSuccessful();
-            } finally {
-                database.endTransaction();
-            }
-        } else {
-            throw new RuntimeException();
-        }
-    }
 }

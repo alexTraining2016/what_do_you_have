@@ -1,0 +1,87 @@
+{
+  "project_info": {
+    "project_number": "864113321179",
+    "project_id": "firebase-food-and-health"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864113321179:android:19cc649be4bc1e06",
+        "android_client_info": {
+          "package_name": "comalexpolyanskyi.github.foodandhealth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864113321179-f4ot4q47n7ndp6ecuq7tttm3p4f11ekp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "comalexpolyanskyi.github.foodandhealth",
+            "certificate_hash": "DAAC596CCC364E9275F61A14C16FF01554402A46"
+          }
+        },
+        {
+          "client_id": "864113321179-gos29dcsove8a4ejr4ismesqoigefslq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNNvP5lukv0OZpX2U1gZFK4Ni3b4SZ4zY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864113321179:android:27883c83954c25ca",
+        "android_client_info": {
+          "package_name": "comalexpolyanskyi.github.what_do_you_have"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864113321179-gh6ufkak7hr8ifqaatgpam72390i6sqk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "comalexpolyanskyi.github.what_do_you_have",
+            "certificate_hash": "DAAC596CCC364E9275F61A14C16FF01554402A46"
+          }
+        },
+        {
+          "client_id": "864113321179-gos29dcsove8a4ejr4ismesqoigefslq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNNvP5lukv0OZpX2U1gZFK4Ni3b4SZ4zY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

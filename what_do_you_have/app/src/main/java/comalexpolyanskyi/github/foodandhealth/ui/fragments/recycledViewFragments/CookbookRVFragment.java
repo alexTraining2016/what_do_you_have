@@ -45,7 +45,12 @@ public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelpe
     public void bindPresenter(Bundle savedInstanceState) {
         if (savedInstanceState == null || mediator == null) {
             this.mediator = new FavoritesFragmentMediator(this);
-            mediator.loadData(getArguments().getString(AuthConstant.TOKEN), getArguments().getString(AuthConstant.ID), TYPE_ART);
+            final String token = getArguments().getString(AuthConstant.TOKEN);
+            if(mediator.accessCheck(token)) {
+                mediator.loadData(token, getArguments().getString(AuthConstant.ID), TYPE_ART);
+            }else{
+                super.returnError(getString(R.string.access_error));
+            }
         }
     }
 
@@ -54,6 +59,7 @@ public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelpe
         super.onDetach();
 
         mediator.onDestroy();
+        mediator = null;
     }
 
     @Override

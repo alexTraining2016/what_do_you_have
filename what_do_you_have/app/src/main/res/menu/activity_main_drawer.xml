@@ -34,6 +34,10 @@
                 android:id="@+id/nav_favorites_program"
                 android:icon="@drawable/ic_assignment_black_24dp"
                 android:title="@string/favorites_program" />
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/ic_input_black_24dp"
+                android:title="@string/exit" />
 
         </menu>
     </item>

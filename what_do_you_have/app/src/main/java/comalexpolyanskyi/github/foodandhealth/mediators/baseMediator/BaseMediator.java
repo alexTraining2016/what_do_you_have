@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
+import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public class BaseMediator<T, P> implements InteractionContract.Mediator<P>, InteractionContract.RequiredPresenter<T> {
@@ -24,8 +25,13 @@ public class BaseMediator<T, P> implements InteractionContract.Mediator<P>, Inte
     }
 
     @Override
+    public boolean accessCheck(String token) {
+        return !token.equals(AuthConstant.ANONYMOUS);
+    }
+
+    @Override
     public void loadData(P... parameters) {
-        if(view != null) {
+        if (view != null) {
             view.showProgress(true);
         }
     }

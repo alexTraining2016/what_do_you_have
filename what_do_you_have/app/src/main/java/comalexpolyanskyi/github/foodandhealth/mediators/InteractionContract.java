@@ -10,6 +10,7 @@ public interface InteractionContract {
 
     interface Mediator<P> {
         void onDestroy();
+        boolean accessCheck(String token);
         void loadData(P... parameters);
         void search(P... searchParameter);
     }

@@ -35,7 +35,7 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionCon
     protected List<ContentValues> processRequest(@NonNull String request) {
         final List<ContentValues> contentValuesList = new ArrayList<>();
 
-        try {
+       try {
             final Type type = new TypeToken<List<ArticleDO>>() {
             }.getType();
             final Gson gson = new GsonBuilder().create();

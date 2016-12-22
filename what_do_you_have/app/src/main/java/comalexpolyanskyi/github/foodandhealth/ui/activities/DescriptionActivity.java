@@ -29,7 +29,7 @@ import comalexpolyanskyi.github.foodandhealth.utils.holders.AppStyleHolder;
 import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 
 
-public class DescriptionActivity extends AppCompatActivity implements InteractionContract.RequiredView<ArticleDO>, AbstractButtonManager.DataUpdateCallback {
+public class DescriptionActivity extends AppCompatActivity implements InteractionContract.RequiredView<ArticleDO>, AbstractButtonManager.DataUpdateCallback, View.OnClickListener {
 
     public static final String EXTRA_IMAGE = "DescriptionActivity:image";
     public static final String ACTION = "action";
@@ -39,7 +39,7 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
     private ArticleDO data;
     private TextView descriptionText;
     private InteractionContract.Mediator<String> mediator;
-    private AbstractButtonManager likeButtonManager, favButtonManager;
+    private AbstractButtonManager likeButtonManager; private AbstractButtonManager favButtonManager;
     private boolean isUpdate = false;
 
     @Override
@@ -71,7 +71,7 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
 
     private void bindView() {
         imageView = (ImageView) findViewById(R.id.imageView);
-        View v = findViewById(R.id.toolbar_layout);
+        final View v = findViewById(R.id.toolbar_layout);
         ViewCompat.setTransitionName(v, EXTRA_IMAGE);
         descriptionText = (TextView) findViewById(R.id.description);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.description_tollbar);
@@ -114,6 +114,21 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
             ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(data.getName());
             ((AppBarLayout) findViewById(R.id.app_bar)).setExpanded(true, true);
             descriptionText.setText(data.getDescription());
+            bindButton();
+        } else {
+            isUpdate = false;
+            likeButtonManager.updateDrawable(data.isLike());
+            likeButtonManager.setText(Integer.toString(data.getLikeCount()));
+            favButtonManager.updateDrawable(data.isRepost());
+            favButtonManager.setText(Integer.toString(data.getFavCount()));
+        }
+    }
+
+    private void bindButton(){
+        final Intent intent = getIntent();
+        String token = intent.getStringExtra(AuthConstant.TOKEN);
+
+        if(mediator.accessCheck(token)){
             likeButtonManager = new LikeButtonManager(
                     findViewById(R.id.like_count),
                     data.isLike(),
@@ -124,17 +139,14 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
                     data.isRepost(),
                     Integer.toString(data.getFavCount()),
                     this);
-        } else {
-            isUpdate = false;
-            likeButtonManager.updateDrawable(data.isLike());
-            likeButtonManager.setText(Integer.toString(data.getLikeCount()));
-            favButtonManager.updateDrawable(data.isRepost());
-            favButtonManager.setText(Integer.toString(data.getFavCount()));
+        }else{
+            findViewById(R.id.like_count).setOnClickListener(this);
+            findViewById(R.id.fav_count).setOnClickListener(this);
         }
     }
 
     @Override
-    public void returnData(ArticleDO response) {
+    public void returnData(final ArticleDO response) {
         data = response;
 
         if (data != null) {
@@ -143,7 +155,7 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
     }
 
     @Override
-    public void returnError(String message) {
+    public void returnError(final String message) {
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).setAction(ACTION, null).show();
 
         if (data != null) {
@@ -167,8 +179,13 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
     @Override
     public void refresh(final String type) {
         isUpdate = true;
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         mediator.loadData(DescriptionActivityMediator.UPDATE, intent.getStringExtra(MainActivity.TITLE_KEY),
                 intent.getStringExtra(AuthConstant.TOKEN), type);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Snackbar.make(findViewById(android.R.id.content), getString(R.string.access_error), Snackbar.LENGTH_LONG).setAction(ACTION, null).show();
     }
 }

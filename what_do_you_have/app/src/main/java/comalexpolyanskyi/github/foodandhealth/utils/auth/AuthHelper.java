@@ -1,12 +1,12 @@
 package comalexpolyanskyi.github.foodandhealth.utils.auth;
 
 
-public interface AuthHelper {
+public interface AuthHelper<A, T> {
 
-    void signIn();
-    void signUp();
+    void registerOnServer(A result, AuthHelperCallback<T> callback);
 
     interface AuthHelperCallback<T>{
         void authSuccess(T data);
+        void onError(String message);
     }
 }

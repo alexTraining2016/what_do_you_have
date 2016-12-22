@@ -43,7 +43,12 @@ public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTo
     public void bindPresenter(Bundle savedInstanceState) {
         if (savedInstanceState == null || mediator == null) {
             this.mediator = new FavoritesFragmentMediator(this);
-            mediator.loadData(getArguments().getString(AuthConstant.TOKEN), getArguments().getString(AuthConstant.ID), TYPE_ART);
+            final String token = getArguments().getString(AuthConstant.TOKEN);
+            if(mediator.accessCheck(token)) {
+                mediator.loadData(token, getArguments().getString(AuthConstant.ID), TYPE_ART);
+            }else{
+                super.returnError(getString(R.string.access_error));
+            }
         }
     }
 
@@ -52,6 +57,7 @@ public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTo
         super.onDetach();
 
         mediator.onDestroy();
+        mediator = null;
     }
 
     @Override

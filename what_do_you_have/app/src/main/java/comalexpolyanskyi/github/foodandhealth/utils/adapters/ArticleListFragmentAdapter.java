@@ -21,7 +21,7 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
     private MySimpleImageLoader imageLoader;
     private View.OnClickListener clickListener;
 
-    public ArticleListFragmentAdapter(@NonNull Cursor items, @NonNull final BaseRVFragment.OnListFragmentInteractionListener listener) {
+    public ArticleListFragmentAdapter(@NonNull final Cursor items, @NonNull final BaseRVFragment.OnListFragmentInteractionListener listener) {
         cursor = items;
         imageLoader = App.getImageLoader();
         clickListener = new View.OnClickListener() {
@@ -40,19 +40,19 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
         holder.<View>get(R.id.article_item_root).setTag(data.getId());
     }
 
-    public void changeCursor(Cursor cursor) {
+    public void changeCursor(final Cursor cursor) {
         this.cursor = cursor;
         notifyDataSetChanged();
     }
 
-    public ArticleListItemDO getItem(final int position) {
+    public ArticleListItemDO getItem(int position) {
         cursor.moveToPosition(position);
 
         return new ArticleListItemDO(cursor);
     }
 
     @Override
-    public AbstractViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AbstractViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         return new AbstractViewHolder(LayoutInflater.from(ContextHolder.getContext()).inflate(R.layout.fragment_article_list_item, parent, false),
                 R.id.article_name, R.id.article_image, R.id.article_item_root);
     }

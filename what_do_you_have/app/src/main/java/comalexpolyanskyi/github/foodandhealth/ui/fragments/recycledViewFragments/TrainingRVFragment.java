@@ -33,6 +33,7 @@ public class TrainingRVFragment extends BaseRVFragment {
         super.onDetach();
 
         mediator.onDestroy();
+        mediator = null;
     }
 
     @Override

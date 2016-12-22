@@ -1,6 +1,7 @@
 package comalexpolyanskyi.github.foodandhealth.ui.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -133,8 +134,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_favorites_program) {
             appStyleHolder.fitnessInitialize(getString(R.string.favorites_program));
             fragment = FitnessFavoritesRVFragment.newInstance(bundle);
+        }else if (id == R.id.nav_exit) {
+            clearUserAuthData();
+            startActivity(new Intent(this, StartActivity.class));
+            finish();
         }
         return fragment;
+    }
+
+    private void clearUserAuthData(){
+        SharedPreferences sharedPreferences = getSharedPreferences(AuthConstant.AUTH, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -162,13 +174,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onRecipesFragmentInteraction(View v) {
-        final ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this, v, DescriptionActivity.EXTRA_IMAGE);
         final Intent intent = new Intent(this, DescriptionActivity.class);
         intent.putExtra(AuthConstant.TOKEN, getIntent().getStringExtra(AuthConstant.TOKEN));
         intent.putExtra(TITLE_KEY, v.getTag().toString());
-        ActivityCompat.startActivity(this, intent, options.toBundle());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            final ActivityOptionsCompat options =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            this, v, DescriptionActivity.EXTRA_IMAGE);
+            ActivityCompat.startActivity(this, intent, options.toBundle());
+        }else{
+            startActivity(intent);
+        }
+
     }
 
     @Override

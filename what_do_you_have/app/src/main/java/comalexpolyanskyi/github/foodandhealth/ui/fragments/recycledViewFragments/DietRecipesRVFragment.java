@@ -34,6 +34,7 @@ public class DietRecipesRVFragment extends BaseRVFragment {
         super.onDetach();
 
         mediator.onDestroy();
+        mediator = null;
     }
 
     @Override

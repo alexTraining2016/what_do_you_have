@@ -61,7 +61,6 @@ abstract public class BaseRVFragment extends Fragment implements InteractionCont
 
         view = inflater.inflate(R.layout.fragment_article_list, container, false);
         setHasOptionsMenu(true);
-        //view.findViewById(R.id.backgroundImage).setBackgroundResource(AppStyleHolder.initialize().getBgDrawable());
         progressBar = (ProgressBar) view.findViewById(R.id.list_fragment_progress);
         progressBar.getIndeterminateDrawable().setColorFilter(AppStyleHolder.initialize().getColor(), PorterDuff.Mode.MULTIPLY);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_fragment);
