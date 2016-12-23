@@ -39,7 +39,7 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
     private ArticleDO data;
     private TextView descriptionText;
     private InteractionContract.Mediator<String> mediator;
-    private AbstractButtonManager likeButtonManager; private AbstractButtonManager favButtonManager;
+    private AbstractButtonManager likeButtonManager, favButtonManager;
     private boolean isUpdate = false;
 
     @Override
@@ -49,23 +49,19 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
         setTheme(AppStyleHolder.initialize().getTheme());
         setContentView(R.layout.desctiption_activity_scrolling);
         bindView();
-        bindPresenter(savedInstanceState);
+        mediator = new DescriptionActivityMediator(this);
+        bindHeaderButton(getIntent());
+        loadData(savedInstanceState, getIntent());
     }
 
-    private void bindPresenter(@Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            Intent intent = getIntent();
-            this.mediator = new DescriptionActivityMediator(this);
+    private void loadData(@Nullable final Bundle savedInstanceState, final Intent intent) {
+        if (savedInstanceState != null) {
+            returnData((ArticleDO) savedInstanceState.getSerializable(DATA_KEY));
+        }
+        
+        if (data == null) {
             mediator.loadData(DescriptionActivityMediator.LOAD, intent.getStringExtra(MainActivity.TITLE_KEY),
                     intent.getStringExtra(AuthConstant.TOKEN), intent.getStringExtra(AuthConstant.ID));
-        } else {
-            returnData((ArticleDO) savedInstanceState.getSerializable(DATA_KEY));
-            this.mediator = new DescriptionActivityMediator(this);
-            if (data == null) {
-                Intent intent = getIntent();
-                mediator.loadData(DescriptionActivityMediator.LOAD, intent.getStringExtra(MainActivity.TITLE_KEY),
-                        intent.getStringExtra(AuthConstant.TOKEN), intent.getStringExtra(AuthConstant.ID));
-            }
         }
     }
 
@@ -82,6 +78,17 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         progressBar = findViewById(R.id.description_progress);
+    }
+
+    private void bindHeaderButton(final Intent intent) {
+        likeButtonManager = new LikeButtonManager(findViewById(R.id.like_count), this);
+        favButtonManager = new FavoritesButtonManager(findViewById(R.id.fav_count), this);
+
+        final String token = intent.getStringExtra(AuthConstant.TOKEN);
+        if (!mediator.accessCheck(token)) {
+            likeButtonManager.setOnClickListener(this);
+            favButtonManager.setOnClickListener(this);
+        }
     }
 
     @Override
@@ -114,42 +121,21 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
             ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(data.getName());
             ((AppBarLayout) findViewById(R.id.app_bar)).setExpanded(true, true);
             descriptionText.setText(data.getDescription());
-            bindButton();
+            likeButtonManager.setData(String.valueOf(data.getLikeCount()), data.isLike());
+            favButtonManager.setData(String.valueOf(data.getFavCount()), data.isRepost());
         } else {
             isUpdate = false;
             likeButtonManager.updateDrawable(data.isLike());
-            likeButtonManager.setText(Integer.toString(data.getLikeCount()));
+            likeButtonManager.updateText(Integer.toString(data.getLikeCount()));
             favButtonManager.updateDrawable(data.isRepost());
-            favButtonManager.setText(Integer.toString(data.getFavCount()));
-        }
-    }
-
-    private void bindButton(){
-        final Intent intent = getIntent();
-        String token = intent.getStringExtra(AuthConstant.TOKEN);
-
-        if(mediator.accessCheck(token)){
-            likeButtonManager = new LikeButtonManager(
-                    findViewById(R.id.like_count),
-                    data.isLike(),
-                    Integer.toString(data.getLikeCount()),
-                    this);
-            favButtonManager = new FavoritesButtonManager(
-                    findViewById(R.id.fav_count),
-                    data.isRepost(),
-                    Integer.toString(data.getFavCount()),
-                    this);
-        }else{
-            findViewById(R.id.like_count).setOnClickListener(this);
-            findViewById(R.id.fav_count).setOnClickListener(this);
+            favButtonManager.updateText(Integer.toString(data.getFavCount()));
         }
     }
 
     @Override
-    public void returnData(final ArticleDO response) {
-        data = response;
-
+    public void returnData(final ArticleDO data) {
         if (data != null) {
+            this.data = data;
             bindHeader();
         }
     }

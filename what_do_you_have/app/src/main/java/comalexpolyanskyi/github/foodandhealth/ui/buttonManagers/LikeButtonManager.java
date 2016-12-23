@@ -10,9 +10,8 @@ public class LikeButtonManager extends AbstractButtonManager {
 
     public static String TYPE = "like";
 
-    public LikeButtonManager(final View view,
-                             final boolean isLike, final String initValue, final DataUpdateCallback updateCallback) {
-        super(view, isLike, initValue, TYPE, updateCallback);
+    public LikeButtonManager(final View view, final DataUpdateCallback updateCallback) {
+        super(view, TYPE, updateCallback);
     }
 
     @Override

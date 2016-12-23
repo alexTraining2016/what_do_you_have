@@ -9,10 +9,10 @@ public class AuthData implements Serializable {
     @SerializedName("token")
     private String token;
 
-    @SerializedName("name")
+    @SerializedName("login")
     private String name;
 
-    @SerializedName("uid")
+    @SerializedName("id")
     private String id;
 
     public AuthData(String token, String name, String id) {

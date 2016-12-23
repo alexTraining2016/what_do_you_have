@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 
@@ -36,10 +37,12 @@ public class GoogleAuthHelper implements AuthHelper<GoogleSignInResult, AuthData
     }
 
     private AuthData processRequest(final String requestString) {
-        final Type type = new TypeToken<AuthData>() {
+        final Type type = new TypeToken<List<AuthData>>() {
         }.getType();
         final Gson gson = new GsonBuilder().create();
-        return gson.fromJson(requestString, type);
+        List<AuthData> authDatas =  gson.fromJson(requestString, type);
+
+        return authDatas.get(0);
     }
 
     private void toSend(final String email, final String login) {

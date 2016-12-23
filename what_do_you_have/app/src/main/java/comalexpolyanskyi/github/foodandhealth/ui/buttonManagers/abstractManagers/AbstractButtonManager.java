@@ -15,15 +15,11 @@ abstract public class AbstractButtonManager implements View.OnClickListener {
         void refresh(String type);
     }
 
-    public AbstractButtonManager(final View view, final boolean isLike,
-                                 final String initValue, final String type, final DataUpdateCallback updateCallback) {
+    public AbstractButtonManager(final View view, final String type, final DataUpdateCallback updateCallback) {
         this.updateCallback = updateCallback;
         this.type = type;
         this.view = (VectorImageTextView) view;
         this.view.setOnClickListener(this);
-        this.view.setText(initValue);
-        this.view.setTag(R.string.likeState, isLike);
-        selectDrawable(this.view, isLike, false);
     }
 
     @Override
@@ -31,24 +27,34 @@ abstract public class AbstractButtonManager implements View.OnClickListener {
         view = (VectorImageTextView) v;
         final Boolean isLike = (Boolean) view.getTag(R.string.likeState);
         final String label = view.getText().toString();
-        selectDrawable(this.view, !isLike, false);
-        updateText(!isLike, label);
-        view.setTag(R.string.likeState, !isLike);
+        this.selectDrawable(this.view, !isLike, false);
+        this.updateText(!isLike, label);
+        this.view.setTag(R.string.likeState, !isLike);
         updateCallback.refresh(type);
+    }
+
+    public void setData(final String initValue, boolean isLike){
+        this.updateText(initValue);
+        this.view.setTag(R.string.likeState, isLike);
+        this.selectDrawable(this.view, isLike, false);
     }
 
     private void updateText(boolean isLike, String label) {
         if (isLike) {
             int intLabel = Integer.parseInt(label);
             intLabel++;
-            view.setText(Integer.toString(intLabel));
+            this.view.setText(Integer.toString(intLabel));
         } else {
             int intLabel = Integer.parseInt(label);
             intLabel--;
-            view.setText(Integer.toString(intLabel));
+            this.view.setText(Integer.toString(intLabel));
         }
     }
-    public void setText(final String text){
+
+    public void setOnClickListener(final View.OnClickListener clickListener){
+        this.view.setOnClickListener(clickListener);
+    }
+    public void updateText(final String text){
         view.setText(text);
     }
 

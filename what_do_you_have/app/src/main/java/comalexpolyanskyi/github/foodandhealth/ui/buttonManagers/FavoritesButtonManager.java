@@ -12,8 +12,8 @@ public class FavoritesButtonManager extends AbstractButtonManager {
 
     public static String TYPE = "repost";
 
-    public FavoritesButtonManager(final View view, final boolean isLike, final String initValue, final DataUpdateCallback updateCallback) {
-        super(view, isLike, initValue, TYPE, updateCallback);
+    public FavoritesButtonManager(final View view, final DataUpdateCallback updateCallback) {
+        super(view, TYPE, updateCallback);
     }
 
     @Override
