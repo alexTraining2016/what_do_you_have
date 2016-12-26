@@ -15,6 +15,10 @@
         <include
             android:id="@+id/main_toolbar"
             layout="@layout/main_toolbar" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/dropshadow" />
 
         <FrameLayout
             android:id="@+id/container_body"

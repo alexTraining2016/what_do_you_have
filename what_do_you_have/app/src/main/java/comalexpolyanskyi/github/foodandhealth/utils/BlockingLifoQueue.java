@@ -10,7 +10,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
-
 public final class BlockingLifoQueue<T> implements BlockingQueue<T> {
 
     private final BlockingDeque<T> deque;

@@ -61,6 +61,10 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionCon
         contentValues.put(ArticleDescription.LIKE_COUNT, item.getLikeCount());
         contentValues.put(ArticleDescription.REPOST_COUNT, item.getFavCount());
         contentValues.put(ArticleDescription.IMAGE_URI, item.getPhotoUrl());
+        contentValues.put(ArticleDescription.DIFFICULTY_LEVEL, item.getDifficultyLevel());
+        contentValues.put(ArticleDescription.INGREDIENT_LIST, item.getIngredientList());
+        contentValues.put(ArticleDescription.TYPE_NAME, item.getTypeName());
+        contentValues.put(ArticleDescription.REQUIRED_TIME, item.getRequiredTime());
         contentValues.put(ArticleDescription.RECORDING_TIME, System.currentTimeMillis() / 1000);
         contentValues.put(ArticleDescription.AGING_TIME, 3600);
 
@@ -80,10 +84,6 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionCon
 
     @Override
     protected ArticleDO prepareResponse(@NonNull Cursor cursor) {
-        return convertToArticleDO(cursor);
-    }
-
-    private ArticleDO convertToArticleDO(@NonNull Cursor cursor) {
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             ArticleDO request = null;

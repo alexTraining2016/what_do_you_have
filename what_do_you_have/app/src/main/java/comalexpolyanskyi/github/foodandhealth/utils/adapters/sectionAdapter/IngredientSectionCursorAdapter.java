@@ -79,7 +79,7 @@ public class IngredientSectionCursorAdapter extends SectionCursorAdapter<String,
         final Integer id = cursor.getInt(cursor.getColumnIndex(Ingredient.ID));
         itemViewHolder.rootView.setTag(R.string.app_name, id);
         itemViewHolder.name.setText(cursor.getString(cursor.getColumnIndex(Ingredient.NAME)));
-        App.getImageLoader().loadImageFromUrl(cursor.getString(cursor.getColumnIndex(Ingredient.IMAGE)), itemViewHolder.background);
+        App.getImageLoader().loadImageFromUrl(cursor.getString(cursor.getColumnIndex(Ingredient.IMAGE)), itemViewHolder.background, null);
         if(isSelected(id)){
             itemViewHolder.checkedView.setImageResource(R.drawable.ic_beenhere_green_60dp);
         }else{

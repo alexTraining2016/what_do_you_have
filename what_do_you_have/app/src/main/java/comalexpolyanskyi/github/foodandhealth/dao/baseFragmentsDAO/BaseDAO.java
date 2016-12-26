@@ -113,7 +113,7 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
 
     @Nullable
     private Cursor updateDatabase(ParametersInformationRequest parameters) {
-        final byte[] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl(), true);
+        final byte[] requestBytes = httpClient.loadDataFromHttp(parameters.getUrl());
         if (requestBytes != null) {
             final String requestString = new String(requestBytes, Charset.forName(CHARSET_NAME));
             final List<ContentValues> contentValuesList = processRequest(requestString);
@@ -138,8 +138,9 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
                 final Cursor cursor = updateDatabase(parameters);
                 if (cursor != null) {
                     sendAnswer(prepareResponse(cursor));
+                }else{
+                    sendAnswer(null);
                 }
-
             }
         });
     }

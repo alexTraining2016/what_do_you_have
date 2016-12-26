@@ -24,13 +24,14 @@ public class AppHttpClient {
     private AppHttpClient() {
     }
 
-    public byte[] loadDataFromHttp(final String targetURL, final String urlParameters)
-    {
+    public byte[] loadDataFromHttp(final String targetURL, final String urlParameters) {
         urlConnection = null;
+        InputStream inputStream = null;
+        ByteArrayOutputStream buffer = null;
         byte[] bytes = null;
         try {
             final URL url = new URL(targetURL);
-            urlConnection = (HttpURLConnection)url.openConnection();
+            urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(METHOD);
             urlConnection.setRequestProperty(CONTENT_TYPE,
                     APPLICATION_X_WWW_FORM_URLENCODED);
@@ -38,18 +39,18 @@ public class AppHttpClient {
                     Integer.toString(urlParameters.getBytes().length));
             urlConnection.setRequestProperty(CONTENT_LANGUAGE, EN_US);
 
-            urlConnection.setUseCaches (false);
+            urlConnection.setUseCaches(false);
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
 
-            DataOutputStream wr = new DataOutputStream (
-                    urlConnection.getOutputStream ());
-            wr.writeBytes (urlParameters);
-            wr.flush ();
-            wr.close ();
+            DataOutputStream wr = new DataOutputStream(
+                    urlConnection.getOutputStream());
+            wr.writeBytes(urlParameters);
+            wr.flush();
+            wr.close();
 
-            final InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-            final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            inputStream = new BufferedInputStream(urlConnection.getInputStream());
+            buffer = new ByteArrayOutputStream();
             int nRead;
             byte[] data = new byte[1024];
             while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
@@ -63,25 +64,34 @@ public class AppHttpClient {
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
+            }
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (buffer != null) {
+                    buffer.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
         return bytes;
     }
 
-    public byte[] loadDataFromHttp(final String stringUrl, boolean usesCache) {
+    public byte[] loadDataFromHttp(final String stringUrl) {
         urlConnection = null;
+        InputStream inputStream = null;
+        ByteArrayOutputStream buffer = null;
         byte[] bytes = null;
 
         try {
             final URL url = new URL(stringUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setUseCaches(true);
-            if (usesCache) {
-                urlConnection.addRequestProperty(IF_MODIFIED_SINCE, urlConnection.getIfModifiedSince() + "");
-            }
-            final InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-            final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            inputStream = new BufferedInputStream(urlConnection.getInputStream());
+            buffer = new ByteArrayOutputStream();
             int nRead;
             byte[] data = new byte[1024];
             while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
@@ -95,6 +105,16 @@ public class AppHttpClient {
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
+            }
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (buffer != null) {
+                    buffer.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 

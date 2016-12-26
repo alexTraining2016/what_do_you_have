@@ -4,12 +4,19 @@ package comalexpolyanskyi.github.foodandhealth.ui.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -32,13 +39,27 @@ public class AuthorizationActivity extends AppCompatActivity implements AuthHelp
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int rgbColor = determineBackground();
         setContentView(R.layout.activity_authorization);
+        findViewById(R.id.auth_root_layout).setBackgroundColor(rgbColor);
         configureGoogleSignIn();
         final SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setOnClickListener(this);
         final View withoutRegButton = findViewById(R.id.without_auth_button);
         withoutRegButton.setOnClickListener(this);
+    }
+
+    private int determineBackground() {
+        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.signin_image);
+        final Palette palette = Palette.from(bitmap).generate();
+        final Palette.Swatch swatch = palette.getDarkVibrantSwatch();
+
+        if (swatch != null) {
+            return swatch.getRgb();
+        }else {
+            return ContextCompat.getColor(this, R.color.colorPrimaryFood);
+        }
     }
 
     @Override

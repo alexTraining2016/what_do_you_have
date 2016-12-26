@@ -22,8 +22,6 @@ import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 
 public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements InteractionContract.DAO<ParametersInformationRequest> {
 
-    private final static String DELETE = "del";
-
     public FavoritesFragmentDAO(@NonNull InteractionContract.RequiredPresenter<Cursor> presenter) {
         super(presenter);
     }

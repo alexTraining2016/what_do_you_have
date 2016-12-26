@@ -12,4 +12,5 @@ public interface ApiConstants {
     String API_BY_AUTH = "&token=";
     String API_ACT = "&act=";
     String API_REMOVE_FROM_FAVORITES = "&del=";
+    String API_KIND = "index2.php?kind";
 }

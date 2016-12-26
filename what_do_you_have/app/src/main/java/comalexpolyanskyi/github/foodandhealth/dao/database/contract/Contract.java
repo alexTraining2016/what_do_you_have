@@ -8,7 +8,8 @@ public final class Contract {
                     ArticleDescription.class,
                     Ingredient.class,
                     ArticleIngredient.class,
-                    Favorites.class
+                    Favorites.class,
+                    KindFood.class
 
             };
 }

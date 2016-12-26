@@ -27,8 +27,8 @@ public abstract class SectionCursorAdapter<T, S extends ViewHolder, H extends Vi
 
     private int sectionLayoutResId;
     private int itemLayoutResId;
-    private SortedMap<Integer, T> sectionMap = new TreeMap<Integer, T>(); // should not be null
-    private ArrayList<Integer> sectionList = new ArrayList<Integer>();
+    private SortedMap<Integer, T> sectionMap = new TreeMap<>();
+    private ArrayList<Integer> sectionList = new ArrayList<>();
     private Object[] fastScrollObjects;
     private LayoutInflater layoutInflater;
 

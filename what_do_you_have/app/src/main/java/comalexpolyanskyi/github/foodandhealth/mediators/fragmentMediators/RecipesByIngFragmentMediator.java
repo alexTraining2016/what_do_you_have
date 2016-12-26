@@ -11,7 +11,7 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleIngre
 import comalexpolyanskyi.github.foodandhealth.mediators.ApiConstants;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
-import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
+import comalexpolyanskyi.github.foodandhealth.sql.SQLConstants;
 
 public class RecipesByIngFragmentMediator extends BaseMediator<Cursor, String> {
 

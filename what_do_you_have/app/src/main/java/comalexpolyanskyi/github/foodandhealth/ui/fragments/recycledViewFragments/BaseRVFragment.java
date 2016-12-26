@@ -33,7 +33,7 @@ abstract public class BaseRVFragment extends Fragment implements InteractionCont
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private View view;
-    private Cursor data;
+    protected Cursor data;
     private ArticleListFragmentAdapter adapter;
 
     public interface OnListFragmentInteractionListener {

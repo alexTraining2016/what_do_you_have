@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_favorites_program) {
             appStyleHolder.fitnessInitialize(getString(R.string.favorites_program));
             fragment = FitnessFavoritesRVFragment.newInstance(bundle);
-        }else if (id == R.id.nav_exit) {
+        } else if (id == R.id.nav_exit) {
             clearUserAuthData();
             startActivity(new Intent(this, StartActivity.class));
             finish();
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return fragment;
     }
 
-    private void clearUserAuthData(){
+    private void clearUserAuthData() {
         SharedPreferences sharedPreferences = getSharedPreferences(AuthConstant.AUTH, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void colorizeStatusBar(){
+    private void colorizeStatusBar() {
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, appStyleHolder.getColor()));
 
@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             colorizeStatusBar();
         }
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
         }
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     ActivityOptionsCompat.makeSceneTransitionAnimation(
                             this, v, DescriptionActivity.EXTRA_IMAGE);
             ActivityCompat.startActivity(this, intent, options.toBundle());
-        }else{
+        } else {
             startActivity(intent);
         }
 

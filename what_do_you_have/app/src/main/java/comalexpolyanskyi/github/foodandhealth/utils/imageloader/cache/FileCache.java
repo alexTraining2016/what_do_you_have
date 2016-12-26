@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class FileCache {
 
     private static final String TEMP_IMAGES = "TempImages";
@@ -30,7 +29,6 @@ public class FileCache {
     private ConcurrentHashMap<String, Long> map = null;
     private long cacheMaxSize = 150 * 1024 * 1024;
     private final Object lock = new Object();
-    private final Object deleteLock = new Object();
 
     private FileCache(Context context, long cacheMaxSize) {
         cacheDir = new File(context.getCacheDir(), TEMP_IMAGES);
@@ -40,15 +38,14 @@ public class FileCache {
         }
 
         if (cacheDir.getFreeSpace() < cacheMaxSize) {
-            this.cacheMaxSize = cacheDir.getFreeSpace();
+            this.cacheMaxSize = cacheDir.getFreeSpace() / 3;
         } else {
             this.cacheMaxSize = cacheMaxSize;
         }
     }
 
-
     private void save(String filename, Bitmap bitmap) {
-        map.put(filename, System.currentTimeMillis());
+        map.put(filename, System.currentTimeMillis() / 1000);
         final File f = getFile(filename);
         final File mappingFile = getFile(MAPPING_FILE);
         ObjectOutputStream out = null;
@@ -58,6 +55,7 @@ public class FileCache {
             if (f != null) {
                 outStream = new FileOutputStream(f);
             }
+
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
 
             if (mappingFile != null) {
@@ -95,6 +93,7 @@ public class FileCache {
     private void deleteOldFile() {
         final List<Map.Entry<String, Long>> list = new ArrayList<>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Long>>() {
+
             @Override
             public int compare(Map.Entry<String, Long> o1, Map.Entry<String, Long> o2) {
                 return o1.getValue().compareTo(o2.getValue());
@@ -134,9 +133,7 @@ public class FileCache {
     public void put(String url, Bitmap bitmap) {
         if (bitmap == null) {
             return;
-
         }
-
         synchronized (lock) {
             try {
                 getMappingFile();
@@ -144,28 +141,29 @@ public class FileCache {
                 int DEFAULT_COUNT = 70;
                 map = new ConcurrentHashMap<>(DEFAULT_COUNT);
             }
-        }
 
-        if (isCacheOverfull()) {
-            synchronized (deleteLock) {
+            if (isCacheOverfull()) {
                 deleteOldFile();
             }
+            save(url, bitmap);
         }
-        save(url, bitmap);
     }
 
     public static FileCache initialFileCache(Context context, long cacheMaxSize) {
         if (fileCache == null) {
             fileCache = new FileCache(context, cacheMaxSize);
-
         }
 
         return fileCache;
     }
 
     public Bitmap get(String url) {
+        FileInputStream fileInputStream = null;
         try {
-            getMappingFile();
+
+            synchronized (lock) {
+                getMappingFile();
+            }
 
             if (map == null || map.get(url) == null) {
                 return null;
@@ -173,7 +171,8 @@ public class FileCache {
                 File f = getFile(url);
 
                 if (f != null) {
-                    return BitmapFactory.decodeStream(new FileInputStream(f));
+                    fileInputStream = new FileInputStream(f);
+                    return BitmapFactory.decodeStream(fileInputStream);
                 } else {
                     return null;
                 }
@@ -181,6 +180,14 @@ public class FileCache {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        } finally {
+            try {
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

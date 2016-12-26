@@ -44,6 +44,18 @@ public class ArticleDO implements Serializable {
     @SerializedName("isRepost")
     private int isRepost;
 
+    @SerializedName("type_name")
+    private String typeName;
+
+    @SerializedName("difficulty_level")
+    private String difficultyLevel;
+
+    @SerializedName("ingredient_list")
+    private String ingredientList;
+
+    @SerializedName("required_time")
+    private String requiredTime;
+
     public ArticleDO(Cursor cursor) {
         this.id = cursor.getInt(cursor.getColumnIndex(ArticleDescription.ID));
         this.name = cursor.getString(cursor.getColumnIndex(ArticleDescription.NAME));
@@ -52,8 +64,12 @@ public class ArticleDO implements Serializable {
         this.repostCount = cursor.getInt(cursor.getColumnIndex(ArticleDescription.REPOST_COUNT));
         this.description = cursor.getString(cursor.getColumnIndex(ArticleDescription.DESCRIPTION));
         this.userId = cursor.getInt(cursor.getColumnIndex(Favorites.USER_ID));
-        this.isLike =  cursor.getInt(cursor.getColumnIndex(Favorites.ISLIKE));
+        this.isLike = cursor.getInt(cursor.getColumnIndex(Favorites.ISLIKE));
         this.isRepost = cursor.getInt(cursor.getColumnIndex(Favorites.ISFAVORITES));
+        this.typeName = cursor.getString(cursor.getColumnIndex(ArticleDescription.TYPE_NAME));
+        this.difficultyLevel = cursor.getString(cursor.getColumnIndex(ArticleDescription.DIFFICULTY_LEVEL));
+        this.ingredientList = cursor.getString(cursor.getColumnIndex(ArticleDescription.INGREDIENT_LIST));
+        this.requiredTime = cursor.getString(cursor.getColumnIndex(ArticleDescription.REQUIRED_TIME));
     }
 
     public String getDescription() {
@@ -106,5 +122,21 @@ public class ArticleDO implements Serializable {
 
     public String getPhotoUrl() {
         return photo;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public String getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public String getIngredientList() {
+        return ingredientList;
+    }
+
+    public String getRequiredTime() {
+        return requiredTime;
     }
 }

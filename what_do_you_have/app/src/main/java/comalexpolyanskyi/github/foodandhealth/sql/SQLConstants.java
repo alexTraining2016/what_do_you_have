@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.utils.commonConstants;
+package comalexpolyanskyi.github.foodandhealth.sql;
 
 public interface SQLConstants {
     String SELECT = "SELECT ";
@@ -15,4 +15,9 @@ public interface SQLConstants {
     String ORDER_BY = " ORDER BY ";
     String ASC = " ASC";
     String EQ = " = ";
+    String SQL_TABLE_CREATE_TEMPLATE = "CREATE TABLE IF NOT EXISTS %s (%s);";
+    String SQL_TABLE_CREATE_FIELD_TEMPLATE = "%s %s";
+    String UNIQUE = " unique ";
+    String SQL_ARTICLE_SELECT = "a.%s";
+    String SQL_FAVORITES_SELECT = "f.%s";
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollingDetails"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
+    tools:context="comalexpolyanskyi.github.foodandhealth.ui.activities.DescriptionActivity"
+    tools:showIn="@layout/desctiption_activity_scrolling">
+
+    <RelativeLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:padding="8dp"
+            android:id="@+id/image_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="?attr/colorPrimary"
+            app:srcCompat="@drawable/ic_timer_black_24dp"/>
+
+        <TextView
+            android:layout_toEndOf="@id/image_time"
+            android:id="@+id/text_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:padding="8dip"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:padding="8dp"
+            android:layout_below="@id/image_time"
+            android:id="@+id/image_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="?attr/colorPrimary"
+            app:srcCompat="@drawable/ic_info_outline_black_24dp"/>
+
+        <TextView
+            android:layout_below="@id/image_time"
+            android:layout_toEndOf="@id/image_type"
+            android:id="@+id/text_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:padding="8dip"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:padding="8dp"
+            android:layout_below="@id/image_type"
+            android:id="@+id/image_difficulty_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="?attr/colorPrimary"
+            app:srcCompat="@drawable/ic_extension_black_24dp"/>
+
+        <TextView
+            android:layout_below="@id/image_type"
+            android:layout_toEndOf="@id/image_difficulty_level"
+            android:id="@+id/text_difficulty_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:padding="8dip"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_below="@id/image_difficulty_level"
+            android:id="@+id/ingredient_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:padding="8dip"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

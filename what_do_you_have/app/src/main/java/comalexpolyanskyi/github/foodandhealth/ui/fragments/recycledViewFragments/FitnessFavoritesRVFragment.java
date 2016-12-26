@@ -67,6 +67,7 @@ public class FitnessFavoritesRVFragment extends BaseRVFragment implements ItemTo
             super.returnError(message);
         } else {
             super.returnError(ContextHolder.getContext().getString(R.string.empty_favorites));
+            super.data = null;
         }
     }
 

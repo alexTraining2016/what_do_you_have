@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryFood">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/auth_root_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,39 +15,40 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="16dip"
-            app:srcCompat="@drawable/ic_restaurant_menu_black_48dp" />
+            app:srcCompat="@drawable/ic_restaurant_menu_black_48dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/app_name"
-            android:textColor="#FFF"
+            android:textColor="@color/white"
             android:textSize="34sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/sub_app_name"
-            android:textColor="#FFF"
-            android:textSize="16sp" />
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
 
         <ImageView
+            android:id="@+id/background_image"
             android:layout_width="match_parent"
             android:layout_height="256dp"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/signin_image" />
+            android:src="@drawable/signin_image"/>
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="16dp"/>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -56,8 +56,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            app:cardUseCompatPadding="true"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
 
             <TextView
                 android:id="@+id/without_auth_button"
@@ -71,7 +71,7 @@
                 android:textAllCaps="false"
                 android:textColor="#6e6d6d"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
         </android.support.v7.widget.CardView>
 
     </LinearLayout>

@@ -80,6 +80,7 @@ public class CookbookRVFragment extends BaseRVFragment implements ItemTouchHelpe
             super.returnError(message);
         }else{
             super.returnError(ContextHolder.getContext().getString(R.string.empty_favorites));
+            super.data = null;
         }
     }
 

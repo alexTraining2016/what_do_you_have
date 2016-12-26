@@ -35,7 +35,7 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
     @Override
     public void onBind(final AbstractViewHolder holder, final ArticleListItemDO data, int position, int viewType) {
         holder.<TextView>get(R.id.article_name).setText(data.getName());
-        imageLoader.loadImageFromUrl(data.getPhotoUrl(), holder.<ImageView>get(R.id.article_image));
+        imageLoader.loadImageFromUrl(data.getPhotoUrl(), holder.<ImageView>get(R.id.article_image), null);
         holder.<View>get(R.id.article_item_root).setOnClickListener(clickListener);
         holder.<View>get(R.id.article_item_root).setTag(data.getId());
     }

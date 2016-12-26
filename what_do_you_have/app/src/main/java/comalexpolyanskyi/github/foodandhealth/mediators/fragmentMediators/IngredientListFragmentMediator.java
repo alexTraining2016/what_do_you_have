@@ -10,7 +10,7 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Ingredient;
 import comalexpolyanskyi.github.foodandhealth.mediators.ApiConstants;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
-import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
+import comalexpolyanskyi.github.foodandhealth.sql.SQLConstants;
 
 
 public class IngredientListFragmentMediator extends BaseMediator<Cursor, String> {

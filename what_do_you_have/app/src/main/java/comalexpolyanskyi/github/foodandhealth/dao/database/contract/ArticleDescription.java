@@ -22,4 +22,15 @@ public class ArticleDescription implements CachedTable {
     @dbInteger
     public static final String REPOST_COUNT = "repostCount";
 
+    @dbString
+    public static String TYPE_NAME = "typeName";
+
+    @dbString
+    public static String DIFFICULTY_LEVEL = "difficultyLevel";
+
+    @dbString
+    public static String INGREDIENT_LIST = "ingredientList";
+
+    @dbString
+    public static String REQUIRED_TIME = "requiredTime";
 }

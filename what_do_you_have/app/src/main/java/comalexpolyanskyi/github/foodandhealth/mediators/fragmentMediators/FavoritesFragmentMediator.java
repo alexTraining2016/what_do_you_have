@@ -12,7 +12,7 @@ import comalexpolyanskyi.github.foodandhealth.dao.fragmentsDAO.FavoritesFragment
 import comalexpolyanskyi.github.foodandhealth.mediators.ApiConstants;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
-import comalexpolyanskyi.github.foodandhealth.utils.commonConstants.SQLConstants;
+import comalexpolyanskyi.github.foodandhealth.sql.SQLConstants;
 
 public class FavoritesFragmentMediator extends BaseMediator<Cursor, String> {
 
@@ -33,7 +33,7 @@ public class FavoritesFragmentMediator extends BaseMediator<Cursor, String> {
         final String select = SQLConstants.SELECT + SATN_PLUS_DOT + Article.ID + SATN_PLUS_C_DOT + Article.NAME + SATN_PLUS_C_DOT + Article.IMAGE_URI + SATN_PLUS_C_DOT + Article.TYPE +
                 SQLConstants.FROM + DBHelper.getTableName(Article.class) + SHORT_ART_T_NAME +
                 SQLConstants.INNER_JOIN + DBHelper.getTableName(Favorites.class) + " f " + SQLConstants.ON + " a." + Article.ID + " = f." + Favorites.ART_ID +
-                SQLConstants.WHERE + "(f." + Favorites.USER_ID + " = " + parameters[1] + ") " +
+                SQLConstants.WHERE + "(f." + Favorites.USER_ID + SQLConstants.EQ + parameters[1] + ") " +
                 SQLConstants.AND + "(a." + Article.TYPE + SQLConstants.IN + "(" + parameters[2] + ")) " +
                 SQLConstants.AND + "(f." + Favorites.ISFAVORITES + " = 1)" +
                 SQLConstants.ORDER_BY + Article.NAME + SQLConstants.ASC;
