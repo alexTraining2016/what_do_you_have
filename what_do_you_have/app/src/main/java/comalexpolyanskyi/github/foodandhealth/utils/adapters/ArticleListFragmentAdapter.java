@@ -12,6 +12,7 @@ import comalexpolyanskyi.github.foodandhealth.App;
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleListItemDO;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.BaseRVFragment;
+import comalexpolyanskyi.github.foodandhealth.utils.adapters.abstractAdapter.AbstractAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
 
@@ -25,6 +26,7 @@ public class ArticleListFragmentAdapter extends AbstractAdapter<ArticleListItemD
         cursor = items;
         imageLoader = App.getImageLoader();
         clickListener = new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 listener.onRecipesFragmentInteraction(v);

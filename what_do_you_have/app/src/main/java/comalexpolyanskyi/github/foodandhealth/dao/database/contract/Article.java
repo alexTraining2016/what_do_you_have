@@ -16,6 +16,9 @@ public class Article implements CachedTable {
     @dbString
     public static final String IMAGE_URI = "imageUrl";
 
+    @dbString
+    public static final String KIND = "kind_id";
+
     @dbInteger
     public static final String TYPE = "type";
 

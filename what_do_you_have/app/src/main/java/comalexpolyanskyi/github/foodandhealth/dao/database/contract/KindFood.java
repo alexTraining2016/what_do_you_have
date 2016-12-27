@@ -7,6 +7,6 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.annotations.dbString;
 public class KindFood implements CachedTable {
 
     @dbString
-    public static final String NAME = "kind";
+    public static final String NAME = "type_name";
 
 }

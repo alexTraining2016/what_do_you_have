@@ -1,4 +1,4 @@
-package comalexpolyanskyi.github.foodandhealth.utils.adapters;
+package comalexpolyanskyi.github.foodandhealth.utils.adapters.abstractAdapter;
 
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
@@ -6,7 +6,7 @@ import android.view.View;
 
 public abstract class AbstractAdapter<Item> extends RecyclerView.Adapter<AbstractAdapter.AbstractViewHolder> {
 
-    public abstract void onBind(AbstractViewHolder holder, Item item, int position, int viewType);
+    public abstract void onBind(final AbstractViewHolder holder, final Item item, int position, int viewType);
 
     public abstract Item getItem(int position);
 

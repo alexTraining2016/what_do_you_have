@@ -1,6 +1,5 @@
 package comalexpolyanskyi.github.foodandhealth.sql;
 
-
 public interface QueryCreator {
 
     String getTableCreateQuery(final Class<?> clazz);

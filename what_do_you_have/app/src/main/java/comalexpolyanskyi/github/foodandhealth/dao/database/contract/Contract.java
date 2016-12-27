@@ -10,6 +10,5 @@ public final class Contract {
                     ArticleIngredient.class,
                     Favorites.class,
                     KindFood.class
-
             };
 }

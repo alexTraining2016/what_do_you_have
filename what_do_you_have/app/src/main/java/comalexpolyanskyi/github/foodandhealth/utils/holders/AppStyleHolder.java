@@ -1,6 +1,5 @@
 package comalexpolyanskyi.github.foodandhealth.utils.holders;
 
-
 import comalexpolyanskyi.github.foodandhealth.R;
 
 public class AppStyleHolder {
@@ -39,13 +38,14 @@ public class AppStyleHolder {
         return styleHolder;
     }
 
-    public void defaultInitialize(String title) {
+    public void defaultInitialize(final String title) {
         this.title = title;
         theme = R.style.FoodAppTheme;
         color = R.color.colorPrimaryFood;
+        drawable = R.drawable.food;
     }
 
-    public void fitnessInitialize(String title) {
+    public void fitnessInitialize(final String title) {
         theme = R.style.TrainingAppTheme;
         this.title = title;
         color = R.color.colorPrimaryTraining;

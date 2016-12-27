@@ -1,6 +1,10 @@
 package comalexpolyanskyi.github.foodandhealth.dao.dataObject;
 
+import android.database.Cursor;
+
 import com.google.gson.annotations.SerializedName;
+
+import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Ingredient;
 
 public class IngredientItemDO {
 
@@ -13,10 +17,10 @@ public class IngredientItemDO {
     @SerializedName("image")
     private String image;
 
-    public IngredientItemDO(int id, String name, String image) {
-        this.id = id;
-        this.name = name;
-        this.image = image;
+    public IngredientItemDO(Cursor cursor) {
+        this.id = cursor.getInt(cursor.getColumnIndex(Ingredient.ID));
+        this.name = cursor.getString(cursor.getColumnIndex(Ingredient.NAME));
+        this.image = cursor.getString(cursor.getColumnIndex(Ingredient.IMAGE));
     }
 
     public String getName() {

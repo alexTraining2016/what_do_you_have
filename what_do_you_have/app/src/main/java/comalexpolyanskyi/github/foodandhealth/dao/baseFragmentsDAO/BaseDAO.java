@@ -17,7 +17,9 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DbOperations;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.CachedTable;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
+import comalexpolyanskyi.github.foodandhealth.utils.AppExecutorService;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
+import comalexpolyanskyi.github.foodandhealth.utils.BlockingLifoQueue;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersInformationRequest> {
@@ -33,7 +35,7 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
         handler = new Handler(Looper.getMainLooper());
         this.presenter = presenter;
         operations = new DBHelper(ContextHolder.getContext(), DbOperations.FOOD_AND_HEAL, DbOperations.VERSION);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService = AppExecutorService.getAppExecutor();
         httpClient = AppHttpClient.getAppHttpClient();
     }
 
@@ -45,6 +47,7 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
     @Override
     public void get(final ParametersInformationRequest parameters, final boolean forceUpdate, final boolean noUpdate) {
         executorService.execute(new Runnable() {
+
             @Override
             public void run() {
                 boolean isNeedUpdate = true;
@@ -57,7 +60,6 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
                         isNeedUpdate = isDataOutdated(parameters.getUrl(), cacheData);
                     }
                 }
-
                 if (isNeedUpdate && !noUpdate) {
                     final Cursor cursor = updateDatabase(parameters);
 
@@ -91,6 +93,7 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
 
     private void displayDataFromCache(final T response) {
         handler.post(new Runnable() {
+
             @Override
             public void run() {
                 presenter.onSuccess(response);
@@ -100,6 +103,7 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
 
     private void sendAnswer(final T request) {
         handler.post(new Runnable() {
+
             @Override
             public void run() {
                 if (request != null) {
@@ -133,12 +137,13 @@ public abstract class BaseDAO<T> implements InteractionContract.DAO<ParametersIn
     @Override
     public void update(final ParametersInformationRequest parameters) {
         executorService.execute(new Runnable() {
+
             @Override
             public void run() {
                 final Cursor cursor = updateDatabase(parameters);
                 if (cursor != null) {
                     sendAnswer(prepareResponse(cursor));
-                }else{
+                } else {
                     sendAnswer(null);
                 }
             }

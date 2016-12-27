@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView
     android:id="@+id/card_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:layout_marginBottom="16dp"
@@ -20,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/food" />
+            android:src="@drawable/food"/>
 
         <TextView
             android:id="@+id/ingredient_name"
@@ -32,7 +33,7 @@
             android:maxLines="1"
             android:padding="8dp"
             android:textColor="#ffff"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/checked_image"
@@ -42,7 +43,7 @@
             android:layout_marginEnd="8dip"
             android:layout_marginTop="-8dp"
             android:scaleType="centerCrop"
-            card_view:srcCompat="@drawable/ic_beenhere_white_60dp" />
+            card_view:srcCompat="@drawable/ic_beenhere_white_60dp"/>
 
 
     </FrameLayout>

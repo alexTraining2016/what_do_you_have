@@ -20,10 +20,17 @@ public class ArticleListItemDO {
     @SerializedName("type")
     private int type;
 
+    @SerializedName("kind_id")
+    private String kind;
+
     public ArticleListItemDO(Cursor cursor) {
         this.id = cursor.getInt(cursor.getColumnIndex(Article.ID));
         this.name = cursor.getString(cursor.getColumnIndex(Article.NAME));
         this.photo = cursor.getString(cursor.getColumnIndex(Article.IMAGE_URI));
+    }
+
+    public String getKind() {
+        return kind;
     }
 
     public int getType() {

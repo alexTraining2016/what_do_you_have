@@ -37,6 +37,7 @@ abstract public class BaseRVFragment extends Fragment implements InteractionCont
     private ArticleListFragmentAdapter adapter;
 
     public interface OnListFragmentInteractionListener {
+
         void onRecipesFragmentInteraction(View v);
     }
 
@@ -70,7 +71,7 @@ abstract public class BaseRVFragment extends Fragment implements InteractionCont
         return view;
     }
 
-    protected ArticleListFragmentAdapter getAdapter(){
+    protected ArticleListFragmentAdapter getAdapter() {
         return adapter;
     }
 

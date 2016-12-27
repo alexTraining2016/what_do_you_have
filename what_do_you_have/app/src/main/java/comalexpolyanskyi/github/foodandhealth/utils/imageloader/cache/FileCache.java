@@ -30,7 +30,7 @@ public class FileCache {
     private long cacheMaxSize = 150 * 1024 * 1024;
     private final Object lock = new Object();
 
-    private FileCache(Context context, long cacheMaxSize) {
+    private FileCache(final Context context, long cacheMaxSize) {
         cacheDir = new File(context.getCacheDir(), TEMP_IMAGES);
 
         if (!cacheDir.exists()) {
@@ -44,7 +44,7 @@ public class FileCache {
         }
     }
 
-    private void save(String filename, Bitmap bitmap) {
+    private void save(final String filename, final Bitmap bitmap) {
         map.put(filename, System.currentTimeMillis() / 1000);
         final File f = getFile(filename);
         final File mappingFile = getFile(MAPPING_FILE);
@@ -149,7 +149,7 @@ public class FileCache {
         }
     }
 
-    public static FileCache initialFileCache(Context context, long cacheMaxSize) {
+    public static FileCache initialFileCache(final Context context, long cacheMaxSize) {
         if (fileCache == null) {
             fileCache = new FileCache(context, cacheMaxSize);
         }
@@ -192,7 +192,7 @@ public class FileCache {
     }
 
     @Nullable
-    private File getFile(String url) {
+    private File getFile(final String url) {
         final String filename = String.valueOf(url.hashCode());
 
         return new File(cacheDir, filename);

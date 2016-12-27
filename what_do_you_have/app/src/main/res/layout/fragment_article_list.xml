@@ -3,18 +3,23 @@
     android:name="comalexpolyanskyi.github.foodandhealth.ui.fragments.ListFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.BaseRVFragment"
-    xmlns:tools="http://schemas.android.com/tools">
+    tools:context="comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.BaseRVFragment">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/dropshadow"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_fragment"
-        android:padding="16dip"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="16dip"
         app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/fragment_article_list_item" />
+        tools:listitem="@layout/fragment_article_list_item"/>
 
     <ProgressBar
         android:id="@+id/list_fragment_progress"

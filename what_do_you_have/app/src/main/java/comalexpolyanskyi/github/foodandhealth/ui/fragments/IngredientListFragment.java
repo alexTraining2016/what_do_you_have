@@ -6,38 +6,38 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import java.util.HashSet;
 
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.mediators.fragmentMediators.IngredientListFragmentMediator;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
-import comalexpolyanskyi.github.foodandhealth.utils.adapters.sectionAdapter.IngredientSectionCursorAdapter;
+import comalexpolyanskyi.github.foodandhealth.utils.adapters.IngredientListAdapter;
 import comalexpolyanskyi.github.foodandhealth.utils.auth.AuthConstant;
-
 
 public class IngredientListFragment extends Fragment implements InteractionContract.RequiredView<Cursor> {
 
     private static final String ACTION = "Action";
     private View progressBar;
     private View view;
-    private ListView listView;
-    private IngredientSectionCursorAdapter arrayAdapter;
     private InteractionContract.Mediator<String> mediator;
     private Cursor data;
+    private IngredientListAdapter adapter;
+    private RecyclerView recyclerView;
     private OnFABClickListener mainActivityCallback;
 
-
     public interface OnFABClickListener {
+
         void onRecipesByIngredient(HashSet<Integer> ingredientsSet);
     }
 
-    public static IngredientListFragment newInstance(Bundle bundle){
-        IngredientListFragment fragment = new IngredientListFragment();
+    public static IngredientListFragment newInstance(Bundle bundle) {
+        final IngredientListFragment fragment = new IngredientListFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -50,6 +50,7 @@ public class IngredientListFragment extends Fragment implements InteractionContr
         super.onCreate(savedInstanceState);
 
         setRetainInstance(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -79,19 +80,18 @@ public class IngredientListFragment extends Fragment implements InteractionContr
         view = inflater.inflate(R.layout.fragment_ingredient_list, container, false);
         progressBar = view.findViewById(R.id.list_fragment_progress);
         view.findViewById(R.id.list_fragment_fab).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                final HashSet<Integer> ingredientSet =  arrayAdapter.getSelectedId();
-                if(ingredientSet.size() != 0) {
+                final HashSet<Integer> ingredientSet = adapter.getSelectedId();
+                if (ingredientSet.size() != 0) {
                     mainActivityCallback.onRecipesByIngredient(ingredientSet);
-                }else{
+                } else {
                     Snackbar.make(view, getContext().getString(R.string.no_ing_mess), Snackbar.LENGTH_LONG).setAction(ACTION, null).show();
                 }
 
             }
         });
-
-        listView = (ListView) view.findViewById(R.id.ingredient_list_view);
 
         bindListView(savedInstanceState);
         bindMVP(savedInstanceState);
@@ -99,16 +99,17 @@ public class IngredientListFragment extends Fragment implements InteractionContr
         return view;
     }
 
-    private void bindListView(Bundle savedInstanceState) {
-        if(savedInstanceState == null) {
-            arrayAdapter = new IngredientSectionCursorAdapter(getContext(), data);
+    private void bindListView(final Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            adapter = new IngredientListAdapter(data);
         }
-        listView.setFastScrollEnabled(true);
-        listView.setFastScrollAlwaysVisible(true);
-        listView.setAdapter(arrayAdapter);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
     }
 
-    public void bindMVP(Bundle savedInstanceState) {
+    public void bindMVP(final Bundle savedInstanceState) {
         if (savedInstanceState == null || mediator == null) {
             this.mediator = new IngredientListFragmentMediator(this);
             mediator.loadData(getArguments().getString(AuthConstant.TOKEN));
@@ -116,13 +117,13 @@ public class IngredientListFragment extends Fragment implements InteractionContr
     }
 
     @Override
-    public void returnData(Cursor response) {
+    public void returnData(final Cursor response) {
         data = response;
-        arrayAdapter.updateDataSet(response);
+        adapter.changeCursor(data);
     }
 
     @Override
-    public void returnError(String message) {
+    public void returnError(final String message) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).setAction(ACTION, null).show();
     }
 
@@ -130,10 +131,10 @@ public class IngredientListFragment extends Fragment implements InteractionContr
     public void showProgress(boolean isInProgress) {
         if (isInProgress) {
             progressBar.setVisibility(View.VISIBLE);
-            listView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
         } else {
             progressBar.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
     }
 }

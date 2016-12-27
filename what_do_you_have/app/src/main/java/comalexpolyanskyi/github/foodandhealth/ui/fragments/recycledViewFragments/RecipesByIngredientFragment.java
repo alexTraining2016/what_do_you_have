@@ -14,7 +14,7 @@ public class RecipesByIngredientFragment extends BaseRVFragment {
     public static final String INGREDIENT_ID_SET = "ingredientIdSet";
 
     public static RecipesByIngredientFragment newInstance(Bundle args) {
-        RecipesByIngredientFragment fragment = new RecipesByIngredientFragment();
+        final RecipesByIngredientFragment fragment = new RecipesByIngredientFragment();
         fragment.setArguments(args);
 
         return fragment;
@@ -53,7 +53,7 @@ public class RecipesByIngredientFragment extends BaseRVFragment {
         final HashSet<Integer> ingredientsIdSet = (HashSet<Integer>) getArguments().getSerializable(INGREDIENT_ID_SET);
         String params = "";
         if (ingredientsIdSet != null) {
-            Integer[] array = ingredientsIdSet.toArray(new Integer[ingredientsIdSet.size()]);
+            final Integer[] array = ingredientsIdSet.toArray(new Integer[ingredientsIdSet.size()]);
 
             for (int i = 0; i < ingredientsIdSet.size(); i++) {
                 if (ingredientsIdSet.size() - 1 > i) {

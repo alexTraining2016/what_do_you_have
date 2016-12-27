@@ -8,7 +8,7 @@ import comalexpolyanskyi.github.foodandhealth.ui.views.VectorImageTextView;
 
 public class LikeButtonManager extends AbstractButtonManager {
 
-    public static String TYPE = "like";
+    private static String TYPE = "like";
 
     public LikeButtonManager(final View view, final DataUpdateCallback updateCallback) {
         super(view, TYPE, updateCallback);

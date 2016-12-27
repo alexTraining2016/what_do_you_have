@@ -1,6 +1,5 @@
 package comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments;
 
-
 import android.os.Bundle;
 
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
@@ -15,7 +14,7 @@ public class TrainingRVFragment extends BaseRVFragment {
     }
 
     public static TrainingRVFragment newInstance(Bundle bundle) {
-        TrainingRVFragment fragment = new TrainingRVFragment();
+        final TrainingRVFragment fragment = new TrainingRVFragment();
         fragment.setArguments(bundle);
         return fragment;
     }

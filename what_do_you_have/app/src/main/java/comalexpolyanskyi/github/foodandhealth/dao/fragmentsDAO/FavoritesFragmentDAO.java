@@ -45,7 +45,8 @@ public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements Interaction
         final List<ContentValues> contentValuesList = new ArrayList<>();
 
         try {
-            final Type type = new TypeToken<List<FavArticleListItemDO>>(){
+            final Type type = new TypeToken<List<FavArticleListItemDO>>() {
+
             }.getType();
             final Gson gson = new GsonBuilder().create();
             final List<FavArticleListItemDO> result = gson.fromJson(request, type);
@@ -66,17 +67,18 @@ public class FavoritesFragmentDAO extends BaseDAO<Cursor> implements Interaction
         contentValues.put(Article.ID, item.getId());
         contentValues.put(Article.TYPE, item.getType());
         contentValues.put(Article.NAME, item.getName());
+        contentValues.put(Article.KIND, item.getKind());
         contentValues.put(Article.SEARCH_NAME, item.getName().toLowerCase());
         contentValues.put(Article.IMAGE_URI, item.getPhotoUrl());
-        contentValues.put(Article.RECORDING_TIME, System.currentTimeMillis()/1000);
+        contentValues.put(Article.RECORDING_TIME, System.currentTimeMillis() / 1000);
         contentValues.put(Article.AGING_TIME, 3600);
 
         return contentValues;
     }
 
-    private void processingAdditionalData(List<BindingUserDataDO> items){
+    private void processingAdditionalData(List<BindingUserDataDO> items) {
         final List<ContentValues> list = new ArrayList<>();
-        for (BindingUserDataDO item:items) {
+        for (BindingUserDataDO item : items) {
             final ContentValues contentValues = new ContentValues();
             contentValues.put(Favorites.ID, item.getId());
             contentValues.put(Favorites.ART_ID, item.getArtId());

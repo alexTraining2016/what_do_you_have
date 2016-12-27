@@ -12,7 +12,6 @@ import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
 import comalexpolyanskyi.github.foodandhealth.sql.SQLConstants;
 
-
 public class TrainingListFragmentMediator extends BaseMediator<Cursor, String> {
 
     private InteractionContract.DAO<ParametersInformationRequest> dao;

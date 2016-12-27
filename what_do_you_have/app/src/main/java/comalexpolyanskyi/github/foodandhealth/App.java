@@ -7,6 +7,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
+import comalexpolyanskyi.github.foodandhealth.utils.AppExecutorService;
 import comalexpolyanskyi.github.foodandhealth.utils.AppHttpClient;
 import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoader;
@@ -14,9 +15,6 @@ import comalexpolyanskyi.github.foodandhealth.utils.imageloader.MySimpleImageLoa
 import static android.content.ContentValues.TAG;
 
 public class App extends Application {
-
-    public static final String HTTP = "http";
-    public static final String CACHE_FAILED = "HTTP response cache installation failed:";
 
     private static MySimpleImageLoader mySimpleImageLoader;
 
@@ -26,16 +24,8 @@ public class App extends Application {
 
         ContextHolder.setContext(this);
         AppHttpClient.install();
-
-        try {
-            final File httpCacheDir = new File(this.getCacheDir(), HTTP);
-            final long httpCacheSize = 5 * 1024 * 1024;
-            HttpResponseCache.install(httpCacheDir, httpCacheSize);
-        } catch (IOException e) {
-            Log.i(TAG, CACHE_FAILED + e);
-        }
+        AppExecutorService.install();
     }
-
 
     public static MySimpleImageLoader getImageLoader() {
         if (mySimpleImageLoader == null) {

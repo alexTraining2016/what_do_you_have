@@ -1,6 +1,5 @@
 package comalexpolyanskyi.github.foodandhealth.dao.dataObject;
 
-
 import android.database.Cursor;
 
 import com.google.gson.annotations.SerializedName;

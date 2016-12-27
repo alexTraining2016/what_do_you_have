@@ -10,7 +10,7 @@ import comalexpolyanskyi.github.foodandhealth.utils.holders.ContextHolder;
 
 public class FavoritesButtonManager extends AbstractButtonManager {
 
-    public static String TYPE = "repost";
+    private static String TYPE = "repost";
 
     public FavoritesButtonManager(final View view, final DataUpdateCallback updateCallback) {
         super(view, TYPE, updateCallback);

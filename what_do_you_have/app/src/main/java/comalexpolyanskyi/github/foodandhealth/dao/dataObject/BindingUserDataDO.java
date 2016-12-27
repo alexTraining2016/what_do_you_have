@@ -1,6 +1,5 @@
 package comalexpolyanskyi.github.foodandhealth.dao.dataObject;
 
-
 import com.google.gson.annotations.SerializedName;
 
 public class BindingUserDataDO {

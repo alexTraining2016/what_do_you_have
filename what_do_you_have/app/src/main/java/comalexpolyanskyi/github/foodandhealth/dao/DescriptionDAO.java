@@ -19,7 +19,6 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescr
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Favorites;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 
-
 public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionContract.DAO<ParametersInformationRequest> {
 
     public DescriptionDAO(@NonNull InteractionContract.RequiredPresenter<ArticleDO> presenter) {
@@ -35,8 +34,9 @@ public class DescriptionDAO extends BaseDAO<ArticleDO> implements InteractionCon
     protected List<ContentValues> processRequest(@NonNull String request) {
         final List<ContentValues> contentValuesList = new ArrayList<>();
 
-       try {
+        try {
             final Type type = new TypeToken<List<ArticleDO>>() {
+
             }.getType();
             final Gson gson = new GsonBuilder().create();
             final List<ArticleDO> result = gson.fromJson(request, type);

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ArticleDO;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleDescription;
@@ -37,10 +38,11 @@ public class ArticleFragment extends Fragment implements PagesCommunicator<Artic
     }
 
     @Override
-    public void setupColor(int color) {}
+    public void setupColor(int color) {
+    }
 
-    private void refreshView(){
-        if(data != null){
+    private void refreshView() {
+        if (data != null && description != null) {
             description.setText(data.getDescription());
         }
     }

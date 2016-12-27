@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <ListView
-        android:id="@+id/ingredient_list_view"
-        android:padding="16dip"
-        android:fastScrollEnabled="true"
-        android:scrollbarStyle="outsideOverlay"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/dropshadow"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="4dip"
-        android:clickable="false"/>
+        android:padding="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/ingredient_list_item"/>
 
     <ProgressBar
         android:id="@+id/list_fragment_progress"
@@ -26,11 +29,12 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/list_fragment_fab"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_accept"
         android:layout_width="56dip"
         android:layout_height="56dip"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="0dp"
         android:clickable="true"
-        android:layout_gravity="bottom|end"/>
+        android:padding="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_accept"/>
+
 </FrameLayout>

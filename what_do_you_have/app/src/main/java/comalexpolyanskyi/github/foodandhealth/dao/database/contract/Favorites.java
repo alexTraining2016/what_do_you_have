@@ -21,6 +21,4 @@ public class Favorites {
     @dbInteger
     public static final String ISLIKE = "like";
 
-
-
 }

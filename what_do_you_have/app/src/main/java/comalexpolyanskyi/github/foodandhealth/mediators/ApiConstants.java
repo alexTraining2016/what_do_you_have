@@ -1,7 +1,7 @@
 package comalexpolyanskyi.github.foodandhealth.mediators;
 
-
 public interface ApiConstants {
+
     String API_BASE_URL = "http://faheasy.esy.es/";
     String API_ARTICLES = "index2.php?type=";
     String API_ARTICLES_All = "index2.php?all_type";
@@ -13,4 +13,5 @@ public interface ApiConstants {
     String API_ACT = "&act=";
     String API_REMOVE_FROM_FAVORITES = "&del=";
     String API_KIND = "index2.php?kind";
+    String API_BY_KIND = "&kindID=";
 }

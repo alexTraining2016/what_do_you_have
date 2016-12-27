@@ -38,9 +38,10 @@ public class GoogleAuthHelper implements AuthHelper<GoogleSignInResult, AuthData
 
     private AuthData processRequest(final String requestString) {
         final Type type = new TypeToken<List<AuthData>>() {
+
         }.getType();
         final Gson gson = new GsonBuilder().create();
-        List<AuthData> authDatas =  gson.fromJson(requestString, type);
+        List<AuthData> authDatas = gson.fromJson(requestString, type);
 
         return authDatas.get(0);
     }

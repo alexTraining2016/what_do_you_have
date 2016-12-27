@@ -1,6 +1,7 @@
 package comalexpolyanskyi.github.foodandhealth.sql;
 
 public interface SQLConstants {
+
     String SELECT = "SELECT ";
     String FROM = " FROM ";
     String S_F = "SELECT * FROM ";
@@ -9,7 +10,6 @@ public interface SQLConstants {
     String GROUP_BY = " GROUP BY ";
     String ON = " ON ";
     String IN = " IN ";
-    String BETWEEN = " BETWEEN ";
     String AND = " AND ";
     String LIKE = " LIKE ";
     String ORDER_BY = " ORDER BY ";

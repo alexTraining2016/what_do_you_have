@@ -33,7 +33,7 @@ public class PropertiesFragment extends Fragment implements PagesCommunicator<Ar
         imageDifficultyLevel = (ImageView) view.findViewById(R.id.image_difficulty_level);
         imageType = (ImageView) view.findViewById(R.id.image_type);
         textTime = (TextView) view.findViewById(R.id.text_time);
-        textDifficultyLevel = (TextView) view.findViewById(R.id.text_difficulty_level) ;
+        textDifficultyLevel = (TextView) view.findViewById(R.id.text_difficulty_level);
         textType = (TextView) view.findViewById(R.id.text_type);
         textIngredient = (TextView) view.findViewById(R.id.ingredient_list);
         refreshColor();
@@ -64,7 +64,7 @@ public class PropertiesFragment extends Fragment implements PagesCommunicator<Ar
     }
 
     private void refreshColor() {
-        if (color != 0) {
+        if (color != 0 && imageTime != null && imageDifficultyLevel != null && imageType != null) {
             imageTime.setColorFilter(color);
             imageDifficultyLevel.setColorFilter(color);
             imageType.setColorFilter(color);

@@ -2,7 +2,9 @@
 
     <style name="Material" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:fastScrollTextColor">@color/colorAccentFood</item>
-        <item name="android:fastScrollPreviewBackgroundRight">@drawable/bg_default_focused_holo_light</item>
+        <item name="android:fastScrollPreviewBackgroundRight">
+            @drawable/bg_default_focused_holo_light
+        </item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

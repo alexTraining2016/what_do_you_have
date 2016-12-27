@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="comalexpolyanskyi.github.foodandhealth">
+<manifest package="comalexpolyanskyi.github.foodandhealth"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".App"
         android:allowBackup="true"
         android:fullBackupContent="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_app_launcher"
         android:label="@string/app_name"
         android:theme="@style/FoodAppTheme">
         <activity
             android:name="comalexpolyanskyi.github.foodandhealth.ui.activities.StartActivity"
             android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <activity
             android:name="comalexpolyanskyi.github.foodandhealth.ui.activities.MainActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
         <activity
             android:name="comalexpolyanskyi.github.foodandhealth.ui.activities.DescriptionActivity"
             android:launchMode="singleTop"/>
         <activity
             android:name="comalexpolyanskyi.github.foodandhealth.ui.activities.AuthorizationActivity"
             android:launchMode="singleTop"
-            android:theme="@style/FoodAppThemeStatusBar" />
+            android:theme="@style/FoodAppThemeStatusBar"/>
     </application>
 
 </manifest>

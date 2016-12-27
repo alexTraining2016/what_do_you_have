@@ -37,7 +37,6 @@ class ImageLoader implements MySimpleImageLoader {
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 8;
         fileCache = FileCache.initialFileCache(ContextHolder.getContext(), FILE_CACHE_SIZE);
-        //if override the method sizeOf then the memory cache doesn't work ¯\_(ツ)_/¯
         memoryCache = new LruCache<>(cacheSize);
         /*{
             @Override

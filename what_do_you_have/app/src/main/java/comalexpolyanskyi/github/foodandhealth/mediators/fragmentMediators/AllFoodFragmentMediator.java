@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import comalexpolyanskyi.github.foodandhealth.dao.dataObject.ParametersInformationRequest;
 import comalexpolyanskyi.github.foodandhealth.dao.database.DBHelper;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.KindFood;
+import comalexpolyanskyi.github.foodandhealth.dao.fragmentsDAO.KindFoodsFragmentDAO;
 import comalexpolyanskyi.github.foodandhealth.mediators.ApiConstants;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
@@ -15,6 +16,8 @@ public class AllFoodFragmentMediator extends BaseMediator<Cursor, String> {
 
     public AllFoodFragmentMediator(@NonNull InteractionContract.RequiredView<Cursor> view) {
         super(view);
+
+        this.dao = new KindFoodsFragmentDAO(this);
     }
 
     @Override

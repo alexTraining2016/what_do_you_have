@@ -29,10 +29,9 @@ import java.util.HashSet;
 
 import comalexpolyanskyi.github.foodandhealth.R;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.IngredientListFragment;
-import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.AllRecipesRVFragment;
+import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.AllFoodFragment;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.BaseRVFragment;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.CookbookRVFragment;
-import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.DietRecipesRVFragment;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.FitnessFavoritesRVFragment;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.RecipesByIngredientFragment;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.recycledViewFragments.TrainingRVFragment;
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -121,13 +120,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = IngredientListFragment.newInstance(bundle);
         } else if (id == R.id.nav_all_recipes) {
             appStyleHolder.defaultInitialize(getString(R.string.all_recipes));
-            fragment = AllRecipesRVFragment.newInstance(bundle);
+            fragment = new AllFoodFragment();
         } else if (id == R.id.nav_favorites) {
             appStyleHolder.defaultInitialize(getString(R.string.favorites));
             fragment = CookbookRVFragment.newInstance(bundle);
-        } else if (id == R.id.nav_diets) {
-            appStyleHolder.fitnessInitialize(getString(R.string.diets));
-            fragment = DietRecipesRVFragment.newInstance(bundle);
         } else if (id == R.id.nav_training_program) {
             appStyleHolder.fitnessInitialize(getString(R.string.training_program));
             fragment = TrainingRVFragment.newInstance(bundle);
@@ -143,15 +139,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void clearUserAuthData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(AuthConstant.AUTH, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        final SharedPreferences sharedPreferences = getSharedPreferences(AuthConstant.AUTH, MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void colorizeStatusBar() {
-        Window window = this.getWindow();
+        final Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, appStyleHolder.getColor()));
 
     }

@@ -43,6 +43,7 @@ public class IngredientListFragmentDAO extends BaseDAO<Cursor> {
 
         try {
             final Type type = new TypeToken<List<IngredientItemDO>>() {
+
             }.getType();
             final Gson gson = new GsonBuilder().create();
             final List<IngredientItemDO> result = gson.fromJson(request, type);
@@ -63,7 +64,7 @@ public class IngredientListFragmentDAO extends BaseDAO<Cursor> {
         contentValues.put(Ingredient.ID, item.getId());
         contentValues.put(Ingredient.NAME, item.getName());
         contentValues.put(Ingredient.IMAGE, item.getImage());
-        contentValues.put(Ingredient.RECORDING_TIME, System.currentTimeMillis()/1000);
+        contentValues.put(Ingredient.RECORDING_TIME, System.currentTimeMillis() / 1000);
         contentValues.put(Ingredient.AGING_TIME, 600);
 
         return contentValues;

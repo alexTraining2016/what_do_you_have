@@ -12,7 +12,6 @@ import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 import comalexpolyanskyi.github.foodandhealth.mediators.baseMediator.BaseMediator;
 import comalexpolyanskyi.github.foodandhealth.sql.SQLConstants;
 
-
 public class IngredientListFragmentMediator extends BaseMediator<Cursor, String> {
 
     private InteractionContract.DAO<ParametersInformationRequest> dao;
@@ -27,7 +26,7 @@ public class IngredientListFragmentMediator extends BaseMediator<Cursor, String>
     public void loadData(String... parameters) {
         super.loadData(parameters);
 
-        final String url = ApiConstants.API_BASE_URL+ ApiConstants.API_ALL_INGREDIENT + ApiConstants.API_BY_AUTH + parameters[0];
+        final String url = ApiConstants.API_BASE_URL + ApiConstants.API_ALL_INGREDIENT + ApiConstants.API_BY_AUTH + parameters[0];
         final String where = SQLConstants.ORDER_BY + Ingredient.NAME;
         final String select = SQLConstants.S_F + DBHelper.getTableName(Ingredient.class) + where;
 

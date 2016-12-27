@@ -28,7 +28,6 @@ import comalexpolyanskyi.github.foodandhealth.ui.buttonManagers.FavoritesButtonM
 import comalexpolyanskyi.github.foodandhealth.ui.buttonManagers.LikeButtonManager;
 import comalexpolyanskyi.github.foodandhealth.ui.buttonManagers.abstractManagers.AbstractButtonManager;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.descriptionFragments.ArticleFragment;
-import comalexpolyanskyi.github.foodandhealth.ui.fragments.descriptionFragments.CommentsFragment;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.descriptionFragments.PagesCommunicator;
 import comalexpolyanskyi.github.foodandhealth.ui.fragments.descriptionFragments.PropertiesFragment;
 import comalexpolyanskyi.github.foodandhealth.utils.adapters.ViewPagerAdapter;
@@ -87,7 +86,6 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
         int[] pictureArr = {
                 R.drawable.ic_equalizer_black_24dp,
                 R.drawable.ic_receipt_black_24dp,
-                R.drawable.ic_rate_review_black_24dp
         };
 
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
@@ -104,19 +102,23 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
         propertiesCommunicator = new PropertiesFragment();
         adapter.addFragment((Fragment) propertiesCommunicator);
         adapter.addFragment((Fragment) articleCommunicator);
-        adapter.addFragment(new CommentsFragment());
         viewPager.setAdapter(adapter);
     }
 
     private void loadData(@Nullable final Bundle savedInstanceState, final Intent intent) {
         if (savedInstanceState != null) {
-            returnData((ArticleDO) savedInstanceState.getSerializable(DATA_KEY));
+            restoreState((ArticleDO) savedInstanceState.getSerializable(DATA_KEY));
         }
 
         if (data == null) {
             mediator.loadData(DescriptionActivityMediator.LOAD, intent.getStringExtra(MainActivity.TITLE_KEY),
                     intent.getStringExtra(AuthConstant.TOKEN), intent.getStringExtra(AuthConstant.ID));
         }
+    }
+
+    private void restoreState(ArticleDO data) {
+        this.data = data;
+        bindHeader();
     }
 
     private void bindView() {
@@ -174,12 +176,7 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
 
     private void bindData(boolean showMessage) {
         if (!isUpdate) {
-            final MySimpleImageLoader imageLoader = App.getImageLoader();
-            imageLoader.loadImageFromUrl(data.getPhotoUrl(), imageView, this);
-            collapsingToolbarLayout.setTitle(data.getName());
-            ((AppBarLayout) findViewById(R.id.app_bar)).setExpanded(true, true);
-            likeButtonManager.setData(String.valueOf(data.getLikeCount()), data.isLike());
-            favButtonManager.setData(String.valueOf(data.getFavCount()), data.isRepost());
+            bindHeader();
             articleCommunicator.updateData(data);
             propertiesCommunicator.updateData(data);
         } else {
@@ -189,6 +186,15 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
             favButtonManager.resetDrawable(data.isRepost(), showMessage);
             favButtonManager.resetText(Integer.toString(data.getFavCount()));
         }
+    }
+
+    private void bindHeader() {
+        final MySimpleImageLoader imageLoader = App.getImageLoader();
+        imageLoader.loadImageFromUrl(data.getPhotoUrl(), imageView, this);
+        collapsingToolbarLayout.setTitle(data.getName());
+        ((AppBarLayout) findViewById(R.id.app_bar)).setExpanded(true, true);
+        likeButtonManager.setData(String.valueOf(data.getLikeCount()), data.isLike());
+        favButtonManager.setData(String.valueOf(data.getFavCount()), data.isRepost());
     }
 
     @Override

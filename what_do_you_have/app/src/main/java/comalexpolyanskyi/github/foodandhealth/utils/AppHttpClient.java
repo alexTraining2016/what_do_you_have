@@ -10,7 +10,6 @@ import java.net.URL;
 
 public class AppHttpClient {
 
-    private static final String IF_MODIFIED_SINCE = "if-Modified-Since";
     private static final String METHOD = "POST";
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
@@ -89,7 +88,6 @@ public class AppHttpClient {
         try {
             final URL url = new URL(stringUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setUseCaches(true);
             inputStream = new BufferedInputStream(urlConnection.getInputStream());
             buffer = new ByteArrayOutputStream();
             int nRead;

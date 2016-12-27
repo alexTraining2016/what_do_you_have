@@ -1,6 +1,5 @@
 package comalexpolyanskyi.github.foodandhealth.dao.dataObject;
 
-
 public class ParametersInformationRequest {
 
     private String url;

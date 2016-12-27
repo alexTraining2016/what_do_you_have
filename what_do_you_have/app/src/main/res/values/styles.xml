@@ -19,11 +19,11 @@
         <item name="colorAccent">@color/colorAccentTraining</item>
     </style>
 
-    <style name="FoodAppThemeStatusBar" parent="FoodAppTheme" />
+    <style name="FoodAppThemeStatusBar" parent="FoodAppTheme"/>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="CollapsedAppBar" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">20sp</item>

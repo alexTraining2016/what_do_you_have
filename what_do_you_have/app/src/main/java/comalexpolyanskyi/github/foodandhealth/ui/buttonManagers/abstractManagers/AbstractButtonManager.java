@@ -12,6 +12,7 @@ abstract public class AbstractButtonManager implements View.OnClickListener {
     private String type;
 
     public interface DataUpdateCallback {
+
         void refresh(String type);
     }
 
@@ -33,7 +34,7 @@ abstract public class AbstractButtonManager implements View.OnClickListener {
         updateCallback.refresh(type);
     }
 
-    public void setData(final String initValue, boolean isLike){
+    public void setData(final String initValue, boolean isLike) {
         this.resetText(initValue);
         this.view.setTag(R.string.likeState, isLike);
         this.selectDrawable(this.view, isLike, false);
@@ -51,14 +52,15 @@ abstract public class AbstractButtonManager implements View.OnClickListener {
         }
     }
 
-    public void setOnClickListener(final View.OnClickListener clickListener){
+    public void setOnClickListener(final View.OnClickListener clickListener) {
         this.view.setOnClickListener(clickListener);
     }
-    public void resetText(final String text){
+
+    public void resetText(final String text) {
         view.setText(text);
     }
 
-    public void resetDrawable(boolean isLike, boolean showMessage){
+    public void resetDrawable(boolean isLike, boolean showMessage) {
         selectDrawable(this.view, isLike, showMessage);
     }
 

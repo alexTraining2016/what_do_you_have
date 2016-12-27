@@ -19,7 +19,6 @@ import comalexpolyanskyi.github.foodandhealth.dao.database.contract.Article;
 import comalexpolyanskyi.github.foodandhealth.dao.database.contract.ArticleIngredient;
 import comalexpolyanskyi.github.foodandhealth.mediators.InteractionContract;
 
-
 public class RecipesByIngFragmentDAO extends BaseDAO<Cursor> {
 
     public RecipesByIngFragmentDAO(@NonNull InteractionContract.RequiredPresenter<Cursor> presenter) {
@@ -37,12 +36,13 @@ public class RecipesByIngFragmentDAO extends BaseDAO<Cursor> {
 
         try {
             final Type type = new TypeToken<List<ArticleByIngredientDO>>() {
+
             }.getType();
             final Gson gson = new GsonBuilder().create();
             final List<ArticleByIngredientDO> result = gson.fromJson(request, type);
 
             for (ArticleByIngredientDO item : result) {
-                ContentValues contentValue = prepareContentValues(item);
+                final ContentValues contentValue = prepareContentValues(item);
                 contentValuesList.add(contentValue);
                 processingAdditionalData(item.getIngredientsId(), item.getId());
             }
@@ -81,9 +81,10 @@ public class RecipesByIngFragmentDAO extends BaseDAO<Cursor> {
         contentValues.put(Article.ID, item.getId());
         contentValues.put(Article.TYPE, item.getType());
         contentValues.put(Article.NAME, item.getName());
+        contentValues.put(Article.KIND, item.getKind());
         contentValues.put(Article.SEARCH_NAME, item.getName().toLowerCase());
         contentValues.put(Article.IMAGE_URI, item.getPhotoUrl());
-        contentValues.put(Article.RECORDING_TIME, System.currentTimeMillis()/1000);
+        contentValues.put(Article.RECORDING_TIME, System.currentTimeMillis() / 1000);
         contentValues.put(Article.AGING_TIME, 3600);
 
         return contentValues;
