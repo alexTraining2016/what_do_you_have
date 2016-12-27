@@ -22,8 +22,9 @@ public class RecipesByIngredientFragment extends BaseRVFragment {
 
     @Override
     public void bindPresenter(Bundle savedInstanceState) {
-        if (savedInstanceState == null || mediator == null) {
-            this.mediator = new RecipesByIngFragmentMediator(this);
+        this.mediator = new RecipesByIngFragmentMediator(this);
+        
+        if (savedInstanceState == null) {
             final String setOfPicking = pickingSet();
             mediator.loadData(setOfPicking, getArguments().getString(AuthConstant.TOKEN));
         }

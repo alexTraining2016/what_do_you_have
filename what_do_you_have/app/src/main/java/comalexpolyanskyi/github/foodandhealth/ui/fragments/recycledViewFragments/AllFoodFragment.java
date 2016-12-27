@@ -42,6 +42,14 @@ public class AllFoodFragment extends Fragment implements InteractionContract.Req
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+
+        mediator.onDestroy();
+        mediator = null;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);

@@ -57,7 +57,7 @@ public class AppHttpClient {
             }
             buffer.flush();
             bytes = buffer.toByteArray();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         } finally {
@@ -97,7 +97,7 @@ public class AppHttpClient {
             }
             buffer.flush();
             bytes = buffer.toByteArray();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         } finally {

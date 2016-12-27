@@ -21,8 +21,8 @@ public class TrainingRVFragment extends BaseRVFragment {
 
     @Override
     public void bindPresenter(Bundle savedInstanceState) {
-        if (savedInstanceState == null || mediator == null) {
-            this.mediator = new TrainingListFragmentMediator(this);
+        this.mediator = new TrainingListFragmentMediator(this);
+        if (savedInstanceState == null) {
             mediator.loadData(getArguments().getString(AuthConstant.TOKEN));
         }
     }
