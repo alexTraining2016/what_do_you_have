@@ -29,8 +29,7 @@ public class TrainingListFragmentMediator extends BaseMediator<Cursor, String> {
 
         final String url = ApiConstants.API_BASE_URL + ApiConstants.API_ARTICLES + TRAINING + ApiConstants.API_BY_AUTH + parameters[0];
         final String selectSql = SQLConstants.S_F + DBHelper.getTableName(Article.class)
-                + SQLConstants.WHERE + Article.TYPE + SQLConstants.EQ + TRAINING + SQLConstants.ORDER_BY + Article.NAME + SQLConstants.ASC +
-                SQLConstants.ORDER_BY + Article.NAME + SQLConstants.ASC;
+                + SQLConstants.WHERE + Article.TYPE + SQLConstants.EQ + TRAINING + SQLConstants.ORDER_BY + Article.NAME + SQLConstants.ASC;
 
         dao.get(new ParametersInformationRequest(url, selectSql), false, false);
     }

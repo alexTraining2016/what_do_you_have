@@ -90,7 +90,6 @@ public class AuthorizationActivity extends AppCompatActivity implements AuthHelp
 
     @Override
     public void authSuccess(final AuthData authData) {
-        showProgress(false);
         Intent intent = new Intent();
         intent.putExtra(AuthConstant.AUTH_DATA_KEY, authData);
         setResult(RESULT_OK, intent);

@@ -207,6 +207,8 @@ public class DescriptionActivity extends AppCompatActivity implements Interactio
 
     @Override
     public void returnError(final String message) {
+        generationComplete = true;
+        showProgress(false);
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).setAction(ACTION, null).show();
         if (data != null) {
             bindData(false);
